@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Import
+{% endblock %}
+
+{% block content %}
+<h1>CSV-Import</h1>
+
+{% if user.is_authenticated %}
+    <div>Welcome back {{ user.get_username }}!</div>
+    <div>{{ data }}</div>
+{% else %}
+    <div>Welcome!</div>
+    <a class="nav-link" href="/login">Login</a>
+{% endif %}
+
+{% endblock %}
