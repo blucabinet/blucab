@@ -5,7 +5,22 @@ View
 {% endblock %}
 
 {% block content %}
-    {% for td in user.todolist.all %}
-        <p><a href="/{{td.id}}">{{td.name}}</a></p>
-    {% endfor %}
+    <div class="container">
+        <div class="row">
+            {% for td in user.todolist.all %}
+                <div class="col-sm">
+                    <div class="card" style="width: 10rem;">
+                        {% load static %}
+                        <img src="{% static 'main/apollo.jpg' %}" class="card-img-top" alt="Picture of the cover">
+                        <div class="card-body">
+                            <h5 class="card-title">{{td.name}}</h5>
+                            <p class="card-text">Card test</p>
+                            <a href="/{{td.id}}" class="btn btn-primary">{{td.name}}</a>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
