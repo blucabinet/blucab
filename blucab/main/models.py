@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -28,8 +29,10 @@ class Movie(models.Model):
     title = models.CharField(max_length=128)
     title_clean = models.CharField(max_length=128)
     format = models.CharField(max_length=16)
-    release = models.CharField(max_length=4, blank=True)
-    runtime = models.CharField(max_length=5, blank=True)
+    release_year = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(9999)]
+    )
+    runtime = models.IntegerField()
     fsk = models.CharField(max_length=50, blank=True)
     content = models.CharField(max_length=10000, blank=True)
     actor = models.CharField(max_length=500, blank=True)
@@ -49,7 +52,18 @@ class MovieUserList(models.Model):
     )
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True)
     activated = models.BooleanField(default=True)
-    rating = models.IntegerField(default=0)
+    rating = models.IntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(6)]
+    )
     rented = models.BooleanField(default=False)
     rented_to = models.CharField(max_length=100, blank=True)
     date_added = models.DateField(auto_now_add=True, null=True)
+    price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    #price_unit = models.CharField(max_length=3, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'movie',)
+
+    def __str__(self):
+        str = self.user.username + ": " + self.movie.title_clean
+        return str
