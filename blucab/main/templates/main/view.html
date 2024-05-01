@@ -7,18 +7,75 @@ View
 {% block content %}
     <div class="container">
         <div class="row">
-            {% for td in user.todolist.all %}
+            {% for mu in user.movieuserlist.all %}
                 <div class="col-sm">
-                    <div class="card" style="width: 10rem;">
+                    {% if mu.rented %}
+                        <div class="card text-white bg-secondary mb-3" style="width: 10rem;">
+                    {% else %}
+                        <div class="card" style="width: 10rem;">
+                    {% endif %}
                         {% load static %}
-                        <img src="{% static 'main/apollo.jpg' %}" class="card-img-top" alt="Picture of the cover">
+                        <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                         <div class="card-body">
-                            <h5 class="card-title">{{td.name}}</h5>
-                            <p class="card-text">Card test</p>
-                            <a href="/{{td.id}}" class="btn btn-primary">{{td.name}}</a>
+                            <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                            <p class="card-text">{{mu.movie.runtime}} min</p>
+                            {% if not mu.movie.disc_count is 1 %}
+                                <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                            {% endif %}
+                            {% if not mu.movie.movie_count is 1 %}
+                                <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                            {% endif %}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#e{{mu.id}}ModalLong">
+                                Details
+                            </button>
                         </div>
                     </div>
                     <br>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="e{{mu.id}}ModalLong" tabindex="-1" role="dialog" aria-labelledby="e{{mu.id}}ModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="e{{mu.id}}ModalLongTitle">{{mu.movie.title_clean}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card border-light mb-3" style="width: 20rem;">
+                                    <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            {{mu.movie.format}}<br>
+                                            {{mu.movie.disc_count}} Disks<br>
+                                            {{mu.movie.movie_count}} Movies<br>
+                                            Runtime: {{mu.movie.runtime}} min<br>
+                                            Release: {{mu.movie.release_year}}<br>
+                                            FSK: {{mu.movie.fsk}}<br>
+                                            Price: {{mu.price}}<br>
+                                            <br>
+                                            {% if mu.rented %}
+                                                {% if mu.rented_to %}
+                                                    Verliehen an {{mu.rented_to}}<br><br>
+                                                {% else %}
+                                                    Verliehen<br><br>
+                                                {% endif %}
+                                            {% endif %}
+
+                                            EAN: {{mu.movie.ean}}<br>
+                                            ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}">{{mu.movie.asin}}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>{{mu.movie.content}}</div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>
