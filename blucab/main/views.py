@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ToDoList
+from .models import ToDoList, UserSettings
 from .forms import CreateNewList
 
 from .content_handler import handler
@@ -79,4 +79,5 @@ def create(response):
 
 
 def view(response):
-    return render(response, "main/view.html", {"path": picture_name})
+    usersettings = response.user.user_profile
+    return render(response, "main/view.html", {"path": picture_name, "usersettings": usersettings})

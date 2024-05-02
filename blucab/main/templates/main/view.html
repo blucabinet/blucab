@@ -17,13 +17,17 @@ View
                         {% load static %}
                         <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                         <div class="card-body">
-                            <h5 class="card-title">{{mu.movie.title_clean}}</h5>
-                            <p class="card-text">{{mu.movie.runtime}} min</p>
-                            {% if not mu.movie.disc_count is 1 %}
-                                <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                            {% if usersettings.show_view_title %}
+                                <h5 class="card-title">{{mu.movie.title_clean}}</h5>
                             {% endif %}
-                            {% if not mu.movie.movie_count is 1 %}
-                                <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                            {% if usersettings.show_view_details %}
+                                <p class="card-text">{{mu.movie.runtime}} min</p>
+                                {% if not mu.movie.disc_count is 1 %}
+                                    <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                                {% endif %}
+                                {% if not mu.movie.movie_count is 1 %}
+                                    <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                                {% endif %}
                             {% endif %}
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#e{{mu.id}}ModalLong">
                                 Details
@@ -54,7 +58,7 @@ View
                                             Runtime: {{mu.movie.runtime}} min<br>
                                             Release: {{mu.movie.release_year}}<br>
                                             FSK: {{mu.movie.fsk}}<br>
-                                            Price: {{mu.price}}<br>
+                                            Price: {{mu.price}} {{usersettings.price_unit}}<br>
                                             <br>
                                             {% if mu.rented %}
                                                 {% if mu.rented_to %}
