@@ -9,13 +9,20 @@ View
         <div class="row">
             {% for mu in user.movieuserlist.all %}
                 <div class="col-sm">
-                    {% if mu.rented %}
-                        <div class="card text-white bg-secondary mb-3" style="width: 10rem;">
-                    {% else %}
                         <div class="card" style="width: 10rem;">
-                    {% endif %}
                         {% load static %}
-                        <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                        <div>
+                            <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                            {% if mu.rented %}
+                                {% if usersettings.show_view_new_icon %}
+                                    <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
+                                {% endif %}
+                                {% if usersettings.show_view_rented_icon %}
+                                    <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        
                         <div class="card-body">
                             {% if usersettings.show_view_title %}
                                 <h5 class="card-title">{{mu.movie.title_clean}}</h5>
