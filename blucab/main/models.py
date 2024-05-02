@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 # Create your models here.
@@ -42,6 +44,10 @@ class Movie(models.Model):
     disc_count = models.IntegerField(default=1)
     movie_count = models.IntegerField(default=1)
 
+    class Meta:
+        verbose_name = "Movies"
+        verbose_name_plural = verbose_name
+
     def __str__(self):
         return self.title_clean
 
@@ -59,11 +65,40 @@ class MovieUserList(models.Model):
     rented_to = models.CharField(max_length=100, blank=True)
     date_added = models.DateField(auto_now_add=True, null=True)
     price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
-    #price_unit = models.CharField(max_length=3, blank=True)
 
     class Meta:
-        unique_together = ('user', 'movie',)
+        unique_together = (
+            "user",
+            "movie",
+        )
+        verbose_name = "User Movie List"
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         str = self.user.username + ": " + self.movie.title_clean
         return str
+
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="user_profile"
+    )
+    price_unit = models.CharField(default="€", max_length=3, blank=True)
+    show_view_title = models.BooleanField(default=True)
+    show_view_details = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "User Settings"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.user.username
+
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    try:
+        if created:
+            UserSettings.objects.create(user=instance).save()
+    except Exception as err:
+        print("Error creating user profile!")
