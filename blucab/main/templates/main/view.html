@@ -62,7 +62,11 @@ View
                             </div>
                             <div class="modal-body">
                                 <div class="card border-light mb-3" style="width: 20rem;">
-                                    <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                    {% if mu.movie.picture_available %}
+                                        <img src="{% get_static_prefix %}main/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                    {% else %}
+                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                    {% endif %}
                                     <div class="card-body">
                                         <p class="card-text">
                                             {{mu.movie.format}}<br>
