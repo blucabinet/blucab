@@ -11,7 +11,7 @@ View
                 <div class="col-sm">
                         <div class="card" style="width: 10rem;">
                         {% load static %}
-                        <div>
+                        <div class="overlay_div" id="pictureOverlayIcons">
                             <img src="{% static 'main/5053083204143.jpg' %}" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                             {% if mu.rented %}
                                 {% if usersettings.show_view_new_icon %}
@@ -23,7 +23,7 @@ View
                             {% endif %}
                         </div>
                         
-                        <div class="card-body">
+                        <div class="card-body" id="e{{mu.id}}Card">
                             {% if usersettings.show_view_title %}
                                 <h5 class="card-title">{{mu.movie.title_clean}}</h5>
                             {% endif %}
