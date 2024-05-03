@@ -62,6 +62,7 @@ class MovieUserList(models.Model):
     rating = models.IntegerField(
         default=0, validators=[MinValueValidator(0), MaxValueValidator(6)]
     )
+    viewed = models.BooleanField(default=False)
     rented = models.BooleanField(default=False)
     rented_to = models.CharField(max_length=100, blank=True)
     date_added = models.DateField(auto_now_add=True, null=True)
