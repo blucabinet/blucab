@@ -43,6 +43,7 @@ class Movie(models.Model):
     genre = models.CharField(max_length=200, blank=True)
     disc_count = models.IntegerField(default=1)
     movie_count = models.IntegerField(default=1)
+    picture_available = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Movies"

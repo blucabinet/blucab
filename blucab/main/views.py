@@ -12,7 +12,6 @@ from django.conf import settings
 
 # Create your views here.
 url = "https://m.media-amazon.com/images/I/51DUcBqDTcL._SX300_SY300_QL70_ML2_.jpg"
-picture_name = "5053083204143"
 
 
 def index(response, id):
@@ -80,4 +79,4 @@ def create(response):
 
 def view(response):
     usersettings = response.user.user_profile
-    return render(response, "main/view.html", {"path": picture_name, "usersettings": usersettings})
+    return render(response, "main/view.html", {"usersettings": usersettings})
