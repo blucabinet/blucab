@@ -87,8 +87,10 @@ class UserSettings(models.Model):
     price_unit = models.CharField(default="€", max_length=3, blank=True)
     show_view_title = models.BooleanField(default=True)
     show_view_details = models.BooleanField(default=True)
-    show_view_new_icon = models.BooleanField(default=True)
-    show_view_rented_icon = models.BooleanField(default=True)
+    show_view_icon_new = models.BooleanField(default=True)
+    show_view_icon_rented = models.BooleanField(default=True)
+    show_view_count_disc = models.BooleanField(default=True)
+    show_view_count_movie = models.BooleanField(default=True)
     show_view_button_details = models.BooleanField(default=True)
 
     class Meta:

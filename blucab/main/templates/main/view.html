@@ -18,10 +18,10 @@ View
                                 <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                             {% endif %}
                             {% if mu.rented %}
-                                {% if usersettings.show_view_new_icon %}
+                                {% if usersettings.show_view_icon_new %}
                                     <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
                                 {% endif %}
-                                {% if usersettings.show_view_rented_icon %}
+                                {% if usersettings.show_view_icon_rented %}
                                     <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
                                 {% endif %}
                             {% endif %}
@@ -34,10 +34,14 @@ View
                             {% if usersettings.show_view_details %}
                                 <p class="card-text">{{mu.movie.runtime}} min</p>
                                 {% if not mu.movie.disc_count is 1 %}
-                                    <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                                    {% if usersettings.show_view_count_disc %}
+                                        <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                                    {% endif %}
                                 {% endif %}
                                 {% if not mu.movie.movie_count is 1 %}
-                                    <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                                    {% if usersettings.show_view_count_movie %}
+                                        <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                             {% if usersettings.show_view_button_details %}
