@@ -88,6 +88,7 @@ class UserSettings(models.Model):
     show_view_details = models.BooleanField(default=True)
     show_view_new_icon = models.BooleanField(default=True)
     show_view_rented_icon = models.BooleanField(default=True)
+    show_view_button_details = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "User Settings"

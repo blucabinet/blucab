@@ -36,9 +36,11 @@ View
                                     <p class="card-text">{{mu.movie.movie_count}} Movies</p>
                                 {% endif %}
                             {% endif %}
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#e{{mu.id}}ModalLong">
-                                Details
-                            </button>
+                            {% if usersettings.show_view_button_details %}
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#e{{mu.id}}ModalLong">
+                                    Details
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
                     <br>
