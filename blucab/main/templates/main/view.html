@@ -82,7 +82,9 @@ View
                                             Release: {{mu.movie.release_year}}<br>
                                             FSK: {{mu.movie.fsk}}<br>
                                             <br>
-                                            Price: {{mu.price}} {{usersettings.price_unit}}<br>
+                                            {% if mu.price != 0.00 %}
+                                                Price: {{mu.price}} {{usersettings.price_unit}}<br>
+                                            {% endif %}
                                             Added: {{mu.date_added}}<br>
                                             <br>
                                             {% if mu.rented %}
