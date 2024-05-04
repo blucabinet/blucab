@@ -6,7 +6,7 @@ View
 
 {% block content %}
     <div class="container">
-        <div class="row">
+        <div class="row" id="gallery">
             {% for mu in user.movieuserlist.all %}
                 <div class="col-sm">
                         <div class="card" style="width: 10rem;">
@@ -79,7 +79,9 @@ View
                                             Runtime: {{mu.movie.runtime}} min<br>
                                             Release: {{mu.movie.release_year}}<br>
                                             FSK: {{mu.movie.fsk}}<br>
+                                            <br>
                                             Price: {{mu.price}} {{usersettings.price_unit}}<br>
+                                            Added: {{mu.date_added}}<br>
                                             <br>
                                             {% if mu.rented %}
                                                 {% if mu.rented_to %}
