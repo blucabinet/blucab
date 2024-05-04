@@ -41,6 +41,7 @@ class Movie(models.Model):
     regisseur = models.CharField(max_length=100, blank=True)
     studio = models.CharField(max_length=100, blank=True)
     genre = models.CharField(max_length=200, blank=True)
+    language = models.CharField(max_length=200, blank=True)
     disc_count = models.IntegerField(default=1)
     movie_count = models.IntegerField(default=1)
     picture_available = models.BooleanField(default=False)
