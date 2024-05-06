@@ -20,10 +20,12 @@ View
                                 {% endif %}
                                 {% if mu.rented %}
                                     {% if usersettings.show_view_icon_new %}
-                                        <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
+                                        {% if usersettings.days_for_new > 0 %}
+                                            <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
+                                        {% endif %}
                                     {% endif %}
                                     {% if usersettings.show_view_icon_rented %}
-                                        <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
+                                        <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
                                     {% endif %}
                                 {% endif %}
                             </span>
