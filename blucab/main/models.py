@@ -87,6 +87,9 @@ class UserSettings(models.Model):
         User, on_delete=models.CASCADE, related_name="user_profile"
     )
     price_unit = models.CharField(default="€", max_length=3, blank=True)
+    days_for_new = models.IntegerField(
+        default=30, validators=[MinValueValidator(0), MaxValueValidator(730)]
+    )
     show_view_title = models.BooleanField(default=True)
     show_view_details = models.BooleanField(default=True)
     show_view_icon_new = models.BooleanField(default=True)
