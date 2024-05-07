@@ -18,8 +18,10 @@ View
                                 {% else %}
                                     <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% endif %}
+
                                 {% if usersettings.show_view_icon_new %}
-                                    {% if usersettings.days_for_new > 0 %}
+                                    {% load days_since %}
+                                    {% if mu.date_added|days_since <= usersettings.days_for_new %}
                                         <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
                                     {% endif %}
                                 {% endif %}
@@ -88,7 +90,6 @@ View
                                                 Price: {{mu.price}} {{usersettings.price_unit}}<br>
                                             {% endif %}
                                             Added: {{mu.date_added}}<br>
-                                            {{ mu.date_added|date:"Y M d" }}
                                             <br>
                                             {% if mu.rented %}
                                                 {% if mu.rented_to %}
