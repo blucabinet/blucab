@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 
 # Create your models here.
@@ -66,7 +67,7 @@ class MovieUserList(models.Model):
     viewed = models.BooleanField(default=False)
     rented = models.BooleanField(default=False)
     rented_to = models.CharField(max_length=100, blank=True)
-    date_added = models.DateField(auto_now_add=True, null=True)
+    date_added = models.DateField(default=timezone.now)
     price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
 
     class Meta:
