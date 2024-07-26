@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, UserSettings
@@ -8,7 +9,6 @@ from .content_handler import handler
 import csv
 import os
 import requests
-from django.conf import settings
 
 # Create your views here.
 url = "https://m.media-amazon.com/images/I/51DUcBqDTcL._SX300_SY300_QL70_ML2_.jpg"
@@ -49,7 +49,7 @@ def csv_import(response):
 
     ch = handler()
 
-    ch._picture_download(url, picture_name)
+    # ch._picture_download(url, picture_name)
     ch.csv_importer(filename="floyer_movies.csv")
 
     return render(response, "main/csv_import.html", {"data": test})
