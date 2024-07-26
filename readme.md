@@ -1,13 +1,7 @@
 
 Needed packages:
-lxml
-requests
-bs4
-
-Django
-django-crispy-forms
-crispy-bootstrap4
+See requirements.txt
 
 Attributions
--Rent-Icon and New-Icon by Muhammad Khaleeq (https://www.vecteezy.com/members/iyikon/)
-- Amazon scraping inspired by Meghna Gangwar (https://www.digitalocean.com/community/tutorials/scrape-amazon-product-information-beautiful-soup)
+- Rent-Icon and New-Icon by Muhammad Khaleeq (https://www.vecteezy.com/members/iyikon/)
+- Amazon scraping by ScrapeHero tutorials (https://www.scrapehero.com/tutorial-how-to-scrape-amazon-product-details-using-python-and-selectorlib/, https://github.com/scrapehero-code/amazon-scraper)

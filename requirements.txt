@@ -1,0 +1,6 @@
+Django
+django-crispy-forms
+crispy-bootstrap4
+
+selectorlib
+requests
