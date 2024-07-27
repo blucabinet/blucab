@@ -4,3 +4,5 @@ services:
     container_name: django
     ports:
       - '8000:8000'
+    volumes:
+      - ./app_db:/app/db
