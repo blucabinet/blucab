@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt .
 
+# Install required packages
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
@@ -16,4 +17,6 @@ COPY . .
 EXPOSE 8000
 
 # Default command on container startup
+ENTRYPOINT ["./entrypoint.sh"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
