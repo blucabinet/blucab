@@ -1,5 +1,5 @@
 from django.conf import settings
-from .models import Movie
+from .models import Movie, MovieUserList
 
 import csv
 import os
@@ -32,7 +32,7 @@ class handler():
             open(file_path, "wb").write(picture.content)
             print(f"File {picture_name} downloaded")
 
-    def csv_importer(self, filename: str):
+    def csv_importer(self, filename: str, user):
         with open(os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING) as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             next(reader, None)
@@ -56,3 +56,11 @@ class handler():
                     )
 
                     m.save()
+
+                c_movie = Movie.objects.get(ean=c_ean)
+
+                if not MovieUserList.objects.filter(user=user, movie=c_movie).exists():
+                    list_item = MovieUserList(user=user, movie=c_movie)
+                    list_item.save()
+                
+

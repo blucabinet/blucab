@@ -46,11 +46,12 @@ def index(response, id):
 def csv_import(response):
     # Import dataset from Flick-Rack
     test = None
+    user = response.user
 
     ch = handler()
 
     # ch._picture_download(url, picture_name)
-    ch.csv_importer(filename="floyer_movies.csv")
+    ch.csv_importer(filename="floyer_movies.csv", user=user)
 
     return render(response, "main/csv_import.html", {"data": test})
 
