@@ -1,0 +1,6 @@
+services:
+  app:
+    build: blucab
+    container_name: django
+    ports:
+      - '8000:8000'
