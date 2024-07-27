@@ -1,6 +1,6 @@
-Django
-django-crispy-forms
-crispy-bootstrap4
+Django==5.0.7
+django-crispy-forms==2.3
+crispy-bootstrap4==2024.1
 
-selectorlib
-requests
+selectorlib==0.16.0
+requests==2.32.3
