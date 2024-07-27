@@ -7,6 +7,7 @@ import requests
 
 
 PICTURE_EXTENSION = ".jpg"
+CSV_ENCODING = "ISO-8859-1"
 
 
 class handler():
@@ -32,7 +33,7 @@ class handler():
             print(f"File {picture_name} downloaded")
 
     def csv_importer(self, filename: str):
-        with open(os.path.join(settings.BASE_DIR, "import", filename)) as csvfile:
+        with open(os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING) as csvfile:
             reader = csv.reader(csvfile, delimiter=",")
             next(reader, None)
             for row in reader:
