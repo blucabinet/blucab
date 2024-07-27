@@ -6,3 +6,7 @@ services:
       - '8000:8000'
     volumes:
       - ./app_db:/app/db
+    env_file:
+      - ./.env.dev
+    #environment:
+    #  - DEBUG=False

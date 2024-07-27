@@ -3,7 +3,7 @@ FROM python:3
 
 WORKDIR /app
 
-# set environment variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
