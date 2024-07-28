@@ -6,6 +6,7 @@ services:
       - '8000:8000'
     volumes:
       - ./app_db:/app/db
+      - ./app_covers:/app/main/static/main/cover
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - ./.env.dev
