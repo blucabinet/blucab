@@ -7,6 +7,7 @@ services:
     volumes:
       - ./app_db:/app/db
       - ./app_covers:/app/main/static/main/cover
+      - ./app_import:/app/import
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - ./.env.dev
