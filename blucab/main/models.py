@@ -45,6 +45,9 @@ class Movie(models.Model):
     language = models.CharField(max_length=200, blank=True)
     disc_count = models.IntegerField(default=1)
     movie_count = models.IntegerField(default=1)
+    season_count = models.IntegerField(default=0)
+    episode_count = models.IntegerField(default=0)
+    is_series = models.BooleanField(default=False)
     picture_available = models.BooleanField(default=False)
 
     class Meta:
