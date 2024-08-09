@@ -82,6 +82,12 @@ View
                                             {{mu.movie.format}}<br>
                                             {{mu.movie.disc_count}} Disks<br>
                                             {{mu.movie.movie_count}} Movies<br>
+                                            {% if not mu.movie.season_count is 0 %}
+                                                {{mu.movie.season_count}} Seasons<br>
+                                            {% endif %}
+                                            {% if not mu.movie.episode_count is 0 %}
+                                                {{mu.movie.episode_count}} Seasons<br>
+                                            {% endif %}
                                             Runtime: {{mu.movie.runtime}} min<br>
                                             Release: {{mu.movie.release_year}}<br>
                                             FSK: {{mu.movie.fsk}}<br>
