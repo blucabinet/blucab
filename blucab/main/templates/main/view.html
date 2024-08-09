@@ -16,7 +16,7 @@ View
                                 {% if mu.movie.picture_available %}
                                     <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% else %}
-                                    <img src="{% get_static_prefix %}main/cover/dummy.jpg" class="card-img-top" alt="Cover dummy" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                    <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% endif %}
 
                                 {% if usersettings.show_view_icon_new %}
@@ -75,7 +75,7 @@ View
                                     {% if mu.movie.picture_available %}
                                         <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
                                     {% else %}
-                                        <img src="{% get_static_prefix %}main/cover/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
                                     {% endif %}
                                     <div class="card-body">
                                         <p class="card-text">
