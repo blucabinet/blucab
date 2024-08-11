@@ -79,5 +79,10 @@ def create(response):
 
 
 def view(response):
-    usersettings = response.user.user_profile
-    return render(response, "main/view.html", {"usersettings": usersettings})
+    user = response.user
+
+    if user.is_authenticated:
+        usersettings = user.user_profile
+        return render(response, "main/view.html", {"usersettings": usersettings})
+    else:
+        return render(response, "main/view.html")
