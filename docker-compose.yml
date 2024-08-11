@@ -11,5 +11,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - ./.env.dev
-    #environment:
-    #  - DEBUG=False
+    environment:
+      - DEBUG=False
+      - SECRET_KEY="django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
+      - DJANGO_ALLOWED_HOSTS=".localhost 127.0.0.1"

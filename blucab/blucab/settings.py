@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from environs import Env
+from dotenv import load_dotenv
+from dotenv import find_dotenv
+
+
+env = Env()
+load_dotenv(find_dotenv())
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +28,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
+SECRET_KEY = SECRET_KEY = env(
+    "SECRET_KEY", "django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", False)
 
-ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '192.168.1.180']
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", ("localhost", "127.0.0.1"))
 
 
 # Application definition
@@ -127,7 +137,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CRISPY_TEMPLATE_PACK="bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
