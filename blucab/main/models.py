@@ -94,6 +94,7 @@ class UserSettings(models.Model):
     days_for_new = models.IntegerField(
         default=30, validators=[MinValueValidator(0), MaxValueValidator(730)]
     )
+    view_is_public = models.BooleanField(default=False)
     show_view_title = models.BooleanField(default=True)
     show_view_details = models.BooleanField(default=True)
     show_view_icon_new = models.BooleanField(default=True)
