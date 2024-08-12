@@ -30,6 +30,14 @@ def handler_500(request):
     return render(request, "error/500.html", status=500)
 
 
+def legal(request):
+    return render(request, "legal/legal.html", {})
+
+
+def privacy(request):
+    return render(request, "legal/privacy.html", {})
+
+
 def index(response, uname):
     user_id_query = User.objects.filter(username=uname)
     if len(user_id_query) != 1:
