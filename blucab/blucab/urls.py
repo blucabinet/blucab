@@ -25,5 +25,10 @@ urlpatterns = [
     path("register/", regview.register, name="register"),
     path("", include("main.urls")),
     path("", include("django.contrib.auth.urls")),
-    path("favicon.ico",RedirectView.as_view(url='/static/favicon.ico')),
+    path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
 ]
+
+handler400 = "main.views.handler_400"
+handler403 = "main.views.handler_403"
+handler404 = "main.views.handler_404"
+handler500 = "main.views.handler_500"

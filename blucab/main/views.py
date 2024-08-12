@@ -14,32 +14,21 @@ import requests
 url = "https://m.media-amazon.com/images/I/51DUcBqDTcL._SX300_SY300_QL70_ML2_.jpg"
 
 
-def index(response, id):
-    ls = ToDoList.objects.get(id=id)
+def handler_400(request):
+    return render(request, "error/400.html", status=400)
 
-    if ls in response.user.todolist.all():
 
-        if response.method == "POST":
-            print(response.POST)
-            if response.POST.get("save"):
-                for item in ls.item_set.all():
-                    if response.POST.get("c" + str(item.id)) == "clicked":
-                        item.complete = True
-                    else:
-                        item.complete = False
+def handler_403(request):
+    return render(request, "error/403.html", status=403)
 
-                    item.save()
 
-            elif response.POST.get("newItem"):
-                txt = response.POST.get("new")
+def handler_404(request, exception):
+    return render(request, "error/404.html", status=404)
 
-                # Validity check
-                if len(txt) > 2:
-                    ls.item_set.create(text=txt, complete=False)
-                else:
-                    print("invalid input")
 
-        return render(response, "main/list.html", {"ls": ls})
+def handler_500(request):
+    return render(request, "error/500.html", status=500)
+
     return render(response, "main/view.html", {})
 
 
