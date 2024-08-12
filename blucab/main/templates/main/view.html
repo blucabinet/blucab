@@ -4,6 +4,10 @@
 View
 {% endblock %}
 
+{% block contentTitle %}
+View of {{ user.get_username }}s cabinet
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row" id="gallery">
