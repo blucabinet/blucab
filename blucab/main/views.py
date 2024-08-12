@@ -33,17 +33,18 @@ def handler_500(request):
 def index(response, uname):
     user_id_query = User.objects.filter(username=uname)
     if len(user_id_query) != 1:
-        # ToDo: Add proper fault handling
-        return render(response, "main/view.html", {})
+        return render(response, "error/403_user_not_public.html", {})
 
     user_id = user_id_query[0].id
     view_is_public = UserSettings.objects.all().filter(user=user_id)[0].view_is_public
 
+    if not view_is_public:
+        return render(response, "error/403_user_not_public.html", {})
+
     ls = MovieUserList.objects.all().filter(user=user_id)
 
     for movie in ls:
-        if view_is_public:
-            print(movie.movie.title_clean)
+        print(movie.movie.title_clean)
 
     # if ls in response.user.todolist.all():
     #
