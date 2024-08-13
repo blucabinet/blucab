@@ -51,6 +51,15 @@
                 <li class="nav-item">
                   <a class="nav-link" href="/view">View</a>
                 </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    About
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/legal/legal">Impressum</a>
+                    <a class="dropdown-item" href="/legal/privacy">Datenschutzerklärung</a>
+                  </div>
+                </li>
                 <li class="nav-item">
                     {% if user.is_authenticated %}
                     <form class="form-inline" action="{% url 'logout' %}" method="post">
