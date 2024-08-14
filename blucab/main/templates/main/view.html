@@ -5,7 +5,11 @@ View
 {% endblock %}
 
 {% block contentTitle %}
-View of {{ user.get_username }}s cabinet
+    {% if user.is_authenticated %}
+        View of {{ user.get_username }}s cabinet
+    {% else %}
+        View of your cabinet
+    {% endif %}
 {% endblock %}
 
 {% block content %}
