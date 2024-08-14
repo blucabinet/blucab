@@ -17,11 +17,11 @@ View of {{ user.get_username }}s cabinet
                             <div class="card" style="width: 10rem;">
                             {% load static %}
                             <div class="overlay_div" id="pictureOverlayIcons">
-                                <span data-toggle="modal" data-target="#e{{mu.id}}ModalLong">
+                                <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                     {% if mu.movie.picture_available %}
-                                        <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                        <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                     {% else %}
-                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" data-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                     {% endif %}
 
                                     {% if usersettings.show_view_icon_new %}
@@ -56,7 +56,7 @@ View of {{ user.get_username }}s cabinet
                                     {% endif %}
                                 {% endif %}
                                 {% if usersettings.show_view_button_details %}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#e{{mu.id}}ModalLong">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                         Details
                                     </button>
                                 {% endif %}
@@ -71,9 +71,7 @@ View of {{ user.get_username }}s cabinet
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="e{{mu.id}}ModalLongTitle">{{mu.movie.title_clean}}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="card border-light mb-3" style="width: 20rem;">
@@ -118,7 +116,7 @@ View of {{ user.get_username }}s cabinet
                                     <div>{{mu.movie.content}}</div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
