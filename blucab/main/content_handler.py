@@ -10,7 +10,7 @@ PICTURE_EXTENSION = ".jpg"
 CSV_ENCODING = "ISO-8859-1"
 
 
-class handler():
+class handler:
 
     def __init__(self):
         pass
@@ -24,24 +24,26 @@ class handler():
     def _picture_download(self, url: str, name: str) -> None:
         picture_name = name + PICTURE_EXTENSION
         file_path = os.path.join(
-            settings.BASE_DIR, "main", "static", "main", picture_name
+            settings.BASE_DIR, "main", "static", "main", "cover", picture_name
         )
-        picture = requests.get(url)
 
         if not os.path.exists(file_path):
+            picture = requests.get(url)
             open(file_path, "wb").write(picture.content)
             print(f"File {picture_name} downloaded")
 
     def csv_importer(self, filename: str, user):
-        with open(os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING) as csvfile:
-            reader = csv.reader(csvfile, delimiter=",")
-            next(reader, None)
+        with open(
+            os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING
+        ) as csv_file:
+            reader = csv.reader(csv_file, delimiter=",")
+            next(reader, None) #Skip CSV header
             for row in reader:
-                c_ean = row[1]
+                csv_ean = row[1]
 
-                if not Movie.objects.filter(ean=c_ean).exists():
+                if not Movie.objects.filter(ean=csv_ean).exists():
                     m = Movie(
-                        ean=c_ean,
+                        ean=csv_ean,
                         asin=row[2],
                         title=row[3],
                         title_clean=row[4],
@@ -57,10 +59,8 @@ class handler():
 
                     m.save()
 
-                c_movie = Movie.objects.get(ean=c_ean)
+                db_movie = Movie.objects.get(ean=csv_ean)
 
-                if not MovieUserList.objects.filter(user=user, movie=c_movie).exists():
-                    list_item = MovieUserList(user=user, movie=c_movie)
+                if not MovieUserList.objects.filter(user=user, movie=db_movie).exists():
+                    list_item = MovieUserList(user=user, movie=db_movie)
                     list_item.save()
-                
-
