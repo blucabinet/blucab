@@ -55,6 +55,7 @@ class handler:
                         actor=row[10],
                         regisseur=row[11],
                         studio=row[12],
+                        rating=row[13],
                     )
 
                     m.save()
