@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"movieuserlist",
+			"todolist",
+			"usersettings"
+		]
+	}
+}

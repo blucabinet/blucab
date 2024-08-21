@@ -1,0 +1,8 @@
+Django==5.0.7
+django-crispy-forms==2.3
+crispy-bootstrap5==2024.2
+
+environs==11.0.0
+
+selectorlib==0.16.0
+requests==2.32.3
