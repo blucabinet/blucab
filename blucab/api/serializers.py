@@ -51,17 +51,21 @@ class MovieUserListSerializer(serializers.ModelSerializer):
 
     movie_title_clean = serializers.SerializerMethodField("title_clean")
     movie_format = serializers.SerializerMethodField("format")
+    user_name = serializers.SerializerMethodField("username")
 
     def title_clean(self, MovieUserList):
         return MovieUserList.movie.title_clean
 
     def format(self, MovieUserList):
         return MovieUserList.movie.format
+    
+    def username(self, MovieUserList):
+        return MovieUserList.user.username
 
     class Meta:
         model = MovieUserList
         fields = [
-            "user",
+            "user_name",
             "movie",
             "movie_title_clean",
             "movie_format",
