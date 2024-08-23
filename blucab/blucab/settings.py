@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "main.apps.MainConfig",
     "register.apps.RegisterConfig",
     "django.contrib.humanize",
+    "rest_framework",
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [

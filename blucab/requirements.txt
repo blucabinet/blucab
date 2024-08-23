@@ -1,7 +1,11 @@
 Django==5.0.7
+django-filter==24.3
 django-crispy-forms==2.3
+djangorestframework==3.15.2
+
 crispy-bootstrap5==2024.2
 
+markdown==3.7
 environs==11.0.0
 
 selectorlib==0.16.0
