@@ -5,5 +5,5 @@ from .views import (
 )
 
 urlpatterns = [
-    path("api", MovieListApiView.as_view()),
+    path("movie", MovieListApiView.as_view()),
 ]
