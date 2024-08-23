@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from main.models import Movie
+from main.models import Movie, MovieUserList, UserSettings
 from django.templatetags.static import static
 
 
@@ -44,4 +44,32 @@ class MovieSerializer(serializers.ModelSerializer):
             "is_series",
             "picture_available",
             "picture_url",
+        ]
+
+
+class MovieUserListSerializer(serializers.ModelSerializer):
+
+    movie_title_clean = serializers.SerializerMethodField("title_clean")
+    movie_format = serializers.SerializerMethodField("format")
+
+    def title_clean(self, MovieUserList):
+        return MovieUserList.movie.title_clean
+
+    def format(self, MovieUserList):
+        return MovieUserList.movie.format
+
+    class Meta:
+        model = MovieUserList
+        fields = [
+            "user",
+            "movie",
+            "movie_title_clean",
+            "movie_format",
+            "activated",
+            "rating",
+            "viewed",
+            "rented",
+            "rented_to",
+            "date_added",
+            "price",
         ]

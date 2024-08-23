@@ -3,9 +3,13 @@ from django.urls import path
 from .views import (
     MovieListApiView,
     MovieApiView,
+    MovieIdApiView,
+    MovieUserListApiView,
 )
 
 urlpatterns = [
     path("movie/", MovieListApiView.as_view()),
-    path("movie/<str:ean>", MovieApiView.as_view()),
+    path("movie/ean/<str:ean>", MovieApiView.as_view()),
+    path("movie/id/<int:id>", MovieIdApiView.as_view()),
+    path("movieuser/", MovieUserListApiView.as_view()),
 ]
