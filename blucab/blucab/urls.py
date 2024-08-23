@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from register import views as regview
 from django.views.generic import RedirectView
+from api import urls as api_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,6 +27,8 @@ urlpatterns = [
     path("", include("main.urls")),
     path("", include("django.contrib.auth.urls")),
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
+    path("api-auth/", include("rest_framework.urls")),
+    path("api/", include(api_urls)),
 ]
 
 handler400 = "main.views.handler_400"
