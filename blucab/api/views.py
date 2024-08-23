@@ -14,3 +14,12 @@ class MovieListApiView(APIView):
         movies = Movie.objects.filter()
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class MovieApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, ean, *args, **kwargs):
+        movies = Movie.objects.filter(ean=ean)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
