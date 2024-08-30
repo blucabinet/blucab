@@ -31,9 +31,26 @@ to start it and let it run in the background.
 ### Manual
 
 The Project requires Python 3 and the given packages in blucab/requirements.txt.<br>
-`pip install -r ./blucab/requirements.txt`
+```
+cd blucab
+pip install -r ./requirements.txt
+```
 
-Further instructions are **ToDo**.
+Afterward a one-time migration and setup of the superuser needs to be done.
+The first migration commands need execution after each update of this project.
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createcachetable
+
+python manage.py createsuperuser
+```
+
+After installation you can run the service with your desired port.
+```
+python manage.py runserver 0.0.0.0:8000
+```
+
 
 ## Notes
 
