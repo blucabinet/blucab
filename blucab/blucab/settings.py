@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "register.apps.RegisterConfig",
     "django.contrib.humanize",
     "rest_framework",
+    "knox",
     "api.apps.ApiConfig",
 ]
 
@@ -115,6 +116,10 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
+}
 
 
 # Internationalization
