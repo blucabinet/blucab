@@ -17,15 +17,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from register import views as regview
 from django.views.generic import RedirectView
+from register import views as regview
+from main import urls as main_urls
 from api import urls as api_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("register/", regview.register, name="register"),
-    path("", include("main.urls")),
     path("", include("django.contrib.auth.urls")),
+    path("", include(main_urls)),
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
     path("api-auth/", include("rest_framework.urls")),
     path("api/", include(api_urls)),
