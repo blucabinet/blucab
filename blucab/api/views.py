@@ -3,7 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from main.models import Movie, MovieUserList, UserSettings
-from .serializers import MovieSerializer, MovieUserListSerializer
+from .serializers import (
+    MovieSerializer,
+    MovieUserListSerializer,
+    UserSettingsSerializer,
+)
 
 
 class MovieListApiView(APIView):
@@ -40,4 +44,13 @@ class MovieUserListApiView(APIView):
     def get(self, request, *args, **kwargs):
         movies = MovieUserList.objects.filter(user=request.user.id)
         serializer = MovieUserListSerializer(movies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserSettingsListApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        settings = UserSettings.objects.filter(user=request.user.id)
+        serializer = UserSettingsSerializer(settings, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

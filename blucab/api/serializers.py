@@ -58,7 +58,7 @@ class MovieUserListSerializer(serializers.ModelSerializer):
 
     def format(self, MovieUserList):
         return MovieUserList.movie.format
-    
+
     def username(self, MovieUserList):
         return MovieUserList.user.username
 
@@ -76,4 +76,28 @@ class MovieUserListSerializer(serializers.ModelSerializer):
             "rented_to",
             "date_added",
             "price",
+        ]
+
+
+class UserSettingsSerializer(serializers.ModelSerializer):
+
+    user_name = serializers.SerializerMethodField("username")
+
+    def username(self, UserSettings):
+        return UserSettings.user.username
+
+    class Meta:
+        model = UserSettings
+        fields = [
+            "user_name",
+            "price_unit",
+            "days_for_new",
+            "view_is_public",
+            "show_view_title",
+            "show_view_details",
+            "show_view_icon_new",
+            "show_view_icon_rented",
+            "show_view_count_disc",
+            "show_view_count_movie",
+            "show_view_button_details",
         ]

@@ -5,6 +5,7 @@ from .views import (
     MovieApiView,
     MovieIdApiView,
     MovieUserListApiView,
+    UserSettingsListApiView,
 )
 
 urlpatterns = [
@@ -12,4 +13,5 @@ urlpatterns = [
     path("movie/ean/<str:ean>", MovieApiView.as_view()),
     path("movie/id/<int:id>", MovieIdApiView.as_view()),
     path("movieuser/", MovieUserListApiView.as_view()),
+    path("user/settings/", UserSettingsListApiView.as_view()),
 ]
