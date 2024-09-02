@@ -28,7 +28,7 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     path("", include(main_urls)),
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
-    path("api-auth/", include("rest_framework.urls")),
+    #path("api-auth/", include("rest_framework.urls")),
     path("api/", include(api_urls)),
 ]
 

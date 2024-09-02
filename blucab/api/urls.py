@@ -17,6 +17,6 @@ urlpatterns = [
     path("movie/", MovieListApiView.as_view()),
     path("movie/ean/<str:ean>", MovieEanApiView.as_view()),
     path("movie/id/<int:id>", MovieIdApiView.as_view()),
-    path("movieuser/", MovieUserListApiView.as_view()),
+    path("movie/user/", MovieUserListApiView.as_view()),
     path("user/settings/", UserSettingsListApiView.as_view()),
 ]
