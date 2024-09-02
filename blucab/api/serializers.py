@@ -1,6 +1,24 @@
 from rest_framework import serializers
-from main.models import Movie, MovieUserList, UserSettings
+from main.models import User, Movie, MovieUserList, UserSettings
 from django.templatetags.static import static
+from django.contrib.auth import authenticate
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username")
+
+
+class LoginUserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        user = authenticate(**data)
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("Invalid Details.")
 
 
 class MovieSerializer(serializers.ModelSerializer):

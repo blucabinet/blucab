@@ -1,18 +1,40 @@
-from rest_framework.views import APIView
+# from rest_framework.views import APIView
+from rest_framework import status, generics
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from main.models import Movie, MovieUserList, UserSettings
+from knox.models import AuthToken
+from knox.auth import TokenAuthentication
 from .serializers import (
     MovieSerializer,
     MovieUserListSerializer,
     UserSettingsSerializer,
+    LoginUserSerializer,
+    UserSerializer,
 )
 
 
-class MovieListApiView(APIView):
+class LoginAPI(generics.GenericAPIView):
+    serializer_class = LoginUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        return Response(
+            {
+                "user": UserSerializer(
+                    user, context=self.get_serializer_context()
+                ).data,
+                "token": AuthToken.objects.create(user)[1],
+            }
+        )
+
+
+class MovieListApiView(generics.GenericAPIView):
     # Add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         movies = Movie.objects.filter()
@@ -20,8 +42,9 @@ class MovieListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class MovieApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class MovieApiView(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, ean, *args, **kwargs):
         movies = Movie.objects.filter(ean=ean)
@@ -29,8 +52,9 @@ class MovieApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class MovieIdApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class MovieIdApiView(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, id, *args, **kwargs):
         movies = Movie.objects.filter(id=id)
@@ -38,8 +62,9 @@ class MovieIdApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class MovieUserListApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class MovieUserListApiView(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         movies = MovieUserList.objects.filter(user=request.user.id)
@@ -47,8 +72,9 @@ class MovieUserListApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class UserSettingsListApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class UserSettingsListApiView(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         settings = UserSettings.objects.filter(user=request.user.id)
