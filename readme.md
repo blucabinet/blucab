@@ -64,10 +64,10 @@ Content-Type: application/json; charset=UTF-8
 ### Authentication
 #### Login
 The token can be derived via _/api/login/_ with the given Content-Type and the following body.
-Multiple tokens can be tied to a user via this POST-request.
+Multiple tokens can be tied to a user (e.g. here admin) via this POST-request.
 ```
 {
-    "username": "USER",
+    "username": "admin",
     "password": "PASSWORD"
 }
 ```
@@ -76,7 +76,7 @@ A response might be:
 {
     "user": {
         "id": 1,
-        "username": "floyer"
+        "username": "admin"
     },
     "token": "TOKEN_STRING"
 }
