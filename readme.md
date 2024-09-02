@@ -52,6 +52,130 @@ python manage.py runserver 0.0.0.0:8000
 ```
 
 
+## API
+The API is based on django-rest-framework and the knox token authentication.
+
+### Http-header
+All requests need the http-header:
+```
+Content-Type: application/json; charset=UTF-8
+```
+
+### Authentication
+#### Login
+The token can be derived via _/api/login/_ with the given Content-Type and the following body.
+Multiple tokens can be tied to a user via this POST-request.
+```
+{
+    "username": "USER",
+    "password": "PASSWORD"
+}
+```
+A response might be:
+```
+{
+    "user": {
+        "id": 1,
+        "username": "floyer"
+    },
+    "token": "TOKEN_STRING"
+}
+```
+
+#### Logout
+Either one token can be logged out or all tokens of the user.
+_/api/auth/logout/_ does the logout for one token, given by the following header next to the Content-Type as GET-request:
+```
+Authorization: Token TOKEN_STRING
+```
+
+To logout from all tokens, use _/api/auth/logoutall/_
+
+### Movie
+There are multiple endpoints to GET information about movies.
+Based on the same database either all movies _/api/movie/_ or selective movies can be received. 
+
+#### Selective movies
+A selective request can be either the EAN _/api/movie/EAN_ of the movie or the internal ID _/api/movie/ID_.
+
+A response might be like:
+```
+[
+    {
+        "ean": "4010884245141",
+        "asin": "B007IZ41EQ",
+        "title": "Transformers 3 [Blu-ray]",
+        "title_clean": "Transformers 3",
+        "format": "Blu-Ray",
+        "release_year": 2012,
+        "runtime": 154,
+        "fsk": "Freigegeben ab 12 Jahren",
+        "content": "Product Description:Transformers 3 Kurzbeschreibung:Ein [...]",
+        "actor": "Shia LaBeouf, Josh Duhamel, Rosie Huntington-Whiteley, Patrick Dempsey, Frances McDormand",
+        "regisseur": "Michael Bay",
+        "studio": "Paramount Home Entertainment",
+        "genre": "",
+        "language": "",
+        "disc_count": 1,
+        "movie_count": 1,
+        "season_count": 0,
+        "episode_count": 0,
+        "is_series": false,
+        "picture_available": false,
+        "picture_url": "/static/main/dummy.jpg"
+    }
+]
+```
+
+
+#### Movies of user
+To get all movies a user owns, use _/api/movie/user/_.
+A movie is references by its internal ID.
+
+A response might be like:
+```
+[
+    {
+        "user_name": "admin",
+        "movie": 661,
+        "movie_title_clean": "Transformers 3",
+        "movie_format": "Blu-Ray",
+        "activated": true,
+        "rating": 0,
+        "viewed": false,
+        "rented": false,
+        "rented_to": "",
+        "date_added": "2024-05-21",
+        "price": "0.00"
+    }
+]
+```
+
+
+### User specific
+User settings are available through _/api/user/settings/_ as GET-request.
+
+A response might be like:
+```
+[
+    {
+        "user_name": "admin",
+        "price_unit": "€",
+        "days_for_new": 21,
+        "view_is_public": true,
+        "show_view_title": true,
+        "show_view_details": true,
+        "show_view_icon_new": true,
+        "show_view_icon_rented": true,
+        "show_view_count_disc": true,
+        "show_view_count_movie": true,
+        "show_view_button_details": true
+    }
+]
+```
+
+
+
 ## Notes
 
 The project is non-commercial hobby project. The development could be irregular and breaking changes could happen. If you use the project in a productive environment, please consider backups.
