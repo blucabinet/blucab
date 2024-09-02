@@ -42,7 +42,7 @@ class MovieListApiView(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class MovieApiView(generics.GenericAPIView):
+class MovieEanApiView(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
