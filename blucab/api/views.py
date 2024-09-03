@@ -15,7 +15,7 @@ from .serializers import (
 )
 
 
-class LoginAPI(generics.GenericAPIView):
+class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginUserSerializer
 
     def post(self, request, *args, **kwargs):
