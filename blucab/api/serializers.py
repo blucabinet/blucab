@@ -11,8 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField()
-    email = serializers.CharField()
+    email = serializers.EmailField()
     password = serializers.CharField(style={'input_type': 'password'})
     class Meta:
         model = User
