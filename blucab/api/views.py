@@ -12,6 +12,8 @@ from .serializers import (
     LoginUserSerializer,
     UserSerializer,
     CreateUserSerializer,
+    MovieUserSerializer,
+    CreateMovieUserSerializer,
 )
 
 
@@ -83,11 +85,25 @@ class MovieIdApiView(generics.GenericAPIView):
 class MovieUserListApiView(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    serializer_class = CreateMovieUserSerializer
 
     def get(self, request, *args, **kwargs):
         movies = MovieUserList.objects.filter(user=request.user.id)
         serializer = MovieUserListSerializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        item = serializer.save(user=self.request.user)
+
+        return Response(
+            {
+                "item": MovieUserSerializer(
+                    item, context=self.get_serializer_context()
+                ).data,
+            }
+        )
 
 
 class UserSettingsListApiView(generics.GenericAPIView):

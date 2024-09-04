@@ -12,7 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CreateUserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    password = serializers.CharField(style={'input_type': 'password'})
+    password = serializers.CharField(style={"input_type": "password"})
+
     class Meta:
         model = User
         fields = ("id", "username", "email", "password")
@@ -31,9 +32,44 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class MovieUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieUserList
+        fields = ("user", "movie")
+
+
+class CreateMovieUserSerializer(serializers.ModelSerializer):
+    ean = serializers.CharField()
+
+    class Meta:
+        model = MovieUserList
+        fields = ("user", "ean")
+        extra_kwargs = {
+            "ean": {"required": True},
+        }
+
+    def create(self, validated_data):
+        user_v = validated_data["user"]
+        ean_v = validated_data["ean"]
+
+        if not Movie.objects.filter(ean=ean_v).exists():
+            raise serializers.ValidationError("Movie not in Database")
+
+        movie_v = Movie.objects.get(ean=ean_v)
+
+        if not MovieUserList.objects.filter(user=user_v, movie=movie_v).exists():
+            item = MovieUserList.objects.create(
+                user=user_v,
+                movie=Movie.objects.get(ean=ean_v),
+            )
+            return item
+        else:
+            raise serializers.ValidationError("Entry already exists")
+
+
 class LoginUserSerializer(serializers.Serializer):
     username = serializers.CharField()
-    password = serializers.CharField(style={'input_type': 'password'})
+    password = serializers.CharField(style={"input_type": "password"})
 
     def validate(self, data):
         user = authenticate(**data)
