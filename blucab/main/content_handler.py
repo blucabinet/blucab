@@ -37,9 +37,10 @@ class handler:
             os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING
         ) as csv_file:
             reader = csv.reader(csv_file, delimiter=",")
-            next(reader, None) #Skip CSV header
+            next(reader, None)  # Skip CSV header
             for row in reader:
                 csv_ean = row[1]
+                csv_rating = self._check_int_string(row[13])
 
                 if not Movie.objects.filter(ean=csv_ean).exists():
                     m = Movie(
@@ -55,7 +56,6 @@ class handler:
                         actor=row[10],
                         regisseur=row[11],
                         studio=row[12],
-                        rating=row[13],
                     )
 
                     m.save()
@@ -63,5 +63,9 @@ class handler:
                 db_movie = Movie.objects.get(ean=csv_ean)
 
                 if not MovieUserList.objects.filter(user=user, movie=db_movie).exists():
-                    list_item = MovieUserList(user=user, movie=db_movie)
+                    list_item = MovieUserList(
+                        user=user,
+                        movie=db_movie,
+                        rating=csv_rating,
+                    )
                     list_item.save()
