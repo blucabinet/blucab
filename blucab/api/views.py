@@ -47,7 +47,7 @@ class RegistrationAPIView(generics.GenericAPIView):
                     user, context=self.get_serializer_context()
                 ).data,
                 "token": AuthToken.objects.create(user)[1],
-            }
+            }, status=status.HTTP_201_CREATED
         )
 
 
@@ -102,7 +102,7 @@ class MovieUserListApiView(generics.GenericAPIView):
                 "item": MovieUserSerializer(
                     item, context=self.get_serializer_context()
                 ).data,
-            }
+            }, status=status.HTTP_201_CREATED
         )
 
 

@@ -1,8 +1,8 @@
-from rest_framework import serializers
+from rest_framework import status, serializers
+import rest_framework.exceptions as exceptions
 from main.models import User, Movie, MovieUserList, UserSettings
 from django.templatetags.static import static
 from django.contrib.auth import authenticate
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,7 +53,7 @@ class CreateMovieUserSerializer(serializers.ModelSerializer):
         ean_v = validated_data["ean"]
 
         if not Movie.objects.filter(ean=ean_v).exists():
-            raise serializers.ValidationError("Movie not in Database")
+            raise exceptions.Throttled(detail="Movie not in Database")#, code=status.HTTP_408_REQUEST_TIMEOUT)
 
         movie_v = Movie.objects.get(ean=ean_v)
 
@@ -64,7 +64,8 @@ class CreateMovieUserSerializer(serializers.ModelSerializer):
             )
             return item
         else:
-            raise serializers.ValidationError("Entry already exists")
+            raise exceptions.NotAcceptable(detail="Entry already exists")
+        
 
 
 class LoginUserSerializer(serializers.Serializer):
@@ -75,7 +76,7 @@ class LoginUserSerializer(serializers.Serializer):
         user = authenticate(**data)
         if user and user.is_active:
             return user
-        raise serializers.ValidationError("Invalid Details.")
+        raise exceptions.AuthenticationFailed()
 
 
 class MovieSerializer(serializers.ModelSerializer):
