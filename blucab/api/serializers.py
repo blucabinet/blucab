@@ -4,6 +4,7 @@ from main.models import User, Movie, MovieUserList, UserSettings
 from django.templatetags.static import static
 from django.contrib.auth import authenticate
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -53,7 +54,7 @@ class CreateMovieUserSerializer(serializers.ModelSerializer):
         ean_v = validated_data["ean"]
 
         if not Movie.objects.filter(ean=ean_v).exists():
-            raise exceptions.Throttled(detail="Movie not in Database")#, code=status.HTTP_408_REQUEST_TIMEOUT)
+            raise exceptions.NotFound(detail="Movie not in Database")
 
         movie_v = Movie.objects.get(ean=ean_v)
 
@@ -65,7 +66,6 @@ class CreateMovieUserSerializer(serializers.ModelSerializer):
             return item
         else:
             raise exceptions.NotAcceptable(detail="Entry already exists")
-        
 
 
 class LoginUserSerializer(serializers.Serializer):
@@ -125,18 +125,60 @@ class MovieSerializer(serializers.ModelSerializer):
 
 class MovieUserListSerializer(serializers.ModelSerializer):
 
-    movie_title_clean = serializers.SerializerMethodField("title_clean")
-    movie_format = serializers.SerializerMethodField("format")
-    user_name = serializers.SerializerMethodField("username")
+    user_name = serializers.SerializerMethodField("_username")
+    movie_title_clean = serializers.SerializerMethodField("_title_clean")
+    movie_format = serializers.SerializerMethodField("_format")
+    movie_picture_url = serializers.SerializerMethodField("_picture_url")
+    movie_picture_available = serializers.SerializerMethodField("_picture_available")
+    movie_disc_count = serializers.SerializerMethodField("_disc_count")
+    movie_count = serializers.SerializerMethodField("_movie_count")
+    movie_is_series = serializers.SerializerMethodField("_is_series")
+    movie_runtime = serializers.SerializerMethodField("_runtime")
+    movie_ean = serializers.SerializerMethodField("_ean")
+    movie_fsk = serializers.SerializerMethodField("_fsk")
 
-    def title_clean(self, MovieUserList):
+    def _picture_url(self, MovieUserList):
+
+        if MovieUserList.movie.picture_available:
+            file_path = "main/cover/"
+            file_name = MovieUserList.movie.ean
+        else:
+            file_path = "main/"
+            file_name = "dummy"
+
+        path = file_path + file_name + ".jpg"
+        url = static(path)
+        return url
+
+    def _title_clean(self, MovieUserList):
         return MovieUserList.movie.title_clean
 
-    def format(self, MovieUserList):
+    def _format(self, MovieUserList):
         return MovieUserList.movie.format
 
-    def username(self, MovieUserList):
+    def _username(self, MovieUserList):
         return MovieUserList.user.username
+
+    def _picture_available(self, MovieUserList):
+        return MovieUserList.movie.picture_available
+
+    def _disc_count(self, MovieUserList):
+        return MovieUserList.movie.disc_count
+
+    def _movie_count(self, MovieUserList):
+        return MovieUserList.movie.movie_count
+
+    def _is_series(self, MovieUserList):
+        return MovieUserList.movie.is_series
+
+    def _runtime(self, MovieUserList):
+        return MovieUserList.movie.runtime
+
+    def _ean(self, MovieUserList):
+        return MovieUserList.movie.ean
+
+    def _fsk(self, MovieUserList):
+        return MovieUserList.movie.fsk
 
     class Meta:
         model = MovieUserList
@@ -152,6 +194,14 @@ class MovieUserListSerializer(serializers.ModelSerializer):
             "rented_to",
             "date_added",
             "price",
+            "movie_picture_available",
+            "movie_picture_url",
+            "movie_disc_count",
+            "movie_count",
+            "movie_is_series",
+            "movie_runtime",
+            "movie_ean",
+            "movie_fsk",
         ]
 
 
