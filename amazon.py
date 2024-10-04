@@ -22,6 +22,7 @@ FORMAT_DVD = "DVD"
 REMOVE_ITEMS = {
     "[Blu-ray]",
     "Blu ray",
+    "Blu-ray",
     "Blu-Ray",
     "[Blu-ray 2D]",
     "[4k Ultra HD]",
@@ -36,6 +37,8 @@ REMOVE_ITEMS = {
 BLURAY_ITEMS = {
     "[Blu-ray]",
     "Blu ray",
+    "Blu-ray",
+    "Blu-Ray",
     "[Blu-ray 2D]",
     "[4k Ultra HD]",
 }
