@@ -113,11 +113,10 @@ def get_image(soup) -> str:
 def get_genre(soup) -> str:
 
     try:
-        # genre = soup.find("tr", attrs={"class": "a-spacing-small po-genre"}).find(
-        #    "span", attrs={"class": "a-size-base po-break-word"}
-        # )
-        genre = soup.find("div", attrs={"id": "detailBullets_feature_div"})
-        genre_value = genre.string
+        genre = soup.find("tr", attrs={"class": "a-spacing-small po-genre"}).find(
+            "span", attrs={"class": "a-size-base po-break-word"}
+        )
+        genre_value = genre.text
 
         genre_string = genre_value.strip()
 
@@ -140,6 +139,18 @@ def get_title(soup) -> str:
         title_string = ""
 
     return title_string
+
+
+def get_content(soup) -> str:
+
+    try:
+        content = soup.find("div", attrs={"id": "productDescription"})
+        content_string = content.text
+
+    except AttributeError:
+        content_string = ""
+
+    return content_string
 
 
 def get_title_clean(soup) -> str:
@@ -296,9 +307,5 @@ if __name__ == "__main__":
         print("Laufzeit (min) =", get_runtime_min(new_soup))
         print("Release (str) =", get_release_year_str(new_soup))
         print("Release (year) =", get_release_year(new_soup))
+        print("Content =", get_content(new_soup))
         print()
-
-        # ToDo:
-        # content
-        # genre
-        # movie_count
