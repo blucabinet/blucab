@@ -9,5 +9,5 @@ crispy-bootstrap5==2024.2
 markdown==3.7
 environs==11.0.0
 
-selectorlib==0.16.0
+beautifulsoup4==4.12.3
 requests==2.32.3
