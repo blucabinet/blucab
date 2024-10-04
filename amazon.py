@@ -4,6 +4,7 @@ import re
 
 AMAZON_BASE_URL = "https://www.amazon.de"
 AMAZON_STR_FSK = "Alterseinstufung"
+AMAZON_STR_FSK_NO = "Freigegeben ohne Altersbeschränkung"
 AMAZON_STR_REGISSEUR = "Regisseur"
 AMAZON_STR_DISKS = "Anzahl Disks"
 AMAZON_STR_ACTOR = "Darsteller"
@@ -187,11 +188,14 @@ def get_fsk(soup) -> int:
     fsk = get_fsk_str(soup)
 
     try:
-        numbers = re.findall(r'\b\d+\b', fsk)
+        numbers = re.findall(r"\b\d+\b", fsk)
         number = number[0]
 
     except:
-        number = None
+        if fsk == AMAZON_STR_FSK_NO:
+            number = 0
+        else:
+            number = None
 
     return number
 
