@@ -37,6 +37,9 @@ class Movie(models.Model):
     )
     runtime = models.IntegerField()
     fsk = models.CharField(max_length=50, blank=True)
+    fsk_nbr = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True
+    )
     content = models.CharField(max_length=10000, blank=True)
     actor = models.CharField(max_length=500, blank=True)
     regisseur = models.CharField(max_length=100, blank=True)

@@ -183,9 +183,14 @@ def get_fsk_str(soup) -> str:
 def get_fsk(soup) -> int:
     fsk = get_fsk_str(soup)
 
-    # ToDo: do processing
+    try:
+        numbers = re.findall(r'\b\d+\b', fsk)
+        number = number[0]
 
-    return fsk
+    except:
+        number = None
+
+    return number
 
 
 def get_regisseur(soup) -> str:
@@ -296,7 +301,8 @@ if __name__ == "__main__":
         print("Product Title =", get_title(new_soup))
         print("Stripped Title =", get_title_clean(new_soup))
         print("ImageUrl =", get_image(new_soup))
-        print("FSK =", get_fsk(new_soup))
+        print("FSK (str) =", get_fsk_str(new_soup))
+        print("FSK (nbr) =", get_fsk(new_soup))
         print("Regisseur =", get_regisseur(new_soup))
         print("Disc-Count =", get_disc_count(new_soup))
         print("Darsteller =", get_actors(new_soup))
