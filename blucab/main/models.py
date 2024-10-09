@@ -52,7 +52,8 @@ class Movie(models.Model):
     episode_count = models.IntegerField(default=0)
     is_series = models.BooleanField(default=False)
     picture_available = models.BooleanField(default=False)
-    #needs_parsing = models.BooleanField(default=False)
+    # picture_url_original = models.CharField(max_length=128)
+    # needs_parsing = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Movies"
