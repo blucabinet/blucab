@@ -38,7 +38,7 @@ class Movie(models.Model):
     runtime = models.IntegerField()
     fsk = models.CharField(max_length=50, blank=True)
     fsk_nbr = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True
+        validators=[MinValueValidator(-1), MaxValueValidator(100)], blank=True, default=-1
     )
     content = models.CharField(max_length=10000, blank=True)
     actor = models.CharField(max_length=500, blank=True)
@@ -53,7 +53,7 @@ class Movie(models.Model):
     is_series = models.BooleanField(default=False)
     picture_available = models.BooleanField(default=False)
     # picture_url_original = models.CharField(max_length=128)
-    # needs_parsing = models.BooleanField(default=False)
+    # needs_parsing = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Movies"
