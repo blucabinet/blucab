@@ -3,6 +3,7 @@ import requests
 import re
 
 AMAZON_BASE_URL = "https://www.amazon.de"
+AMAZON_ASIN = "ASIN"
 AMAZON_STR_FSK = "Alterseinstufung"
 AMAZON_STR_FSK_NO = "Freigegeben ohne Altersbeschränkung"
 AMAZON_STR_REGISSEUR = "Regisseur"
@@ -33,6 +34,7 @@ REMOVE_ITEMS = {
     "(Remastered)",
     "(OmU)",
     "(Special Edition)",
+    "[]",
 }
 
 BLURAY_ITEMS = {
@@ -120,14 +122,15 @@ class contentParser:
         return list_entry
 
     def get_asin(self, url) -> str:
+        return self.get_product_information(soup, AMAZON_ASIN)
+        # try:
+        #    asin_string = url.split("/dp/")[1].split("/")[0]
 
-        try:
-            asin_string = url.split("/dp/")[1].split("/")[0]
-
-        except AttributeError:
-            asin_string = ""
-
-        return asin_string
+    #
+    # except AttributeError:
+    #    asin_string = ""
+    #
+    # return asin_string
 
     def get_image(self, soup) -> str:
 
