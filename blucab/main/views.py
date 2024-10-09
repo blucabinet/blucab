@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, UserSettings, MovieUserList, User
 from .forms import CreateNewList
 
-from .contenthandler.content_handler import handler
+from contenthandler.content_handler import handler
 
 import csv
 import os

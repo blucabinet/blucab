@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "knox",
     "api.apps.ApiConfig",
+    "contenthandler.apps.ContenthandlerConfig",
 ]
 
 MIDDLEWARE = [
