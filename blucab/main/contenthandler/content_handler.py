@@ -1,5 +1,5 @@
 from django.conf import settings
-from .models import Movie, MovieUserList
+from ..models import Movie, MovieUserList
 
 import csv
 import os
