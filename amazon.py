@@ -114,10 +114,10 @@ class contentParser:
 
                     return str_processed
 
-            list_entry = ""
+            list_entry = None
 
         except AttributeError:
-            list_entry = ""
+            list_entry = None
 
         return list_entry
 
@@ -139,7 +139,7 @@ class contentParser:
             img_url = img["src"].strip()
 
         except AttributeError:
-            img_url = ""
+            img_url = None
 
         return img_url
 
@@ -154,7 +154,7 @@ class contentParser:
             genre_string = genre_value.strip()
 
         except AttributeError:
-            genre_string = ""
+            genre_string = None
 
         return genre_string
 
@@ -168,7 +168,7 @@ class contentParser:
             title_string = title_value.strip()
 
         except AttributeError:
-            title_string = ""
+            title_string = None
 
         return title_string
 
@@ -179,7 +179,7 @@ class contentParser:
             content_string = content.text.strip()
 
         except AttributeError:
-            content_string = ""
+            content_string = None
 
         return content_string
 
@@ -202,7 +202,7 @@ class contentParser:
             if str(input).find(item) != -1:
                 return FORMAT_DVD
 
-        return ""
+        return None
 
     def get_fsk_str(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_FSK)
@@ -212,7 +212,7 @@ class contentParser:
 
         try:
             numbers = re.findall(r"\b\d+\b", fsk)
-            number = number[0]
+            number = numbers[0]
 
         except:
             if fsk == AMAZON_STR_FSK_NO:
@@ -273,12 +273,15 @@ class contentParser:
     def get_release_year(self, soup) -> str:
         ryear = self.get_release_year_str(soup)
 
-        ryear = str(ryear).strip().split(" ")
+        try:
+            ryear = str(ryear).strip().split(" ")
 
-        if len(ryear[2]) == 4:
-            year = ryear[2]
-        else:
-            year = 0
+            if len(ryear[2]) == 4:
+                year = ryear[2]
+            else:
+                year = None
+        except:
+            year = None
 
         return year
 
