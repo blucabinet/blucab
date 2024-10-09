@@ -62,8 +62,9 @@ class contentParser:
     }
 
     search_link_list = []
+    soups = []
 
-    def __init__(self, search_term):
+    def __init__(self, search_term, item_limit=1):
         # The webpage URL for searches
         URL = AMAZON_BASE_URL + "/s?k=" + search_term + "&ref=nb_sb_noss"
 
@@ -79,6 +80,16 @@ class contentParser:
         # Loop for extracting links from Tag Objects
         for link in links:
             self.search_link_list.append(link.get("href"))
+
+
+        for i in range(len(self.search_link_list)):
+            new_webpage = requests.get(
+                AMAZON_BASE_URL + self.search_link_list[i], headers=self.HEADERS
+            )
+            self.soups.append(BeautifulSoup(new_webpage.content, "lxml"))
+
+            if i == item_limit - 1:
+                break
 
         return
 
@@ -288,34 +299,32 @@ class contentParser:
 
 if __name__ == "__main__":
 
-    pars = contentParser("4010232053060")
+    ean = "Star Wars Blu-Ray"
+    # ean = "B0DF5PYLT7"
+    # ean = "4010232053060"
+    # ean = "4010232066398"
 
-    # Loop for extracting product details from each link
-    # for link in links_list:
-    for link in pars.search_link_list:
+    pars = contentParser(ean, item_limit=1)
 
-        new_webpage = requests.get(AMAZON_BASE_URL + link, headers=pars.HEADERS)
-
-        new_soup = BeautifulSoup(new_webpage.content, "lxml")
-
+    for soup in pars.soups:
         # Function calls to display all necessary product information
-        print("ASIN =", pars.get_asin(new_webpage.url))
-        print("Format =", pars.get_format(new_soup))
-        print("Genre =", pars.get_genre(new_soup))
-        print("Product Title =", pars.get_title(new_soup))
-        print("Stripped Title =", pars.get_title_clean(new_soup))
-        print("ImageUrl =", pars.get_image(new_soup))
-        print("FSK (str) =", pars.get_fsk_str(new_soup))
-        print("FSK (nbr) =", pars.get_fsk(new_soup))
-        print("Regisseur =", pars.get_regisseur(new_soup))
-        print("Disc-Count =", pars.get_disc_count(new_soup))
-        print("Darsteller =", pars.get_actors(new_soup))
-        print("Untertitel =", pars.get_subtitle(new_soup))
-        print("Sprache =", pars.get_language(new_soup))
-        print("Studio =", pars.get_studio(new_soup))
-        print("Laufzeit (str) =", pars.get_runtime_str(new_soup))
-        print("Laufzeit (min) =", pars.get_runtime_min(new_soup))
-        print("Release (str) =", pars.get_release_year_str(new_soup))
-        print("Release (year) =", pars.get_release_year(new_soup))
-        print("Content =", pars.get_content(new_soup))
+        print("ASIN =", pars.get_asin(soup))
+        print("Format =", pars.get_format(soup))
+        print("Genre =", pars.get_genre(soup))
+        print("Product Title =", pars.get_title(soup))
+        print("Stripped Title =", pars.get_title_clean(soup))
+        print("ImageUrl =", pars.get_image(soup))
+        print("FSK (str) =", pars.get_fsk_str(soup))
+        print("FSK (nbr) =", pars.get_fsk(soup))
+        print("Regisseur =", pars.get_regisseur(soup))
+        print("Disc-Count =", pars.get_disc_count(soup))
+        print("Darsteller =", pars.get_actors(soup))
+        print("Untertitel =", pars.get_subtitle(soup))
+        print("Sprache =", pars.get_language(soup))
+        print("Studio =", pars.get_studio(soup))
+        print("Laufzeit (str) =", pars.get_runtime_str(soup))
+        print("Laufzeit (min) =", pars.get_runtime_min(soup))
+        print("Release (str) =", pars.get_release_year_str(soup))
+        print("Release (year) =", pars.get_release_year(soup))
+        # print("Content =", pars.get_content(soup))
         print()
