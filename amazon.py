@@ -173,7 +173,7 @@ class contentParser:
 
         try:
             content = soup.find("div", attrs={"id": "productDescription"})
-            content_string = content.text
+            content_string = content.text.strip()
 
         except AttributeError:
             content_string = ""
@@ -243,20 +243,24 @@ class contentParser:
     def get_runtime_min(self, soup) -> str:
         rtime = self.get_runtime_str(soup)
 
-        time = (
-            str(rtime)
-            .replace(AMAZON_STR_HOUR, "")
-            .replace(AMAZON_STR_MINUTES, "")
-            .replace(" ", "")
-            .split(AMAZON_STR_AND)
-        )
+        try:
+            time = (
+                str(rtime)
+                .replace(AMAZON_STR_HOUR, "")
+                .replace(AMAZON_STR_MINUTES, "")
+                .replace(" ", "")
+                .split(AMAZON_STR_AND)
+            )
 
-        hours = time[0]
-        minutes = time[1]
+            hours = time[0]
+            minutes = time[1]
 
-        total_minutes = int(hours) * 60 + int(minutes)
+            total_minutes = int(hours) * 60 + int(minutes)
 
-        # ToDo: Error-Handling if not in hours and only minutes.
+            # ToDo: Error-Handling if not in hours and only minutes.
+
+        except:
+            total_minutes = None
 
         return total_minutes
 
