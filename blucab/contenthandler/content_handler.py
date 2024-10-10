@@ -71,7 +71,7 @@ class handler:
                     )
                     list_item.save()
 
-    def add_movie(self, ean: str):
+    def add_movie(self, ean: str) -> bool:
         pars = contentParser(ean, item_limit=1)
 
         if len(pars.soups) > 0:
@@ -100,3 +100,6 @@ class handler:
                 )
 
                 m.save()
+                return True
+
+        return False
