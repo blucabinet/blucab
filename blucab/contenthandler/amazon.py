@@ -132,16 +132,8 @@ class contentParser:
 
         return list_entry
 
-    def get_asin(self, url) -> str:
+    def get_asin(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_ASIN)
-        # try:
-        #    asin_string = url.split("/dp/")[1].split("/")[0]
-
-    #
-    # except AttributeError:
-    #    asin_string = ""
-    #
-    # return asin_string
 
     def get_image(self, soup) -> str:
 
