@@ -1,5 +1,6 @@
 from django.conf import settings
 from main.models import Movie, MovieUserList
+from .amazon import contentParser
 
 import csv
 import os
@@ -69,3 +70,33 @@ class handler:
                         rating=csv_rating,
                     )
                     list_item.save()
+
+    def add_movie(self, ean: str):
+        pars = contentParser(ean, item_limit=1)
+
+        if len(pars.soups) > 0:
+            soup = pars.soups[0]
+
+            if not Movie.objects.filter(ean=ean).exists():
+                m = Movie(
+                    ean=ean,
+                    asin=pars.get_asin(soup),
+                    title=pars.get_title(soup),
+                    title_clean=pars.get_title_clean(soup),
+                    format=pars.get_format(soup),
+                    release_year=pars.get_release_year(soup),
+                    runtime=pars.get_runtime_min(soup),
+                    fsk=pars.get_fsk_str(soup),
+                    fsk_nbr=pars.get_fsk(soup),
+                    content=pars.get_content(soup),
+                    actor=pars.get_actors(soup),
+                    regisseur=pars.get_regisseur(soup),
+                    studio=pars.get_studio(soup),
+                    genre=pars.get_genre(soup),
+                    language=pars.get_language(soup),
+                    disc_count=pars.get_disc_count(soup),
+                    picture_url_original=pars.get_image(soup),
+                    needs_parsing=False,
+                )
+
+                m.save()
