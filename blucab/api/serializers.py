@@ -1,6 +1,7 @@
 from rest_framework import status, serializers
 import rest_framework.exceptions as exceptions
 from main.models import User, Movie, MovieUserList, UserSettings
+from contenthandler.content_handler import handler
 from django.templatetags.static import static
 from django.contrib.auth import authenticate
 
@@ -50,11 +51,13 @@ class CreateMovieUserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        ch = handler()
         user_v = validated_data["user"]
         ean_v = validated_data["ean"]
 
         if not Movie.objects.filter(ean=ean_v).exists():
-            raise exceptions.NotFound(detail="Movie not in Database")
+            if not ch.add_movie(ean_v):
+                raise exceptions.NotFound(detail="Movie not in Database or not found")
 
         movie_v = Movie.objects.get(ean=ean_v)
 
