@@ -14,7 +14,8 @@ AMAZON_STR_LANGUAGE = "Sprache"
 AMAZON_STR_STUDIO = "Studio"
 AMAZON_STR_RUNTIME = "Laufzeit"
 AMAZON_STR_RELEASE = "Erscheinungstermin"
-AMAZON_STR_HOUR = "Stunden"
+AMAZON_STR_HOUR = "Stunde"
+AMAZON_STR_HOURS = "Stunden"
 AMAZON_STR_MINUTES = "Minuten"
 AMAZON_STR_AND = "und"
 
@@ -256,6 +257,7 @@ class contentParser:
             time = (
                 str(rtime)
                 .replace(AMAZON_STR_HOUR, "")
+                .replace(AMAZON_STR_HOURS, "")
                 .replace(AMAZON_STR_MINUTES, "")
                 .replace(" ", "")
                 .split(AMAZON_STR_AND)
