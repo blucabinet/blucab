@@ -135,7 +135,7 @@ class contentParser:
     def get_asin(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_ASIN)
 
-    def get_image(self, soup) -> str:
+    def get_image_url(self, soup) -> str:
 
         try:
             img = soup.find("div", attrs={"id": "imgTagWrapperId"}).find("img")
@@ -308,7 +308,7 @@ if __name__ == "__main__":
         print("Genre =", pars.get_genre(soup))
         print("Product Title =", pars.get_title(soup))
         print("Stripped Title =", pars.get_title_clean(soup))
-        print("ImageUrl =", pars.get_image(soup))
+        print("ImageUrl =", pars.get_image_url(soup))
         print("FSK (str) =", pars.get_fsk_str(soup))
         print("FSK (nbr) =", pars.get_fsk(soup))
         print("Regisseur =", pars.get_regisseur(soup))

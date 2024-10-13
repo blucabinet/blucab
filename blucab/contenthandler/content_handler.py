@@ -80,7 +80,7 @@ class handler:
 
         if len(pars.soups) > 0:
             soup = pars.soups[0]
-            pars_picture_url = pars.get_image(soup)
+            pars_picture_url = pars.get_image_url(soup)
             pars_picture_available = False
 
             if pars_picture_url != None:
