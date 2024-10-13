@@ -21,18 +21,22 @@ class handler:
             return 0
         else:
             return int(input)
+    
+    def __picture_file_path(self, name: str) -> str:
+        picture_name = name + PICTURE_EXTENSION
+        return os.path.join(settings.BASE_DIR, "main", "static", "main", "cover", picture_name)
+         
+    def _picture_exists(self, name) -> bool:
+        file_path = self.__picture_file_path(name)
+        return os.path.exists(file_path)
 
     def _picture_download(self, url: str, name: str) -> None:
-        picture_name = name + PICTURE_EXTENSION
-        file_path = os.path.join(
-            settings.BASE_DIR, "main", "static", "main", "cover", picture_name
-        )
+        file_path = self.__picture_file_path(name)
 
-        if not os.path.exists(file_path):
+        if not self._picture_exists(file_path):
             picture = requests.get(url)
             open(file_path, "wb").write(picture.content)
-            print(f"File {picture_name} downloaded")
-
+            print(f"File {file_path} downloaded")
         return
 
     def csv_importer(self, filename: str, user) -> None:
@@ -116,3 +120,12 @@ class handler:
                 return True
 
         return False
+    
+    def check_all_picture_available(self) -> None:
+        movies = Movie.objects.filter(picture_available=True)
+        
+        for movie in movies:
+            movie.picture_available = self._picture_exists(movie.ean)
+            movie.save()
+
+        return
