@@ -88,7 +88,6 @@ def csv_import(response):
 
     ch = handler()
 
-    # ch._picture_download(url, picture_name)
     file = username + ".csv"
     ch.csv_importer(filename=file, user=user)
 

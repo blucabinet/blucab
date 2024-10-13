@@ -141,6 +141,9 @@ class contentParser:
             img = soup.find("div", attrs={"id": "imgTagWrapperId"}).find("img")
             img_url = img["src"].strip()
 
+            if img_url == "":
+                img_url = None
+
         except AttributeError:
             img_url = None
 

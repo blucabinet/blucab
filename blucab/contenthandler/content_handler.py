@@ -33,7 +33,9 @@ class handler:
             open(file_path, "wb").write(picture.content)
             print(f"File {picture_name} downloaded")
 
-    def csv_importer(self, filename: str, user):
+        return
+
+    def csv_importer(self, filename: str, user) -> None:
         with open(
             os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING
         ) as csv_file:
@@ -71,11 +73,18 @@ class handler:
                     )
                     list_item.save()
 
+        return
+
     def add_movie(self, ean: str) -> bool:
         pars = contentParser(ean, item_limit=1)
 
         if len(pars.soups) > 0:
             soup = pars.soups[0]
+            pars_picture_url = pars.get_image(soup)
+            pars_picture_available = False
+
+            if pars_picture_url != None:
+                pars_picture_available = True
 
             if not Movie.objects.filter(ean=ean).exists():
                 m = Movie(
@@ -95,11 +104,15 @@ class handler:
                     genre=pars.get_genre(soup),
                     language=pars.get_language(soup),
                     disc_count=pars.get_disc_count(soup),
-                    picture_url_original=pars.get_image(soup),
+                    picture_available=pars_picture_available,
+                    picture_url_original=pars_picture_url,
                     needs_parsing=False,
                 )
 
                 m.save()
+
+                self._picture_download(pars_picture_url, ean)
+
                 return True
 
         return False
