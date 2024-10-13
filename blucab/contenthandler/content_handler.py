@@ -75,7 +75,7 @@ class handler:
 
         return
 
-    def add_movie(self, ean: str) -> bool:
+    def add_new_movie(self, ean: str) -> bool:
         pars = contentParser(ean, item_limit=1)
 
         if len(pars.soups) > 0:

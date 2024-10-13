@@ -56,7 +56,7 @@ class CreateMovieUserSerializer(serializers.ModelSerializer):
         ean_v = validated_data["ean"]
 
         if not Movie.objects.filter(ean=ean_v).exists():
-            if not ch.add_movie(ean_v):
+            if not ch.add_new_movie(ean_v):
                 raise exceptions.NotFound(detail="Movie not in Database or not found")
 
         movie_v = Movie.objects.get(ean=ean_v)
