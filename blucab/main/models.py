@@ -33,12 +33,18 @@ class Movie(models.Model):
     title_clean = models.CharField(max_length=128)
     format = models.CharField(max_length=16)
     release_year = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(9999)], blank=True, null=True
+        validators=[MinValueValidator(0), MaxValueValidator(9999)],
+        blank=True,
+        null=True,
+        default=None,
     )
     runtime = models.IntegerField(blank=True, null=True)
     fsk = models.CharField(max_length=50, blank=True, null=True)
     fsk_nbr = models.IntegerField(
-        validators=[MinValueValidator(-1), MaxValueValidator(100)], blank=True, null=True, default=None
+        validators=[MinValueValidator(-1), MaxValueValidator(100)],
+        blank=True,
+        null=True,
+        default=None,
     )
     content = models.CharField(max_length=10000, blank=True, null=True)
     actor = models.CharField(max_length=500, blank=True, null=True)
