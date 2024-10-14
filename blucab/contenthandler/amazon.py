@@ -73,6 +73,10 @@ class contentParser:
         # HTTP Request
         webpage = requests.get(URL, headers=self.HEADERS)
 
+        if webpage.status_code != 200:
+            print(f"An parsing error occurred with status {webpage.status_code}")
+            return
+
         # Soup Object containing all data
         soup = BeautifulSoup(webpage.content, "lxml")
 
@@ -87,6 +91,7 @@ class contentParser:
             new_webpage = requests.get(
                 AMAZON_BASE_URL + self.search_link_list[i], headers=self.HEADERS
             )
+
             self.soups.append(BeautifulSoup(new_webpage.content, "lxml"))
 
             if i == item_limit - 1:
