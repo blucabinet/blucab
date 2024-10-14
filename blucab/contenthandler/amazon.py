@@ -255,25 +255,29 @@ class contentParser:
     def get_runtime_str(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_RUNTIME)
 
-    def get_runtime_min(self, soup) -> str:
+    def get_runtime_min(self, soup) -> int:
         rtime = self.get_runtime_str(soup)
 
         try:
-            time = (
-                str(rtime)
-                .replace(AMAZON_STR_HOUR, "")
-                .replace(AMAZON_STR_HOURS, "")
-                .replace(AMAZON_STR_MINUTES, "")
-                .replace(" ", "")
-                .split(AMAZON_STR_AND)
-            )
+            str_count_hour = rtime.count(AMAZON_STR_HOUR) + rtime.count(AMAZON_STR_HOURS)
+            str_count_minutes = rtime.count(AMAZON_STR_MINUTES)
 
-            hours = time[0]
-            minutes = time[1]
+            time = re.findall(r"\b\d+\b", rtime)
 
-            total_minutes = int(hours) * 60 + int(minutes)
+            if (str_count_hour >= 1) and (str_count_minutes >= 1):
+                hours = time[0]
+                minutes = time[1]
 
-            # ToDo: Error-Handling if not in hours and only minutes.
+                total_minutes = int(hours) * 60 + int(minutes)
+
+            if (str_count_hour == 0) and (str_count_minutes >= 1):
+                minutes = time[0]
+                total_minutes = int(minutes)
+
+            if (str_count_hour >= 1) and (str_count_minutes == 0):
+                hours = time[0]
+
+                total_minutes = int(hours) * 60
 
         except:
             total_minutes = None
