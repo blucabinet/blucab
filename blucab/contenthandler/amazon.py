@@ -63,10 +63,10 @@ class contentParser:
         "Accept-Language": "de",
     }
 
-    search_link_list = []
-    soups = []
-
     def __init__(self, search_term, item_limit=1):
+        self.search_link_list = []
+        self.soups = []
+
         # The webpage URL for searches
         URL = AMAZON_BASE_URL + "/s?k=" + search_term + "&ref=nb_sb_noss"
 
