@@ -5,6 +5,8 @@ from .amazon import contentParser
 import csv
 import os
 import requests
+import time
+import random
 
 
 PICTURE_EXTENSION = ".jpg"
@@ -18,14 +20,16 @@ class handler:
 
     def _check_int_string(self, input: str) -> int:
         if input == "":
-            return 0
+            return None
         else:
             return int(input)
-    
+
     def __picture_file_path(self, name: str) -> str:
         picture_name = name + PICTURE_EXTENSION
-        return os.path.join(settings.BASE_DIR, "main", "static", "main", "cover", picture_name)
-         
+        return os.path.join(
+            settings.BASE_DIR, "main", "static", "main", "cover", picture_name
+        )
+
     def _picture_exists(self, name) -> bool:
         file_path = self.__picture_file_path(name)
         return os.path.exists(file_path)
@@ -120,12 +124,82 @@ class handler:
                 return True
 
         return False
-    
+
     def check_all_picture_available(self) -> None:
         movies = Movie.objects.filter(picture_available=True)
-        
+
         for movie in movies:
             movie.picture_available = self._picture_exists(movie.ean)
+            movie.save()
+
+        return
+
+    def content_update(self) -> None:
+        movies = Movie.objects.filter(needs_parsing=True)
+        counter = 0
+
+        for movie in movies:
+            if counter == 10:
+                return
+            counter = counter + 1
+
+            # Slow down speed for parsing
+            t = random.randint(2, 10)
+            time.sleep(t)
+
+            movie_ean = movie.ean
+            pars = contentParser(movie_ean, item_limit=1)
+
+            if len(pars.soups) == 0:
+                print("ContentParser failed!")
+                continue
+
+            soup = pars.soups[0]
+
+            if movie.release_year == None:
+                movie.release_year = pars.get_release_year(soup)
+
+            if movie.runtime == None:
+                movie.runtime = pars.get_runtime_min(soup)
+
+            if movie.fsk == None:
+                movie.fsk = pars.get_fsk_str(soup)
+
+            if movie.fsk_nbr == None:
+                movie.fsk_nbr = pars.get_fsk(soup)
+
+            if movie.content == None:
+                movie.content = pars.get_content(soup)
+
+            if movie.actor == None:
+                movie.actor = pars.get_actors(soup)
+
+            if movie.regisseur == None:
+                movie.regisseur = pars.get_regisseur(soup)
+
+            if movie.studio == None:
+                movie.studio = pars.get_studio(soup)
+
+            if movie.genre == None:
+                movie.genre = pars.get_genre(soup)
+
+            if movie.language == None:
+                movie.language = pars.get_language(soup)
+
+            if movie.disc_count == 1:
+                count = pars.get_disc_count(soup)
+                if count != None:
+                    movie.disc_count = count
+
+            # Picture update
+            pars_picture_url = pars.get_image_url(soup)
+
+            if (pars_picture_url != None) and (movie.picture_available == False):
+                self._picture_download(pars_picture_url, movie_ean)
+                movie.picture_url_original = pars_picture_url
+                movie.picture_available = True
+
+            movie.needs_parsing = False
             movie.save()
 
         return
