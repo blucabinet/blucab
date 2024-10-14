@@ -36,6 +36,7 @@ REMOVE_ITEMS = {
     "(OmU)",
     "(Special Edition)",
     "[]",
+    "()",
 }
 
 BLURAY_ITEMS = {
@@ -81,7 +82,6 @@ class contentParser:
         # Loop for extracting links from Tag Objects
         for link in links:
             self.search_link_list.append(link.get("href"))
-
 
         for i in range(len(self.search_link_list)):
             new_webpage = requests.get(
