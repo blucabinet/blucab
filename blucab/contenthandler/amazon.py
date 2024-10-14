@@ -99,6 +99,9 @@ class contentParser:
 
         return
 
+    def _get_str_numbers(self, string):
+        return re.findall(r"\b\d+\b", string)
+
     def get_product_information(self, soup, searchtext: str) -> str:
         try:
             feature = soup.find("div", attrs={"id": "detailBullets_feature_div"})
@@ -223,8 +226,7 @@ class contentParser:
         fsk = self.get_fsk_str(soup)
 
         try:
-            numbers = re.findall(r"\b\d+\b", fsk)
-            number = numbers[0]
+            number = self._get_str_numbers(fsk)[0]
 
         except:
             if fsk == AMAZON_STR_FSK_NO:
@@ -262,7 +264,7 @@ class contentParser:
             str_count_hour = rtime.count(AMAZON_STR_HOUR) + rtime.count(AMAZON_STR_HOURS)
             str_count_minutes = rtime.count(AMAZON_STR_MINUTES)
 
-            time = re.findall(r"\b\d+\b", rtime)
+            time = self._get_str_numbers(rtime)
 
             if (str_count_hour >= 1) and (str_count_minutes >= 1):
                 hours = time[0]
