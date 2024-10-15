@@ -162,7 +162,7 @@ class handler:
             self._picture_postprocessing(movie.ean)
         return
 
-    def content_update(self) -> None:
+    def get_missing_information(self) -> None:
         movies = Movie.objects.filter(needs_parsing=True)
         counter = 0
 
@@ -231,3 +231,8 @@ class handler:
             movie.save()
 
         return
+
+    def content_update(self) -> None:
+        self.check_all_picture_available()
+        self.get_missing_information()
+        self.picture_update()
