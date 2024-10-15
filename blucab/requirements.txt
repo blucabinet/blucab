@@ -12,3 +12,5 @@ environs==11.0.0
 beautifulsoup4==4.12.3
 requests==2.32.3
 lxml==5.3.0 
+
+pillow==11.0.0

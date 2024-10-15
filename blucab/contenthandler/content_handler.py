@@ -1,6 +1,7 @@
 from django.conf import settings
 from main.models import Movie, MovieUserList
 from .amazon import contentParser
+from PIL import Image, ImageChops
 
 import csv
 import os
@@ -34,13 +35,34 @@ class handler:
         file_path = self.__picture_file_path(name)
         return os.path.exists(file_path)
 
+    def _picture_postprocessing(self, name: str) -> None:
+        def trim(im):
+            bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
+            diff = ImageChops.difference(im, bg)
+            diff = ImageChops.add(diff, diff, 2.0, -100)
+            bbox = diff.getbbox()
+            if bbox:
+                return im.crop(bbox)
+            else:
+                # Failed to find the borders, convert to "RGB"
+                return trim(im.convert("RGB"))
+
+        if self._picture_exists(name):
+            im = Image.open(self.__picture_file_path(name))
+            im.save(self.__picture_file_path(f"orig_{name}"))
+            im = trim(im)
+            im.save(self.__picture_file_path(name))
+        return
+
     def _picture_download(self, url: str, name: str) -> None:
         file_path = self.__picture_file_path(name)
 
         if not self._picture_exists(file_path):
             picture = requests.get(url)
             open(file_path, "wb").write(picture.content)
+            self._picture_postprocessing(file_path)
             print(f"File {file_path} downloaded")
+
         return
 
     def csv_importer(self, filename: str, user) -> None:
@@ -131,7 +153,13 @@ class handler:
         for movie in movies:
             movie.picture_available = self._picture_exists(movie.ean)
             movie.save()
+        return
 
+    def picture_update(self) -> None:
+        movies = Movie.objects.filter(picture_available=True)
+
+        for movie in movies:
+            self._picture_postprocessing(movie.ean)
         return
 
     def content_update(self) -> None:
