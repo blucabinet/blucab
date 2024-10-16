@@ -18,6 +18,8 @@ AMAZON_STR_HOUR = "Stunde"
 AMAZON_STR_HOURS = "Stunden"
 AMAZON_STR_MINUTES = "Minuten"
 AMAZON_STR_AND = "und"
+AMAZON_STR_PICTURE_SD = "src"
+AMAZON_STR_PICTURE_HD = "data-old-hires"
 
 FORMAT_BLURAY = "Blu-Ray"
 FORMAT_DVD = "DVD"
@@ -144,11 +146,16 @@ class contentParser:
     def get_asin(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_ASIN)
 
-    def get_image_url(self, soup) -> str:
+    def get_image_url(self, soup, use_hd=False) -> str:
+
+        if use_hd:
+            type = AMAZON_STR_PICTURE_HD
+        else:
+            type = AMAZON_STR_PICTURE_SD
 
         try:
             img = soup.find("div", attrs={"id": "imgTagWrapperId"}).find("img")
-            img_url = img["src"].strip()
+            img_url = img[type].strip()
 
             if img_url == "":
                 img_url = None
