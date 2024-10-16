@@ -127,6 +127,7 @@ class contentParser:
                         .replace("\n", "")
                         .replace("\u200e", "")
                         .replace("\u200f", "")
+                        .removeprefix(", ")
                         .lstrip()
                         .strip()
                     )
