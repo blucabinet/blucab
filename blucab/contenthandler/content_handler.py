@@ -49,7 +49,9 @@ class handler:
 
         if self._picture_exists(name):
             im = Image.open(self.__picture_file_path(name))
-            im.save(self.__picture_file_path(f"orig_{name}")) #ToDo: Maybe remove in future
+            im.save(
+                self.__picture_file_path(f"orig_{name}")
+            )  # ToDo: Maybe remove in future
             im = trim(im)
             im.save(self.__picture_file_path(name))
         return
@@ -60,9 +62,7 @@ class handler:
         if not self._picture_exists(file_path):
             picture = requests.get(url)
             open(file_path, "wb").write(picture.content)
-            self._picture_postprocessing(file_path)
             print(f"File {file_path} downloaded")
-
         return
 
     def csv_importer(self, filename: str, user) -> None:
@@ -102,7 +102,6 @@ class handler:
                         rating=csv_rating,
                     )
                     list_item.save()
-
         return
 
     def add_new_movie(self, ean: str) -> bool:
@@ -136,12 +135,14 @@ class handler:
                     disc_count=pars.get_disc_count(soup),
                     picture_available=pars_picture_available,
                     picture_url_original=pars_picture_url,
+                    picture_processed=pars_picture_available,
                     needs_parsing=False,
                 )
 
                 m.save()
 
                 self._picture_download(pars_picture_url, ean)
+                self._picture_postprocessing(ean)
 
                 return True
 
@@ -151,7 +152,10 @@ class handler:
         movies = Movie.objects.filter(picture_available=True)
 
         for movie in movies:
-            movie.picture_available = self._picture_exists(movie.ean)
+            exists = self._picture_exists(movie.ean)
+            movie.picture_available = exists
+            if not exists:
+                movie.picture_processed = False
             movie.save()
         return
 
@@ -226,15 +230,17 @@ class handler:
 
             if (pars_picture_url != None) and (movie.picture_available == False):
                 self._picture_download(pars_picture_url, movie_ean)
+                self._picture_postprocessing(movie_ean)
                 movie.picture_url_original = pars_picture_url
                 movie.picture_available = True
+                movie.picture_processed = True
 
             movie.needs_parsing = False
             movie.save()
-
         return
 
     def content_update(self) -> None:
         self.check_all_picture_available()
         self.get_missing_information()
         self.picture_update()
+        return
