@@ -59,6 +59,7 @@ class Movie(models.Model):
     is_series = models.BooleanField(default=False)
     picture_available = models.BooleanField(default=False)
     picture_url_original = models.CharField(max_length=128, blank=True, null=True)
+    picture_url_original_hd = models.CharField(max_length=128, blank=True, null=True)
     picture_processed = models.BooleanField(default=False)
     needs_parsing = models.BooleanField(default=True)
 
