@@ -228,6 +228,9 @@ class handler:
             # Picture update
             pars_picture_url = pars.get_image_url(soup)
 
+            if movie.picture_url_original_hd == None:
+                movie.picture_url_original_hd = pars.get_image_url(soup, True)
+
             if (pars_picture_url != None) and (movie.picture_available == False):
                 self._picture_download(pars_picture_url, movie_ean)
                 self._picture_postprocessing(movie_ean)
