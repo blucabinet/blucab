@@ -49,7 +49,7 @@ class handler:
 
         if self._picture_exists(name):
             im = Image.open(self.__picture_file_path(name))
-            im.save(self.__picture_file_path(f"orig_{name}"))
+            im.save(self.__picture_file_path(f"orig_{name}")) #ToDo: Maybe remove in future
             im = trim(im)
             im.save(self.__picture_file_path(name))
         return
@@ -156,10 +156,12 @@ class handler:
         return
 
     def picture_update(self) -> None:
-        movies = Movie.objects.filter(picture_available=True)
+        movies = Movie.objects.filter(picture_available=True, picture_processed=False)
 
         for movie in movies:
             self._picture_postprocessing(movie.ean)
+            movie.picture_processed = True
+            movie.save()
         return
 
     def get_missing_information(self) -> None:
