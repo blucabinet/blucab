@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import ToDoList, UserSettings, MovieUserList, User
 from .forms import CreateNewList
 
-from .content_handler import handler
+from contenthandler.content_handler import handler
 
 import csv
 import os
@@ -88,7 +88,6 @@ def csv_import(response):
 
     ch = handler()
 
-    # ch._picture_download(url, picture_name)
     file = username + ".csv"
     ch.csv_importer(filename=file, user=user)
 
