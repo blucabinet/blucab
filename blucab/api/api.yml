@@ -1,0 +1,452 @@
+openapi: 3.0.3
+
+info:
+  title: Blucab API
+  description: API for the Blucab application
+  version: 1.0.0
+
+tags:
+  - name: movies
+    description: Global list of movies
+  - name: authentication
+  - name: user movies
+    description: A user's collection of movies
+  - name: user settings
+
+paths:
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: Get all movies or filtered by EAN
+      description: Returns all known movies and allows to search / filter by EAN
+      parameters:
+        - name: ean
+          in: query
+          description: EAN of the movie to return
+          required: false
+          schema:
+            $ref: '#/components/schemas/Ean'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+  
+  /movies/{id}:
+    get:
+      tags:
+        - movies
+      summary: Get movie by ID
+      description: Returns a single movie with the requested ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the movie to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: No movie with the requested ID was found
+                  
+  /user/register:
+    post:
+      tags:
+        - authentication
+      summary: Registers a new user
+      description: The user will be created and logged in on success
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterPost'
+      responses:
+        '200':
+          description: User created and logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid username/password supplied
+        '409':
+          description: The username is already taken
+                  
+  /user/login:
+    post:
+      tags:
+        - authentication
+      summary: Logs user into the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginPost'
+      responses:
+        '200':
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid username/password supplied
+  
+  /user/logout:
+    post:
+      tags:
+        - authentication
+      summary: Invalidates the currently used authentication token
+      responses:
+        '200':
+          description: The user was logged out successfully
+        '401':
+          description: The user is not authenticated
+
+  /user/movies:
+    get:
+      tags:
+        - user movies
+      summary: Movies in a user's collection
+      description: Returns all movies the authenticated user owns
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserMovie'
+        '401':
+          description: The user is not authenticated
+
+    post:
+      tags:
+        - user movies
+      summary: Adds a movie to the user's collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMoviePost'
+      responses:
+        '200':
+          description: The movie was added to the user's collection
+        '401':
+          description: The user is not authenticated
+                
+  /user/movies/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the movie to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+    
+    patch:
+      tags:
+        - user movies
+      summary: Update a movie in the user's collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMoviePatch'
+      responses:
+        '200':
+          description: User's movie updated successfully
+        '401':
+          description: The user is not authenticated
+        '404':
+          description: No movie with the requested ID was found
+    
+    delete:
+      tags:
+        - user movies
+      summary: Remove a movie from the user's collection
+      responses:
+        '200':
+          description: Movie was removed from the user's collection
+        '401':
+          description: The user is not authenticated
+        '404':
+          description: No movie with the requested ID was found
+  
+  /user/settings:
+    get:
+      tags:
+        - user settings
+      summary: Returns the current user settings
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: The user is not authenticated
+                
+    patch:
+      tags:
+        - user settings
+      summary: Updates the user settings
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettingsPatch'
+        '401':
+          description: The user is not authenticated
+
+components:
+  
+  schemas:
+    MovieFormat:
+      type: string
+      enum:
+        - Blu-ray
+        - DVD
+        
+    Ean:
+      type: string
+      pattern: ^\d{8}|\d{13}$
+      example: "4010232037589"
+      
+    RunningTime:
+      type: integer
+      minimum: 0
+      example: 124
+      description: The length of the movie in minutes
+      
+    FskRating:
+      type: integer
+      nullable: true
+      enum: [0, 6, 12, 16, 18]
+      example: 12
+    
+    Price:
+      type: number
+      format: float
+      nullable: true
+      minimum: 0
+      multipleOf: 0.01
+      example: 12.99
+    
+    Language:
+      type: string
+      enum:
+        - de
+        - en
+    
+    Cover:
+      type: string
+      format: uri
+      nullable: true
+      example: 'https://media.myserver.org/movie-cover-1.jpg'
+      description: Absolute URL to the movie's cover image
+    
+    Rating:
+      type: number
+      nullable: true
+      minimum: 0
+      maximum: 5
+    
+    RentedTo:
+      type: string
+      nullable: true
+      description: An arbitrary string describing a person the movie was rented to or null when not rented to anybody
+      example: null
+      
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        ean:
+          $ref: '#/components/schemas/Ean'
+        title:
+          type: string
+          example: 'Inception'
+        cover:
+          $ref: '#/components/schemas/Cover'
+        format:
+          $ref: '#/components/schemas/MovieFormat'
+        isSeries:
+          type: boolean
+          example: false
+        discCount:
+          type: integer
+          minimum: 0
+        episodeCount:
+          type: integer
+          minimum: 0
+          nullable: true
+        seasonCount:
+          type: integer
+          minimum: 0
+          nullable: true
+        releaseYear:
+          type: integer
+          minimum: 1800
+          example: 2011
+        runningTime:
+          $ref: '#/components/schemas/RunningTime'
+        fskRating:
+          $ref: '#/components/schemas/FskRating'
+        description:
+          type: string
+          example: "In Inception, Dom Cobb, a thief who steals secrets through dreams, must plant an idea in someone's mind to clear his criminal record."
+        actors:
+          type: array
+          items:
+            type: string
+            example: 'Leonardo DiCaprio'
+        directors:
+          type: array
+          items:
+            type: string
+            example: 'Christopher Nolan'
+        studio:
+          type: string
+          example: 'Warner Bros.'
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Language'
+        genres:
+          type: array
+          items:
+            type: string
+            example: 'Science Fiction'
+      
+    UserMovie:
+      type: object
+      properties:
+        isActivated:
+          type: boolean
+        rating:
+          $ref: '#/components/schemas/Rating'
+        isViewed:
+          type: boolean
+        rentedTo:
+          $ref: '#/components/schemas/RentedTo'
+        inCollectionSince:
+          type: string
+          format: date
+        price:
+          $ref: '#/components/schemas/Price'
+        movie:
+          $ref: '#/components/schemas/Movie'
+    
+    UserMoviePatch:
+      type: object
+      properties:
+        isActivated:
+          type: boolean
+        rating:
+          $ref: '#/components/schemas/Rating'
+        isViewed:
+          type: boolean
+        rentedTo:
+          $ref: '#/components/schemas/RentedTo'
+    
+    UserMoviePost:
+      type: object
+      required:
+        - movieId
+      properties:
+        movieId:
+          type: integer
+        isActivated:
+          type: boolean
+        rating:
+          $ref: '#/components/schemas/Rating'
+        isViewed:
+          type: boolean
+        rentedTo:
+          $ref: '#/components/schemas/RentedTo'
+    
+    RegisterPost:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    
+    LoginPost:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            username:
+              type: string
+            email:
+              type: string
+              format: email
+        token:
+          type: string
+          example: '9ee4aa315d69846e78b6bb045f29c5cf0afbd3f6b08c02391fbc0790d4751eba'
+          
+    UserSettings:
+      type: object
+      properties:
+        username:
+          type: string
+        priceUnit:
+          type: string
+        daysForNew:
+          type: integer
+          minimum: 0
+    
+    UserSettingsPatch:
+      type: object
+      properties:
+        priceUnit:
+          type: string
+        daysForNew:
+          type: integer
