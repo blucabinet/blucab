@@ -1,7 +1,7 @@
 from django.conf import settings
 from main.models import Movie, MovieUserList
 from .amazon import contentParser
-from .picture_helper import pictureHelper as ph
+from .picture_helper import pictureHelper
 
 import csv
 import os
@@ -9,6 +9,8 @@ import time
 import random
 
 CSV_ENCODING = "ISO-8859-1"
+
+ph = pictureHelper()
 
 
 class handler:
