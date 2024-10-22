@@ -115,6 +115,7 @@ class handler:
             movie.picture_available = exists
             if not exists:
                 movie.picture_processed = False
+                movie.needs_parsing = True
             movie.save()
         return
 
