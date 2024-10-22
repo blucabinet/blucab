@@ -100,8 +100,7 @@ class handler:
 
                 m.save()
 
-                ph.picture_download(pars_picture_url, ean)
-                ph.picture_postprocessing(ean)
+                ph.picture_download_processing(pars_picture_url, ean)
 
                 return True
 
@@ -191,8 +190,7 @@ class handler:
                 movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
 
             if (pars_picture_url != None) and (movie.picture_available == False):
-                ph.picture_download(pars_picture_url, movie_ean)
-                ph.picture_postprocessing(movie_ean)
+                ph.picture_download_processing(pars_picture_url, movie_ean)
                 movie.picture_url_original = pars_picture_url
                 movie.picture_available = True
                 movie.picture_processed = True

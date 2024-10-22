@@ -52,3 +52,8 @@ class pictureHelper:
             open(file_path, "wb").write(picture.content)
             print(f"File {file_path} downloaded")
         return
+    
+    def picture_download_processing(self, url: str, name: str) -> None:
+        self.picture_download(url, name)
+        self.picture_postprocessing(name)
+        return
