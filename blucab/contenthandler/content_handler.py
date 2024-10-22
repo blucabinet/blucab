@@ -25,6 +25,12 @@ class handler:
         else:
             return int(input)
 
+    def _check_string(self, input: str) -> str:
+        if input == "":
+            return None
+        else:
+            return str(input)
+
     def __picture_file_path(self, name: str) -> str:
         picture_name = name + PICTURE_EXTENSION
         return os.path.join(
@@ -78,17 +84,19 @@ class handler:
                 if not Movie.objects.filter(ean=csv_ean).exists():
                     m = Movie(
                         ean=csv_ean,
-                        asin=row[2],
-                        title=row[3],
-                        title_clean=row[4],
-                        format=row[5],
+                        asin=self._check_string(row[2]),
+                        title=self._check_string(row[3]),
+                        title_clean=self._check_string(row[4]),
+                        format=self._check_string(row[5]),
                         release_year=self._check_int_string(row[6]),
                         runtime=self._check_int_string(row[7]),
-                        fsk=row[8],
-                        content=row[9],
-                        actor=row[10],
-                        regisseur=row[11],
-                        studio=row[12],
+                        fsk=self._check_string(row[8]),
+                        fsk_nbr=None,
+                        content=self._check_string(row[9]),
+                        actor=self._check_string(row[10]),
+                        regisseur=self._check_string(row[11]),
+                        studio=self._check_string(row[12]),
+                        needs_parsing=True,
                     )
 
                     m.save()
