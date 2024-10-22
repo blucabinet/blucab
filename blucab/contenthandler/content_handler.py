@@ -69,6 +69,7 @@ class handler:
         if len(pars.soups) > 0:
             soup = pars.soups[0]
             pars_picture_url = pars.get_image_url(soup)
+            pars_picture_url_hd = pars.get_image_url(soup, use_hd=True)
             pars_picture_available = False
 
             if pars_picture_url != None:
@@ -94,13 +95,15 @@ class handler:
                     disc_count=pars.get_disc_count(soup),
                     picture_available=pars_picture_available,
                     picture_url_original=pars_picture_url,
+                    picture_url_original_hd=pars_picture_url_hd,
                     picture_processed=pars_picture_available,
                     needs_parsing=False,
                 )
 
                 m.save()
 
-                ph.picture_download_processing(pars_picture_url, ean)
+                if pars_picture_available:
+                    ph.picture_download_processing(pars_picture_url, ean)
 
                 return True
 
