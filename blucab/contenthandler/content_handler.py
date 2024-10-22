@@ -118,9 +118,22 @@ class handler:
         return
 
     def picture_update(self) -> None:
-        movies = Movie.objects.filter(picture_available=True, picture_processed=False)
+        movies_img_unavailable = Movie.objects.filter(
+            picture_available=False, picture_processed=False
+        )
 
-        for movie in movies:
+        for movie in movies_img_unavailable:
+            if movie.picture_url_original != None:
+                ph.picture_download_processing(movie.picture_url_original, movie.ean)
+                movie.picture_available = True
+                movie.picture_processed = True
+                movie.save()
+
+        movies_img_available = Movie.objects.filter(
+            picture_available=True, picture_processed=False
+        )
+
+        for movie in movies_img_available:
             ph.picture_postprocessing(movie.ean)
             movie.picture_processed = True
             movie.save()
