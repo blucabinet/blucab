@@ -1,17 +1,16 @@
 from django.conf import settings
 from main.models import Movie, MovieUserList
 from .amazon import contentParser
-from PIL import Image, ImageChops
+from .picture_helper import pictureHelper
 
 import csv
 import os
-import requests
 import time
 import random
 
-
-PICTURE_EXTENSION = ".jpg"
 CSV_ENCODING = "ISO-8859-1"
+
+ph = pictureHelper()
 
 
 class handler:
@@ -30,46 +29,6 @@ class handler:
             return None
         else:
             return str(input)
-
-    def __picture_file_path(self, name: str) -> str:
-        picture_name = name + PICTURE_EXTENSION
-        return os.path.join(
-            settings.BASE_DIR, "main", "static", "main", "cover", picture_name
-        )
-
-    def _picture_exists(self, name) -> bool:
-        file_path = self.__picture_file_path(name)
-        return os.path.exists(file_path)
-
-    def _picture_postprocessing(self, name: str) -> None:
-        def trim(im):
-            bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
-            diff = ImageChops.difference(im, bg)
-            diff = ImageChops.add(diff, diff, 2.0, -100)
-            bbox = diff.getbbox()
-            if bbox:
-                return im.crop(bbox)
-            else:
-                # Failed to find the borders, convert to "RGB"
-                return trim(im.convert("RGB"))
-
-        if self._picture_exists(name):
-            im = Image.open(self.__picture_file_path(name))
-            im.save(
-                self.__picture_file_path(f"orig_{name}")
-            )  # ToDo: Maybe remove in future
-            im = trim(im)
-            im.save(self.__picture_file_path(name))
-        return
-
-    def _picture_download(self, url: str, name: str) -> None:
-        file_path = self.__picture_file_path(name)
-
-        if not self._picture_exists(file_path):
-            picture = requests.get(url)
-            open(file_path, "wb").write(picture.content)
-            print(f"File {file_path} downloaded")
-        return
 
     def csv_importer(self, filename: str, user) -> None:
         with open(
@@ -118,6 +77,7 @@ class handler:
         if len(pars.soups) > 0:
             soup = pars.soups[0]
             pars_picture_url = pars.get_image_url(soup)
+            pars_picture_url_hd = pars.get_image_url(soup, use_hd=True)
             pars_picture_available = False
 
             if pars_picture_url != None:
@@ -143,14 +103,15 @@ class handler:
                     disc_count=pars.get_disc_count(soup),
                     picture_available=pars_picture_available,
                     picture_url_original=pars_picture_url,
+                    picture_url_original_hd=pars_picture_url_hd,
                     picture_processed=pars_picture_available,
                     needs_parsing=False,
                 )
 
                 m.save()
 
-                self._picture_download(pars_picture_url, ean)
-                self._picture_postprocessing(ean)
+                if pars_picture_available:
+                    ph.picture_download_processing(pars_picture_url, ean)
 
                 return True
 
@@ -160,7 +121,7 @@ class handler:
         movies = Movie.objects.filter(picture_available=True)
 
         for movie in movies:
-            exists = self._picture_exists(movie.ean)
+            exists = ph._picture_exists(movie.ean)
             movie.picture_available = exists
             if not exists:
                 movie.picture_processed = False
@@ -168,10 +129,23 @@ class handler:
         return
 
     def picture_update(self) -> None:
-        movies = Movie.objects.filter(picture_available=True, picture_processed=False)
+        movies_img_unavailable = Movie.objects.filter(
+            picture_available=False, picture_processed=False
+        )
 
-        for movie in movies:
-            self._picture_postprocessing(movie.ean)
+        for movie in movies_img_unavailable:
+            if movie.picture_url_original != None:
+                ph.picture_download_processing(movie.picture_url_original, movie.ean)
+                movie.picture_available = True
+                movie.picture_processed = True
+                movie.save()
+
+        movies_img_available = Movie.objects.filter(
+            picture_available=True, picture_processed=False
+        )
+
+        for movie in movies_img_available:
+            ph.picture_postprocessing(movie.ean)
             movie.picture_processed = True
             movie.save()
         return
@@ -240,8 +214,7 @@ class handler:
                 movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
 
             if (pars_picture_url != None) and (movie.picture_available == False):
-                self._picture_download(pars_picture_url, movie_ean)
-                self._picture_postprocessing(movie_ean)
+                ph.picture_download_processing(pars_picture_url, movie_ean)
                 movie.picture_url_original = pars_picture_url
                 movie.picture_available = True
                 movie.picture_processed = True
