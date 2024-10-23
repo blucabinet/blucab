@@ -1,4 +1,4 @@
-from rest_framework import status, serializers
+from rest_framework import serializers
 import rest_framework.exceptions as exceptions
 from main.models import User, Movie, MovieUserList, UserSettings
 from contenthandler.content_handler import handler

@@ -1,6 +1,5 @@
 # from django.conf.urls import url
 from django.urls import path, include
-from knox import views as knox_views
 from knox import urls as knox_urls
 from .views import (
     MovieListApiView,

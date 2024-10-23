@@ -1,13 +1,7 @@
-from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 from .models import UserSettings, MovieUserList, User
 
 from contenthandler.content_handler import handler
-
-import csv
-import os
-import requests
 
 
 # Create your views here.
