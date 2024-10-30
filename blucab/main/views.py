@@ -54,10 +54,16 @@ def csv_import(response):
     user = response.user
     username = user.username
 
-    ch = handler()
+    if user.is_authenticated:
 
-    file = username + ".csv"
-    ch.csv_importer(filename=file, user=user)
+        ch = handler()
+
+        file = username + ".csv"
+        ch.csv_importer(filename=file, user=user)
+
+        ch.content_update()
+    else:
+        pass
 
     return render(response, "main/csv_import.html", {"data": test})
 
