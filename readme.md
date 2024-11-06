@@ -185,3 +185,4 @@ The project is non-commercial hobby project. The development could be irregular 
 - _Rent Vector Icon_ and _Vector New Icon_ by [Muhammad Khaleeq](https://www.vecteezy.com/members/iyikon/)
 - Thanks for the nice Django Tutorial on YouTube by [Tech With Tim](https://www.youtube.com/@TechWithTim)
 - Thanks to bhuma08 for the good overview about [Authentication using knox](https://dev.to/bhuma08/django-user-authentication-using-knox-5f17)
+- Thanks to fraxel and Victor for the [picture trimming code](https://stackoverflow.com/a/10616717)

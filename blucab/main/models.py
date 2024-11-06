@@ -6,26 +6,6 @@ from django.db.models.signals import post_save
 from django.utils import timezone
 
 
-# Create your models here.
-class ToDoList(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="todolist", null=True
-    )
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-
-class Item(models.Model):
-    todolist = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
-    text = models.CharField(max_length=300)
-    complete = models.BooleanField()
-
-    def __str__(self):
-        return self.text
-
-
 class Movie(models.Model):
     ean = models.CharField(max_length=16)
     asin = models.CharField(max_length=16)
@@ -33,22 +13,35 @@ class Movie(models.Model):
     title_clean = models.CharField(max_length=128)
     format = models.CharField(max_length=16)
     release_year = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(9999)]
+        validators=[MinValueValidator(0), MaxValueValidator(9999)],
+        blank=True,
+        null=True,
+        default=None,
     )
-    runtime = models.IntegerField()
-    fsk = models.CharField(max_length=50, blank=True)
-    content = models.CharField(max_length=10000, blank=True)
-    actor = models.CharField(max_length=500, blank=True)
-    regisseur = models.CharField(max_length=100, blank=True)
-    studio = models.CharField(max_length=100, blank=True)
-    genre = models.CharField(max_length=200, blank=True)
-    language = models.CharField(max_length=200, blank=True)
+    runtime = models.IntegerField(blank=True, null=True)
+    fsk = models.CharField(max_length=50, blank=True, null=True)
+    fsk_nbr = models.IntegerField(
+        validators=[MinValueValidator(-1), MaxValueValidator(100)],
+        blank=True,
+        null=True,
+        default=None,
+    )
+    content = models.CharField(max_length=10000, blank=True, null=True)
+    actor = models.CharField(max_length=500, blank=True, null=True)
+    regisseur = models.CharField(max_length=100, blank=True, null=True)
+    studio = models.CharField(max_length=100, blank=True, null=True)
+    genre = models.CharField(max_length=200, blank=True, null=True)
+    language = models.CharField(max_length=200, blank=True, null=True)
     disc_count = models.IntegerField(default=1)
     movie_count = models.IntegerField(default=1)
     season_count = models.IntegerField(default=0)
     episode_count = models.IntegerField(default=0)
     is_series = models.BooleanField(default=False)
     picture_available = models.BooleanField(default=False)
+    picture_url_original = models.CharField(max_length=128, blank=True, null=True)
+    picture_url_original_hd = models.CharField(max_length=128, blank=True, null=True)
+    picture_processed = models.BooleanField(default=False)
+    needs_parsing = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Movies"

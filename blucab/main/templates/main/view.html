@@ -24,9 +24,9 @@ View
                                 <div class="overlay_div" id="pictureOverlayIcons">
                                     <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                         {% if mu.movie.picture_available %}
-                                            <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                            <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" class="img-fluid" alt="Picture of the cover" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                         {% else %}
-                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" class="img-fluid" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                         {% endif %}
 
                                         {% if usersettings.show_view_icon_new %}
@@ -114,7 +114,7 @@ View
                                                     {% endif %}
 
                                                     EAN: {{mu.movie.ean}}<br>
-                                                    ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}">{{mu.movie.asin}}</a>
+                                                    ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a>
                                                 </p>
                                             </div>
                                         </div>
