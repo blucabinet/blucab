@@ -344,6 +344,8 @@ components:
     UserMovie:
       type: object
       properties:
+        id:
+          type: integer
         isActivated:
           type: boolean
         rating:
