@@ -18,8 +18,8 @@ paths:
     get:
       tags:
         - movies
-      summary: Get all movies or filtered by EAN
-      description: Returns all known movies and allows to search / filter by EAN
+      summary: Get all movies with or without filters
+      description: Returns all known movies and allows to search / filter
       parameters:
         - name: ean
           in: query
@@ -27,6 +27,12 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/Ean'
+        - name: query
+          in: query
+          description: A search query to filter the list of movies
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
