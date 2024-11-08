@@ -6,6 +6,7 @@ import requests
 from PIL import Image, ImageChops
 
 PICTURE_EXTENSION = ".jpg"
+MINIMUM_IMAGE_HEIGHT = 50
 
 
 class pictureHelper:
@@ -37,11 +38,13 @@ class pictureHelper:
 
         if self._picture_exists(name):
             im = Image.open(self.__picture_file_path(name))
-            im.save(
-                self.__picture_file_path(f"orig_{name}")
-            )  # ToDo: Maybe remove in future
-            im = trim(im)
-            im.save(self.__picture_file_path(name))
+            
+            if im.height > MINIMUM_IMAGE_HEIGHT:
+                im.save(
+                    self.__picture_file_path(f"orig_{name}")
+                )  # ToDo: Maybe remove in future
+                im = trim(im)
+                im.save(self.__picture_file_path(name))
         return
 
     def picture_download(self, url: str, name: str) -> None:
