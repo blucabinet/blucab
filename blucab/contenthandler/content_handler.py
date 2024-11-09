@@ -167,7 +167,7 @@ class handler:
             pars = contentParser(movie_ean, item_limit=1)
 
             if len(pars.soups) == 0:
-                print("ContentParser failed!")
+                print(f"ContentParser failed! Movie: {movie.title}, EAN: {movie_ean}, ASIN: {movie.asin}")
                 continue
 
             soup = pars.soups[0]

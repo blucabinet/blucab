@@ -58,6 +58,7 @@ DVD_ITEMS = {
 
 PRODUCT_DESCRIPTION_ITEMS = {
     "Product Description:",
+    "Produktbeschreibung:",
     "Kurzbeschreibung:",
     "Besonderheiten:",
     "Amazon.de:",
