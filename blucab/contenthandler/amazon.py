@@ -56,6 +56,13 @@ DVD_ITEMS = {
     "dvd",
 }
 
+PRODUCT_DESCRIPTION_ITEMS = {
+    "Product Description:",
+    "Kurzbeschreibung:",
+    "Besonderheiten:",
+    "Amazon.de:",
+}
+
 
 class contentParser:
 
@@ -200,6 +207,9 @@ class contentParser:
         try:
             content = soup.find("div", attrs={"id": "productDescription"})
             content_string = content.text.strip()
+
+            for item in PRODUCT_DESCRIPTION_ITEMS:
+                content_string = content_string.replace(item,"").lstrip()
 
         except AttributeError:
             content_string = None

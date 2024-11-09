@@ -1,6 +1,6 @@
 from django.conf import settings
 from main.models import Movie, MovieUserList
-from .amazon import contentParser
+from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS
 from .picture_helper import pictureHelper
 
 import csv
@@ -186,6 +186,9 @@ class handler:
 
             if movie.content == None:
                 movie.content = pars.get_content(soup)
+            else:
+                for item in PRODUCT_DESCRIPTION_ITEMS:
+                    movie.content = movie.content.replace(item,"").lstrip()
 
             if movie.actor == None:
                 movie.actor = pars.get_actors(soup)
