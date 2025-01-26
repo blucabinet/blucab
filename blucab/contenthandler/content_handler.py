@@ -101,6 +101,7 @@ class handler:
                     genre=pars.get_genre(soup),
                     language=pars.get_language(soup),
                     disc_count=pars.get_disc_count(soup),
+                    is_bluray_uhd=pars.is_bluray_uhd(soup),
                     picture_available=pars_picture_available,
                     picture_url_original=pars_picture_url,
                     picture_url_original_hd=pars_picture_url_hd,
@@ -209,6 +210,9 @@ class handler:
                 count = pars.get_disc_count(soup)
                 if count != None:
                     movie.disc_count = count
+
+            if movie.is_bluray_uhd == False:
+                movie.is_bluray_uhd = pars.is_bluray_uhd(soup)
 
             # Picture update
             pars_picture_url = pars.get_image_url(soup)
