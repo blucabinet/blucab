@@ -7,6 +7,7 @@ AMAZON_ASIN = "ASIN"
 AMAZON_STR_FSK = "Alterseinstufung"
 AMAZON_STR_FSK_NO = "Freigegeben ohne Altersbeschränkung"
 AMAZON_STR_REGISSEUR = "Regisseur"
+AMAZON_STR_MEDIAFORMAT = "Medienformat"
 AMAZON_STR_DISKS = "Anzahl Disks"
 AMAZON_STR_ACTOR = "Darsteller"
 AMAZON_STR_SUBTITLE = "Untertitel"
@@ -30,7 +31,11 @@ REMOVE_ITEMS = {
     "Blu-ray",
     "Blu-Ray",
     "[Blu-ray 2D]",
-    "[4k Ultra HD]",
+    "[4K Ultra HD]",
+    "(4K Ultra-HD)",
+    "4K-UHD",
+    "4K UHD",
+    "UHD",
     "[DVD]",
     "(Fanedition)",
     "[Limited Edition]",
@@ -47,7 +52,18 @@ BLURAY_ITEMS = {
     "Blu-ray",
     "Blu-Ray",
     "[Blu-ray 2D]",
-    "[4k Ultra HD]",
+    "[4K Ultra HD]",
+    "(4K Ultra-HD)",
+    "4K-UHD",
+    "4K UHD",
+}
+
+BLURAY_UHD_ITEMS = {
+    "4K Ultra HD",
+    "4K Ultra-HD",
+    "4K-UHD",
+    "4K UHD",
+    "UHD",
 }
 
 DVD_ITEMS = {
@@ -210,7 +226,7 @@ class contentParser:
             content_string = content.text.strip()
 
             for item in PRODUCT_DESCRIPTION_ITEMS:
-                content_string = content_string.replace(item,"").lstrip()
+                content_string = content_string.replace(item, "").lstrip()
 
         except AttributeError:
             content_string = None
@@ -238,6 +254,18 @@ class contentParser:
 
         return None
 
+    def is_bluray_uhd(self, soup) -> bool:
+        title = self.get_title(soup)
+
+        if "4K" in self.get_mediaformat(soup):
+            return True
+
+        for item in BLURAY_UHD_ITEMS:
+            if item in title:
+                return True
+
+        return False
+
     def get_fsk_str(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_FSK)
 
@@ -257,6 +285,9 @@ class contentParser:
 
     def get_regisseur(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_REGISSEUR)
+
+    def get_mediaformat(self, soup) -> str:
+        return self.get_product_information(soup, AMAZON_STR_MEDIAFORMAT)
 
     def get_disc_count(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_DISKS)
