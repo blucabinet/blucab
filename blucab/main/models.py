@@ -37,6 +37,7 @@ class Movie(models.Model):
     season_count = models.IntegerField(default=0)
     episode_count = models.IntegerField(default=0)
     is_series = models.BooleanField(default=False)
+    is_bluray_uhd = models.BooleanField(default=False)
     picture_available = models.BooleanField(default=False)
     picture_url_original = models.CharField(max_length=128, blank=True, null=True)
     picture_url_original_hd = models.CharField(max_length=128, blank=True, null=True)
