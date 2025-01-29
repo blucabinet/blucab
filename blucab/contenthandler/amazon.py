@@ -25,6 +25,8 @@ AMAZON_STR_PICTURE_HD = "data-old-hires"
 FORMAT_BLURAY = "Blu-Ray"
 FORMAT_DVD = "DVD"
 
+UHD_STR = "4K"
+
 REMOVE_ITEMS = {
     "[Blu-ray]",
     "Blu ray",
@@ -59,11 +61,13 @@ BLURAY_ITEMS = {
 }
 
 BLURAY_UHD_ITEMS = {
+    "Blu-ray 4K"
     "4K Ultra HD",
     "4K Ultra-HD",
     "4K-UHD",
     "4K UHD",
     "UHD",
+    "BR4K",
 }
 
 DVD_ITEMS = {
@@ -245,11 +249,11 @@ class contentParser:
         input = self.get_title(soup)
 
         for item in BLURAY_ITEMS:
-            if str(input).find(item) != -1:
+            if item in input:
                 return FORMAT_BLURAY
 
         for item in DVD_ITEMS:
-            if str(input).find(item) != -1:
+            if item in input:
                 return FORMAT_DVD
 
         return None
@@ -257,7 +261,7 @@ class contentParser:
     def is_bluray_uhd(self, soup) -> bool:
         title = self.get_title(soup)
 
-        if "4K" in self.get_mediaformat(soup):
+        if UHD_STR in self.get_mediaformat(soup):
             return True
 
         for item in BLURAY_UHD_ITEMS:
