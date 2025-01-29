@@ -99,6 +99,9 @@ View
                                                     Runtime: {{mu.movie.runtime}} min<br>
                                                     Release: {{mu.movie.release_year}}<br>
                                                     FSK: {{mu.movie.fsk}}<br>
+                                                    {% if mu.movie.is_bluray_uhd %}
+                                                        UHD: Yes<br>
+                                                    {% endif %}
                                                     <br>
                                                     {% if mu.price != 0.00 %}
                                                         Price: {{mu.price}} {{usersettings.price_unit}}<br>
