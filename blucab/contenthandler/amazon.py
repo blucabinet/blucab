@@ -261,14 +261,17 @@ class contentParser:
     def is_bluray_uhd(self, soup) -> bool:
         title = self.get_title(soup)
 
-        if UHD_STR in self.get_mediaformat(soup):
-            return True
-
-        for item in BLURAY_UHD_ITEMS:
-            if item in title:
+        try:
+            if UHD_STR in self.get_mediaformat(soup):
                 return True
 
-        return False
+            for item in BLURAY_UHD_ITEMS:
+                if item in title:
+                    return True
+
+            return False
+        except:
+            return False
 
     def get_fsk_str(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_FSK)
