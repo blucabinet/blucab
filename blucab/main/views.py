@@ -80,3 +80,13 @@ def view(response):
         return render(response, "main/view.html", {"usersettings": usersettings})
     else:
         return render(response, "main/view.html")
+
+def settings(response):
+    user = response.user
+
+    if user.is_authenticated:
+        usersettings = user.user_profile
+        # return render(response, "main/view.html", {"usersettings": usersettings})
+        return render(response, "error/403_user_not_public.html", {})
+    else:
+        return render(response, "main/view.html")

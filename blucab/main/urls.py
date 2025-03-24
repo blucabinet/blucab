@@ -8,4 +8,5 @@ urlpatterns = [
     path("import/", views.csv_import, name="import"),
     path("legal/legal/", views.legal, name="legal"),
     path("legal/privacy/", views.privacy, name="privacy"),
+    path("user/settings/", views.settings, name="settings"),
 ]

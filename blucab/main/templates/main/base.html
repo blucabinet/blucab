@@ -70,7 +70,7 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{{ user.get_username }}</a>
+                      <a class="nav-link" href="/user/settings" tabindex="-1" aria-disabled="false">{{ user.get_username }}</a>
                     </li>
                 {% endif %}
               </ul>
