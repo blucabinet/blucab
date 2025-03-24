@@ -16,6 +16,15 @@ from .serializers import (
     CreateMovieUserSerializer,
 )
 
+from environs import Env
+from dotenv import load_dotenv
+from dotenv import find_dotenv
+
+env = Env()
+load_dotenv(find_dotenv())
+
+ALLOW_REGISTRATION = env.bool("BLUCAB_ALLOW_REGISTER", False)
+
 
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginUserSerializer
@@ -38,6 +47,9 @@ class RegistrationAPIView(generics.GenericAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
+        if not ALLOW_REGISTRATION:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -47,7 +59,8 @@ class RegistrationAPIView(generics.GenericAPIView):
                     user, context=self.get_serializer_context()
                 ).data,
                 "token": AuthToken.objects.create(user)[1],
-            }, status=status.HTTP_201_CREATED
+            },
+            status=status.HTTP_201_CREATED,
         )
 
 
@@ -102,7 +115,8 @@ class MovieUserListApiView(generics.GenericAPIView):
                 "item": MovieUserSerializer(
                     item, context=self.get_serializer_context()
                 ).data,
-            }, status=status.HTTP_201_CREATED
+            },
+            status=status.HTTP_201_CREATED,
         )
 
 
