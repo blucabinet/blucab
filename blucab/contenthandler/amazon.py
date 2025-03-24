@@ -61,7 +61,7 @@ BLURAY_ITEMS = {
 }
 
 BLURAY_UHD_ITEMS = {
-    "Blu-ray 4K"
+    "Blu-ray 4K",
     "4K Ultra HD",
     "4K Ultra-HD",
     "4K-UHD",
@@ -318,7 +318,9 @@ class contentParser:
         rtime = self.get_runtime_str(soup)
 
         try:
-            str_count_hour = rtime.count(AMAZON_STR_HOUR) + rtime.count(AMAZON_STR_HOURS)
+            str_count_hour = rtime.count(AMAZON_STR_HOUR) + rtime.count(
+                AMAZON_STR_HOURS
+            )
             str_count_minutes = rtime.count(AMAZON_STR_MINUTES)
 
             time = self._get_str_numbers(rtime)
