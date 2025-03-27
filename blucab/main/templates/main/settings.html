@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+User Settings
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>User Settings</h1>
+
+{% if user.is_authenticated %}
+    <div>Let's check your settings {{ user.get_username }}!</div>
+    <br>
+    <form method="post" class="form-group">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+
+    <br>
+    <div>Change Password (ToDo)</div>
+    <div>Delete Account (ToDo)</div>
+
+{% else %}
+    <div>Welcome!</div>
+    <a class="nav-link" href="/login">Login</a>
+{% endif %}
+
+{% endblock %}

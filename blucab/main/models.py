@@ -76,7 +76,9 @@ class MovieUserList(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        str = self.user.username + ": (" + self.movie.ean + ") " + self.movie.title_clean
+        str = (
+            self.user.username + ": (" + self.movie.ean + ") " + self.movie.title_clean
+        )
         return str
 
 
@@ -84,18 +86,36 @@ class UserSettings(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="user_profile"
     )
-    price_unit = models.CharField(default="€", max_length=3, blank=True)
-    days_for_new = models.IntegerField(
-        default=30, validators=[MinValueValidator(0), MaxValueValidator(730)]
+    price_unit = models.CharField(
+        default="€", max_length=3, blank=True, verbose_name="Price Unit"
     )
-    view_is_public = models.BooleanField(default=False)
-    show_view_title = models.BooleanField(default=True)
-    show_view_details = models.BooleanField(default=True)
-    show_view_icon_new = models.BooleanField(default=True)
-    show_view_icon_rented = models.BooleanField(default=True)
-    show_view_count_disc = models.BooleanField(default=True)
-    show_view_count_movie = models.BooleanField(default=True)
-    show_view_button_details = models.BooleanField(default=True)
+    days_for_new = models.IntegerField(
+        default=30,
+        validators=[MinValueValidator(0), MaxValueValidator(730)],
+        verbose_name="Days since adding a movie to show the new sign",
+    )
+    view_is_public = models.BooleanField(
+        default=False, verbose_name="The library can be viewed publicly"
+    )
+    show_view_title = models.BooleanField(default=True, verbose_name="Show Movie title")
+    show_view_details = models.BooleanField(
+        default=True, verbose_name="Show Movie details"
+    )
+    show_view_icon_new = models.BooleanField(
+        default=True, verbose_name="Show the new sign"
+    )
+    show_view_icon_rented = models.BooleanField(
+        default=True, verbose_name="Show the rented sign"
+    )
+    show_view_count_disc = models.BooleanField(
+        default=True, verbose_name="Show the number of disks"
+    )
+    show_view_count_movie = models.BooleanField(
+        default=True, verbose_name="Show the number of movies"
+    )
+    show_view_button_details = models.BooleanField(
+        default=True, verbose_name="Show the details button"
+    )
 
     class Meta:
         verbose_name = "User Settings"

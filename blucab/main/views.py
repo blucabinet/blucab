@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import UserSettings, MovieUserList, User
+from .forms import UpdateUserSettings
 
 from contenthandler.content_handler import handler
 
@@ -81,12 +82,24 @@ def view(response):
     else:
         return render(response, "main/view.html")
 
+
 def settings(response):
     user = response.user
 
-    if user.is_authenticated:
-        usersettings = user.user_profile
-        # return render(response, "main/view.html", {"usersettings": usersettings})
-        return render(response, "error/403_user_not_public.html", {})
+    if not user.is_authenticated:
+        return render(response, "error/403.html", {})
+
+    user_settings = UserSettings.objects.get(user=user)
+
+    if response.method == "POST":
+        form = UpdateUserSettings(response.POST)
+
+        if form.is_valid():
+            for field, value in form.cleaned_data.items():
+                print(field)
+                user_settings.__dict__[field] = value
+            user_settings.save()
     else:
-        return render(response, "main/view.html")
+        form = UpdateUserSettings(instance=user_settings)
+
+    return render(response, "main/settings.html", {"form": form})
