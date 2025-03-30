@@ -29,6 +29,8 @@ urlpatterns = [
     path("", include(main_urls)),
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
     path("api/", include(api_urls)),
+    path("user/change_password/", regview.change_password, name="change_password"),
+    path("user/change_password/done/", regview.change_password_done, name="change_password_done"),
 ]
 
 handler400 = "main.views.handler_400"
