@@ -18,19 +18,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
-from register import views as regview
+from register import urls as regview_urls
 from main import urls as main_urls
 from api import urls as api_urls
 
 urlpatterns = [
+    path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
     path("admin/", admin.site.urls),
-    path("register/", regview.register, name="register"),
+    path("api/", include(api_urls)),
     path("", include("django.contrib.auth.urls")),
     path("", include(main_urls)),
-    path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
-    path("api/", include(api_urls)),
-    path("user/change_password/", regview.change_password, name="change_password"),
-    path("user/change_password/done/", regview.change_password_done, name="change_password_done"),
+    path("", include(regview_urls)),
 ]
 
 handler400 = "main.views.handler_400"
