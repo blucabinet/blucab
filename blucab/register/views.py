@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User
 from .forms import RegisterForm, ChangePasswordForm
 
 from environs import Env
@@ -47,3 +48,22 @@ def change_password(response):
 
 def change_password_done(response):
     return render(response, "register/change_password_done.html", {})
+
+
+def delete_user(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return render(request, "error/403.html", {})
+
+    if request.method == "GET":
+        return render(request, "register/delete_user_confirm.html", {})
+    elif request.method == "POST":
+        user_object = User.objects.get(username=user)
+        user_object.delete()
+        update_session_auth_hash(request, user)
+        return redirect("/user/delete/done")
+
+
+def delete_user_done(response):
+    return render(response, "register/delete_user_done.html", {})

@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+
+{% block title %}User deletion{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Are you sure?</h1>
+    <p>Everything assigned to your account {{ user.get_username }} will be deleted permanently!</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure that you want to delete the account?</p>
+        <div>
+          <button type="submit" class="btn btn-danger">Yes, Delete</button>
+          <a href="/user/settings" class="btn btn-success" role="button">Back to Settings</a>
+        </div>
+      </form>
+    
+{% endblock %}
