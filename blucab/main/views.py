@@ -73,6 +73,14 @@ def home(response):
     return render(response, "main/home.html", {})
 
 
+def add_movie(response):
+    user = response.user
+
+    if user.is_authenticated:
+        return render(response, "main/add_movie.html", {})
+    else:
+        return render(response, "main/add_movie.html")
+    
 def view(response):
     user = response.user
 

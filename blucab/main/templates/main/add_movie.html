@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Add Movie
+{% endblock %}
+
+{% block content %}
+<h1>Add a Movie</h1>
+
+{% if user.is_authenticated %}
+    <div>Welcome back {{ user.get_username }}!</div>
+{% else %}
+    <a class="nav-link" href="/login">Login</a>
+{% endif %}
+
+{% endblock %}
