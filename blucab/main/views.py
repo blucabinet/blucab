@@ -1,6 +1,10 @@
 from django.shortcuts import render
+from django.conf import settings
 from .models import UserSettings, MovieUserList, User
 from .forms import UpdateUserSettings
+from django.core.files.storage import FileSystemStorage
+
+import os
 
 from contenthandler.content_handler import handler
 
@@ -50,23 +54,41 @@ def index(response, uname):
 
 
 def csv_import(response):
-    # Import dataset from Flick-Rack
-    test = None
     user = response.user
-    username = user.username
 
     if user.is_authenticated:
+        if response.method == "POST":
+            file = response.FILES.get("myfile", None)
 
-        ch = handler()
+            if not file:
+                return render(
+                    response,
+                    "main/csv_import.html",
+                    {"message": "Please select a file to upload."},
+                )
 
-        file = username + ".csv"
-        ch.csv_importer(filename=file, user=user)
+            myfile = response.FILES["myfile"]
+            file_path = os.path.join(settings.BASE_DIR, "import")
 
-        ch.content_update()
+            filestorage = FileSystemStorage(location=str(file_path))
+            filename = filestorage.save(myfile.name, myfile)
+            uploaded_file_url = filestorage.url(filename)
+
+            ch = handler()
+            ch.csv_importer(filename=filename, user=user)
+            ch.content_update()
+
+            os.remove(os.path.join(settings.BASE_DIR, "import", filename))
+
+            return render(
+                response,
+                "main/csv_import.html",
+                {"uploaded_file_url": uploaded_file_url},
+            )
     else:
         pass
 
-    return render(response, "main/csv_import.html", {"data": test})
+    return render(response, "main/csv_import.html", {})
 
 
 def home(response):

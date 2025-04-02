@@ -4,12 +4,34 @@
 blucab - Import
 {% endblock %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <h1>CSV-Import</h1>
 
 {% if user.is_authenticated %}
-    <div>Welcome back {{ user.get_username }}!</div>
-    <div>{{ data }}</div>
+    <div>This will import a flickrack exported library .csv for {{ user.get_username }}.</div>
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="file" name="myfile">
+        <br>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% else %}
+            <br>
+        {% endif %}
+        <button type="submit" class="btn btn-success">Import</button>
+    </form>
+    <br>
+    <a href="/user/settings" class="btn btn-light" role="button">Back to Settings</a>
+
+    {% if uploaded_file_url %}
+        <br><br>
+        <p>Processed the file: {{ uploaded_file_url }}</p>
+    {% endif %}
+
 {% else %}
     <div>Welcome!</div>
     <a class="nav-link" href="/login">Login</a>
