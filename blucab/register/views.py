@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from .forms import RegisterForm, ChangePasswordForm
 
 from environs import Env
@@ -22,8 +23,13 @@ def register(response):
         form = RegisterForm(response.POST)
         if form.is_valid():
             form.save()
+            new_user = authenticate(
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password1"],
+            )
+            login(response, new_user)
 
-        return redirect("/")
+            return redirect("/user/settings")
     else:
         form = RegisterForm()
 
