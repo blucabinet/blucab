@@ -80,7 +80,8 @@ def add_movie(response):
         return render(response, "main/add_movie.html", {})
     else:
         return render(response, "main/add_movie.html")
-    
+
+
 def view(response):
     user = response.user
 
@@ -91,13 +92,13 @@ def view(response):
         return render(response, "main/view.html")
 
 
-def settings(response):
+def user_settings(response):
     user = response.user
 
     if not user.is_authenticated:
         return render(response, "error/403.html", {})
 
-    user_settings = UserSettings.objects.get(user=user)
+    user_settings_model = UserSettings.objects.get(user=user)
 
     if response.method == "POST":
         form = UpdateUserSettings(response.POST)
@@ -105,9 +106,9 @@ def settings(response):
         if form.is_valid():
             for field, value in form.cleaned_data.items():
                 print(field)
-                user_settings.__dict__[field] = value
-            user_settings.save()
+                user_settings_model.__dict__[field] = value
+            user_settings_model.save()
     else:
-        form = UpdateUserSettings(instance=user_settings)
+        form = UpdateUserSettings(instance=user_settings_model)
 
     return render(response, "main/settings.html", {"form": form})
