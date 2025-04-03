@@ -38,7 +38,7 @@ class pictureHelper:
 
         if self._picture_exists(name):
             im = Image.open(self.__picture_file_path(name))
-            
+
             if im.height > MINIMUM_IMAGE_HEIGHT:
                 im.save(
                     self.__picture_file_path(f"orig_{name}")
@@ -55,7 +55,7 @@ class pictureHelper:
             open(file_path, "wb").write(picture.content)
             print(f"File {file_path} downloaded")
         return
-    
+
     def picture_download_processing(self, url: str, name: str) -> None:
         self.picture_download(url, name)
         self.picture_postprocessing(name)

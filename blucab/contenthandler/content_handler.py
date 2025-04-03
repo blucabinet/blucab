@@ -168,7 +168,9 @@ class handler:
             pars = contentParser(movie_ean, item_limit=1)
 
             if len(pars.soups) == 0:
-                print(f"ContentParser failed! Movie: {movie.title}, EAN: {movie_ean}, ASIN: {movie.asin}")
+                print(
+                    f"ContentParser failed! Movie: {movie.title}, EAN: {movie_ean}, ASIN: {movie.asin}"
+                )
                 continue
 
             soup = pars.soups[0]
@@ -189,7 +191,7 @@ class handler:
                 movie.content = pars.get_content(soup)
             else:
                 for item in PRODUCT_DESCRIPTION_ITEMS:
-                    movie.content = movie.content.replace(item,"").lstrip()
+                    movie.content = movie.content.replace(item, "").lstrip()
 
             if movie.actor == None:
                 movie.actor = pars.get_actors(soup)

@@ -10,11 +10,11 @@ from .views import (
     LoginAPIView,
     RegistrationAPIView,
 )
-    
+
 urlpatterns = [
-    path(r"auth/", include(knox_urls)), # auth/logoutall/, auth/logout/, auth/login/
-    path("login/", LoginAPIView.as_view()), # works better than auth/login/
-    path('register/', RegistrationAPIView.as_view()),
+    path(r"auth/", include(knox_urls)),  # auth/logoutall/, auth/logout/, auth/login/
+    path("login/", LoginAPIView.as_view()),  # works better than auth/login/
+    path("register/", RegistrationAPIView.as_view()),
     path("movie/", MovieListApiView.as_view()),
     path("movie/ean/<str:ean>", MovieEanApiView.as_view()),
     path("movie/id/<int:id>", MovieIdApiView.as_view()),
