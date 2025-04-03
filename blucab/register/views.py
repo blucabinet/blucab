@@ -15,45 +15,45 @@ load_dotenv(find_dotenv())
 ALLOW_REGISTRATION = env.bool("BLUCAB_ALLOW_REGISTER", False)
 
 
-def register(response):
+def register(request):
     if not ALLOW_REGISTRATION:
-        return render(response, "error/403.html", {})
+        return render(request, "error/403.html", {})
 
-    if response.method == "POST":
-        form = RegisterForm(response.POST)
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
             new_user = authenticate(
                 username=form.cleaned_data["username"],
                 password=form.cleaned_data["password1"],
             )
-            login(response, new_user)
+            login(request, new_user)
 
             return redirect("/user/settings")
     else:
         form = RegisterForm()
 
-    return render(response, "register/register.html", {"form": form})
+    return render(request, "register/register.html", {"form": form})
 
 
-def change_password(response):
-    if response.method == "POST":
-        form = ChangePasswordForm(response.user, response.POST)
+def change_password(request):
+    if request.method == "POST":
+        form = ChangePasswordForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(response, user)
-            messages.success(response, "Your password was successfully updated!")
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password was successfully updated!")
             return redirect("/user/change_password/done")
         else:
-            messages.error(response, "Please correct the error below.")
+            messages.error(request, "Please correct the error below.")
     else:
-        form = ChangePasswordForm(response.user)
+        form = ChangePasswordForm(request.user)
 
-    return render(response, "register/change_password.html", {"form": form})
+    return render(request, "register/change_password.html", {"form": form})
 
 
-def change_password_done(response):
-    return render(response, "register/change_password_done.html", {})
+def change_password_done(request):
+    return render(request, "register/change_password_done.html", {})
 
 
 def delete_user(request):
@@ -71,5 +71,5 @@ def delete_user(request):
         return redirect("/user/delete/done")
 
 
-def delete_user_done(response):
-    return render(response, "register/delete_user_done.html", {})
+def delete_user_done(request):
+    return render(request, "register/delete_user_done.html", {})
