@@ -12,18 +12,22 @@ blucab - Import
 {% if user.is_authenticated %}
     <div>This will import a flickrack exported library .csv for {{ user.get_username }}.</div>
     <br>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="file" name="myfile">
-        <br>
-        {% if message %}
-            <p>{{ message }}</p>
-        {% else %}
-            <br>
-        {% endif %}
-        <button type="submit" class="btn btn-success">Import</button>
-    </form>
+    <div class="card" style="max-width: 28rem;">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="file" name="myfile">
+                <br>
+                {% if message %}
+                    <p>{{ message }}</p>
+                {% else %}
+                    <br>
+                {% endif %}
+                <button type="submit" class="btn btn-success">Import</button>
+            </form>
+        </div>
+    </div>
     <br>
     <a href="/user/settings" class="btn btn-light" role="button">Back to Settings</a>
 

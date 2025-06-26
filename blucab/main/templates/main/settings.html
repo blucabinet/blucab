@@ -12,11 +12,16 @@ blucab - User Settings
 {% if user.is_authenticated %}
     <div>Let's check your settings {{ user.get_username }}!</div>
     <br>
-    <form method="post" class="form-group">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Save</button>
-    </form>
+    
+    <div class="card" style="max-width: 28rem;">
+        <div class="card-body">
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
 
     <br>
     <a href="/user/change_password" class="btn btn-outline-success" role="button">Change Password</a>
