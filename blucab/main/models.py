@@ -43,6 +43,7 @@ class Movie(models.Model):
     picture_url_original_hd = models.CharField(max_length=128, blank=True, null=True)
     picture_processed = models.BooleanField(default=False)
     needs_parsing = models.BooleanField(default=True)
+    imdb_id = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         verbose_name = "Movies"
