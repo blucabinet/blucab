@@ -8,45 +8,51 @@ blucab - View
     {% if user.is_authenticated %}
         View of {{ user.get_username }}s cabinet
     {% else %}
-        View of your cabinet
+        Nothing to see here.
     {% endif %}
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row" id="gallery">
-            {% if user.is_authenticated %}
-                {% for mu in user.movieuserlist.all %}
-                    {% if mu.activated %}
-                        <div class="col-sm">
-                                <div class="card" style="width: 10rem;">
-                                {% load static %}
-                                <div class="overlay_div" id="pictureOverlayIcons">
-                                    <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
-                                        {% if mu.movie.picture_available %}
-                                            <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" class="img-fluid" alt="Picture of the cover" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
-                                        {% else %}
-                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" class="img-fluid" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
-                                        {% endif %}
+            {% for mu in movieuserlist %}
+                {% if mu.activated %}
+                    <div class="col-sm">
+                            <div class="card" style="width: 10rem;">
+                            {% load static %}
+                            <div class="overlay_div" id="pictureOverlayIcons">
+                                <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
+                                    {% if mu.movie.picture_available %}
+                                        <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" class="img-fluid" alt="Picture of the cover" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                    {% else %}
+                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" class="img-fluid" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                    {% endif %}
 
-                                        {% if usersettings.show_view_icon_new %}
-                                            {% load days_since %}
-                                            {% if mu.date_added|days_since <= usersettings.days_for_new %}
-                                                <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
-                                            {% endif %}
+                                    {% if usersettings.show_view_icon_new %}
+                                        {% load days_since %}
+                                        {% if mu.date_added|days_since <= usersettings.days_for_new %}
+                                            <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
                                         {% endif %}
-                                        {% if mu.rented %}
-                                            {% if usersettings.show_view_icon_rented %}
-                                                <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
-                                            {% endif %}
+                                    {% endif %}
+                                    {% if mu.rented %}
+                                        {% if usersettings.show_view_icon_rented %}
+                                            <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
                                         {% endif %}
-                                    </span>
-                                </div>
-                                
-                                <div class="card-body" id="e{{mu.id}}Card">
-                                    {% if usersettings.show_view_title %}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            
+                            <div class="card-body" id="e{{mu.id}}Card">
+                                {% if usersettings.show_view_title %}
+                                    <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                {% else %}
+                                    {% if not is_user_view %}
                                         <h5 class="card-title">{{mu.movie.title_clean}}</h5>
                                     {% endif %}
+                                {% endif %}
+
+
+                                {% if is_user_view %}
                                     {% if usersettings.show_view_details %}
                                         <p class="card-text">{{mu.movie.runtime}} min</p>
                                         {% if not mu.movie.disc_count is 1 %}
@@ -65,47 +71,49 @@ blucab - View
                                             Details
                                         </button>
                                     {% endif %}
-                                </div>
+                                {% endif %}
                             </div>
-                            <br>
                         </div>
+                        <br>
+                    </div>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="e{{mu.id}}ModalLong" tabindex="-1" role="dialog" aria-labelledby="e{{mu.id}}ModalLongTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="e{{mu.id}}ModalLongTitle">{{mu.movie.title_clean}}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="card border-light mb-3" style="width: 20rem;">
-                                            {% if mu.movie.picture_available %}
-                                                <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
-                                            {% else %}
-                                                <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
-                                            {% endif %}
-                                            <div class="card-body">
-                                                <p class="card-text">
-                                                    {{mu.movie.format}}
-                                                    {% if mu.movie.is_bluray_uhd %}
-                                                        UHD
-                                                    {% endif %}<br>
-                                                    {{mu.movie.disc_count}} Disks<br>
-                                                    {{mu.movie.movie_count}} Movies<br>
-                                                    {% if not mu.movie.season_count is 0 %}
-                                                        {{mu.movie.season_count}} Seasons<br>
-                                                    {% endif %}
-                                                    {% if not mu.movie.episode_count is 0 %}
-                                                        {{mu.movie.episode_count}} Episodes<br>
-                                                    {% endif %}
-                                                    Runtime: {{mu.movie.runtime}} min<br>
-                                                    Release: {{mu.movie.release_year}}<br>
-                                                    FSK: {{mu.movie.fsk}}<br>
-                                                    {% if mu.movie.is_bluray_uhd %}
-                                                        UHD: Yes<br>
-                                                    {% endif %}
-                                                    <br>
+                    <!-- Modal -->
+                    <div class="modal fade" id="e{{mu.id}}ModalLong" tabindex="-1" role="dialog" aria-labelledby="e{{mu.id}}ModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="e{{mu.id}}ModalLongTitle">{{mu.movie.title_clean}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card border-light mb-3" style="width: 20rem;">
+                                        {% if mu.movie.picture_available %}
+                                            <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                        {% else %}
+                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                {{mu.movie.format}}
+                                                {% if mu.movie.is_bluray_uhd %}
+                                                    UHD
+                                                {% endif %}<br>
+                                                {{mu.movie.disc_count}} Disks<br>
+                                                {{mu.movie.movie_count}} Movies<br>
+                                                {% if not mu.movie.season_count is 0 %}
+                                                    {{mu.movie.season_count}} Seasons<br>
+                                                {% endif %}
+                                                {% if not mu.movie.episode_count is 0 %}
+                                                    {{mu.movie.episode_count}} Episodes<br>
+                                                {% endif %}
+                                                Runtime: {{mu.movie.runtime}} min<br>
+                                                Release: {{mu.movie.release_year}}<br>
+                                                FSK: {{mu.movie.fsk}}<br>
+                                                {% if mu.movie.is_bluray_uhd %}
+                                                    UHD: Yes<br>
+                                                {% endif %}
+                                                <br>
+                                                {% if is_user_view %}
                                                     {% if mu.price != 0.00 %}
                                                         Price: {{mu.price}} {{usersettings.price_unit}}<br>
                                                     {% endif %}
@@ -118,25 +126,26 @@ blucab - View
                                                             Rented<br><br>
                                                         {% endif %}
                                                     {% endif %}
+                                                {% endif %}
 
-                                                    EAN: {{mu.movie.ean}}<br>
-                                                    ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a>
-                                                </p>
-                                            </div>
+                                                EAN: {{mu.movie.ean}}<br>
+                                                ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
+                                                {% if not mu.movie.imdb_id is none %}
+                                                    IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a>
+                                                {% endif %}
+                                            </p>
                                         </div>
-                                        <div>{{mu.movie.content}}</div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
+                                    <div>{{mu.movie.content}}</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <a class="nav-link" href="/login">Login</a>
-            {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

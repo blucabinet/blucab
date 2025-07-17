@@ -34,23 +34,25 @@ def privacy(request):
     return render(request, "legal/privacy.html", {})
 
 
-def index(request, uname):
+def cab_uname(request, uname):
     user_id_query = User.objects.filter(username=uname)
     if len(user_id_query) != 1:
         return render(request, "error/403_user_not_public.html", {})
 
     user_id = user_id_query[0].id
-    view_is_public = UserSettings.objects.all().filter(user=user_id)[0].view_is_public
+    usersettings = UserSettings.objects.all().filter(user=user_id)[0]
+    view_is_public = usersettings.view_is_public
 
     if not view_is_public:
         return render(request, "error/403_user_not_public.html", {})
 
-    ls = MovieUserList.objects.all().filter(user=user_id)
+    mls = MovieUserList.objects.all().filter(user=user_id)
 
-    for movie in ls:
-        print(movie.movie.title_clean)
-
-    return render(request, "main/view.html", {})
+    return render(
+        request,
+        "main/view.html",
+        {"movieuserlist": mls, "usersettings": usersettings, "is_user_view": False},
+    )
 
 
 def csv_import(request):
@@ -109,9 +111,14 @@ def view(request):
 
     if user.is_authenticated:
         usersettings = user.user_profile
-        return render(request, "main/view.html", {"usersettings": usersettings})
+        mls = MovieUserList.objects.all().filter(user=user)
+        return render(
+            request,
+            "main/view.html",
+            {"movieuserlist": mls, "usersettings": usersettings, "is_user_view": True},
+        )
     else:
-        return render(request, "main/view.html")
+        return render(request, "error/403.html", {})
 
 
 def user_settings(request):
