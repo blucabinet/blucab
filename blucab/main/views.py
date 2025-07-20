@@ -103,7 +103,7 @@ def add_movie(request):
     if user.is_authenticated:
         return render(request, "main/add_movie.html", {})
     else:
-        return render(request, "main/add_movie.html")
+        return render(request, "error/403.html", {})
 
 
 def view(request):
