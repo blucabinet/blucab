@@ -5,11 +5,14 @@ blucab - View
 {% endblock %}
 
 {% block contentTitle %}
-    {% if user.is_authenticated %}
-        View of {{ user.get_username }}s cabinet
+    {% if is_user_view %}
+        {% if user.is_authenticated %}
+            View of your cabinet
+        {% endif %}
     {% else %}
-        Nothing to see here.
+        Public view of {{ usersettings.user.get_username }}'s cabinet
     {% endif %}
+
 {% endblock %}
 
 {% block content %}
