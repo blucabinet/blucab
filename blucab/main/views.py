@@ -46,12 +46,12 @@ def cab_uname(request, uname):
     if not view_is_public:
         return render(request, "error/403_user_not_public.html", {})
 
-    mls = MovieUserList.objects.all().filter(user=user_id)
+    movieuserlist = MovieUserList.objects.all().filter(user=user_id)
 
     return render(
         request,
         "main/view.html",
-        {"movieuserlist": mls, "usersettings": usersettings, "is_user_view": False},
+        {"movieuserlist": movieuserlist, "usersettings": usersettings, "is_user_view": False},
     )
 
 
@@ -111,11 +111,11 @@ def view(request):
 
     if user.is_authenticated:
         usersettings = user.user_profile
-        mls = MovieUserList.objects.all().filter(user=user)
+        movieuserlist = MovieUserList.objects.all().filter(user=user)
         return render(
             request,
             "main/view.html",
-            {"movieuserlist": mls, "usersettings": usersettings, "is_user_view": True},
+            {"movieuserlist": movieuserlist, "usersettings": usersettings, "is_user_view": True},
         )
     else:
         return render(request, "error/403.html", {})
