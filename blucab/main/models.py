@@ -117,6 +117,9 @@ class UserSettings(models.Model):
     show_view_button_details = models.BooleanField(
         default=True, verbose_name="Show the details button"
     )
+    show_view_button_share = models.BooleanField(
+        default=True, verbose_name="Show the share button"
+    )
 
     class Meta:
         verbose_name = "User Settings"

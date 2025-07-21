@@ -10,6 +10,7 @@ class UpdateUserSettings(forms.ModelForm):
             "show_view_title",
             "show_view_details",
             "show_view_button_details",
+            "show_view_button_share",
             "show_view_count_disc",
             "show_view_count_movie",
             "show_view_icon_rented",

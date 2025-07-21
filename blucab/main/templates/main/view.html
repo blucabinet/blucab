@@ -8,10 +8,12 @@ blucab - View
     {% if is_user_view %}
         {% if user.is_authenticated %}
             View of your cabinet
-            {% if usersettings.view_is_public %}
-                <a href="/cab/{{ user.get_username }}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="Open public view">🔗 Share</a>
-            {% else %}
-                <a href="/user/settings/" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="Public view is deactivated. Open Settings.">Share</a>
+            {% if usersettings.show_view_button_share %}
+                {% if usersettings.view_is_public %}
+                    <a href="/cab/{{ user.get_username }}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="Open public view">🔗 Share</a>
+                {% else %}
+                    <a href="/user/settings/" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="Public view is deactivated. Open Settings.">Share</a>
+                {% endif %}
             {% endif %}
         {% endif %}
     {% else %}
