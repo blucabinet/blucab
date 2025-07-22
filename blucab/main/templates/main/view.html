@@ -27,7 +27,7 @@ blucab - View
             {% for mu in movieuserlist %}
                 {% if mu.activated %}
                     <div class="col">
-                            <div class="card" style="width: 10rem;">
+                        <div class="card" style="width: 10rem;">
                             {% load static %}
                             <div class="overlay_div" id="pictureOverlayIcons">
                                 <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
@@ -86,7 +86,7 @@ blucab - View
                         </div>
                     </div>
 
-                    <!-- Modal -->
+                    <!-- Modal - Popup with details -->
                     <div class="modal fade" id="e{{mu.id}}ModalLong" tabindex="-1" role="dialog" aria-labelledby="e{{mu.id}}ModalLongTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
