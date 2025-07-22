@@ -70,6 +70,26 @@ def cab_uname(request, uname):
     )
 
 
+def view(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return render(request, "error/403.html", {})
+
+    usersettings = user.user_profile
+    movieuserlist = MovieUserList.objects.all().filter(user=user)
+    return render(
+        request,
+        "main/view.html",
+        {
+            "movieuserlist": movieuserlist,
+            "usersettings": usersettings,
+            "is_user_view": True,
+            "show_card_body": True,
+        },
+    )
+
+
 def csv_import(request):
     user = request.user
 
@@ -122,24 +142,7 @@ def add_movie(request):
 
 
 
-def view(request):
-    user = request.user
 
-    if not user.is_authenticated:
-        return render(request, "error/403.html", {})
-
-    usersettings = user.user_profile
-    movieuserlist = MovieUserList.objects.all().filter(user=user)
-    return render(
-        request,
-        "main/view.html",
-        {
-            "movieuserlist": movieuserlist,
-            "usersettings": usersettings,
-            "is_user_view": True,
-            "show_card_body": True,
-        },
-    )
 
 
 def user_settings(request):
