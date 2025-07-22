@@ -23,7 +23,7 @@ blucab - View
 
 {% block content %}
     <div class="container-fluid">
-        <div class="row gx-3 gy-0" id="gallery">
+        <div class="row gx-3 gy-3" id="gallery">
             {% for mu in movieuserlist %}
                 {% if mu.activated %}
                     <div class="col">
@@ -62,7 +62,6 @@ blucab - View
                                     {% endif %}
                                 {% endif %}
 
-
                                 {% if is_user_view %}
                                     {% if usersettings.show_view_details %}
                                         <p class="card-text">{{mu.movie.runtime}} min</p>
@@ -85,7 +84,6 @@ blucab - View
                                 {% endif %}
                             </div>
                         </div>
-                        <br>
                     </div>
 
                     <!-- Modal -->
