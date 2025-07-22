@@ -109,10 +109,10 @@ class UserSettings(models.Model):
         default=True, verbose_name="Show the rented sign"
     )
     show_view_count_disc = models.BooleanField(
-        default=True, verbose_name="Show the number of disks"
+        default=True, verbose_name="- Show the number of disks"
     )
     show_view_count_movie = models.BooleanField(
-        default=True, verbose_name="Show the number of movies"
+        default=True, verbose_name="- Show the number of movies"
     )
     show_view_button_details = models.BooleanField(
         default=True, verbose_name="Show the details button"
