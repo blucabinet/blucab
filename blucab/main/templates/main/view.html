@@ -51,38 +51,40 @@ blucab - View
                                 </span>
                             </div>
                             
-                            <div class="card-body" id="e{{mu.id}}Card">
-                                {% if is_user_view %}
-                                    {% if usersettings.show_view_title %}
-                                        <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                            {% if show_card_body %}
+                                <div class="card-body" id="e{{mu.id}}Card">
+                                    {% if is_user_view %}
+                                        {% if usersettings.show_view_title %}
+                                            <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if show_view_title %}
+                                            <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                        {% endif %}
                                     {% endif %}
-                                {% else %}
-                                    {% if show_view_title %}
-                                        <h5 class="card-title">{{mu.movie.title_clean}}</h5>
-                                    {% endif %}
-                                {% endif %}
 
-                                {% if is_user_view %}
-                                    {% if usersettings.show_view_details %}
-                                        <p class="card-text">{{mu.movie.runtime}} min</p>
-                                        {% if not mu.movie.disc_count is 1 %}
-                                            {% if usersettings.show_view_count_disc %}
-                                                <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                                    {% if is_user_view %}
+                                        {% if usersettings.show_view_details %}
+                                            <p class="card-text">{{mu.movie.runtime}} min</p>
+                                            {% if not mu.movie.disc_count is 1 %}
+                                                {% if usersettings.show_view_count_disc %}
+                                                    <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if not mu.movie.movie_count is 1 %}
+                                                {% if usersettings.show_view_count_movie %}
+                                                    <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                                                {% endif %}
                                             {% endif %}
                                         {% endif %}
-                                        {% if not mu.movie.movie_count is 1 %}
-                                            {% if usersettings.show_view_count_movie %}
-                                                <p class="card-text">{{mu.movie.movie_count}} Movies</p>
-                                            {% endif %}
+                                        {% if usersettings.show_view_button_details %}
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
+                                                Details
+                                            </button>
                                         {% endif %}
                                     {% endif %}
-                                    {% if usersettings.show_view_button_details %}
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
-                                            Details
-                                        </button>
-                                    {% endif %}
-                                {% endif %}
-                            </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 

@@ -37,7 +37,7 @@ def privacy(request):
 def cab_uname(request, uname):
     user = request.user
     user_id_query = User.objects.filter(username=uname)
-    
+
     if len(user_id_query) != 1:
         return render(request, "error/403_user_not_public.html", {})
 
@@ -52,13 +52,21 @@ def cab_uname(request, uname):
 
     if user.is_authenticated:
         show_view_title = user.user_profile.show_view_title
+        show_card_body = show_view_title
     else:
         show_view_title = True
+        show_card_body = True
 
     return render(
         request,
         "main/view.html",
-        {"movieuserlist": movieuserlist, "usersettings": usersettings, "is_user_view": False, "show_view_title": show_view_title},
+        {
+            "movieuserlist": movieuserlist,
+            "usersettings": usersettings,
+            "is_user_view": False,
+            "show_view_title": show_view_title,
+            "show_card_body": show_card_body,
+        },
     )
 
 
@@ -67,7 +75,7 @@ def csv_import(request):
 
     if not user.is_authenticated:
         return render(request, "error/403.html", {})
-    
+
     if request.method == "POST":
         file = request.FILES.get("myfile", None)
 
@@ -109,7 +117,7 @@ def add_movie(request):
 
     if not user.is_authenticated:
         return render(request, "error/403.html", {})
-        
+
     return render(request, "main/add_movie.html", {})
 
 
@@ -125,7 +133,12 @@ def view(request):
     return render(
         request,
         "main/view.html",
-        {"movieuserlist": movieuserlist, "usersettings": usersettings, "is_user_view": True},
+        {
+            "movieuserlist": movieuserlist,
+            "usersettings": usersettings,
+            "is_user_view": True,
+            "show_card_body": True,
+        },
     )
 
 
