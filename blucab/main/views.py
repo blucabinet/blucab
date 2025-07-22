@@ -141,10 +141,6 @@ def add_movie(request):
     return render(request, "main/add_movie.html", {})
 
 
-
-
-
-
 def user_settings(request):
     user = request.user
 
