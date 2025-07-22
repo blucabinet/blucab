@@ -14,6 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# Process files
+RUN ["chmod", "+x", "./entrypoint.sh"]
+
+
 EXPOSE 8000
 
 # Default command on container startup
@@ -22,4 +26,3 @@ ENTRYPOINT ["./entrypoint.sh"]
 HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
