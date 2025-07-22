@@ -52,10 +52,12 @@ blucab - View
                             </div>
                             
                             <div class="card-body" id="e{{mu.id}}Card">
-                                {% if usersettings.show_view_title %}
-                                    <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                {% if is_user_view %}
+                                    {% if usersettings.show_view_title %}
+                                        <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                    {% endif %}
                                 {% else %}
-                                    {% if not is_user_view %}
+                                    {% if show_view_title %}
                                         <h5 class="card-title">{{mu.movie.title_clean}}</h5>
                                     {% endif %}
                                 {% endif %}

@@ -35,6 +35,7 @@ def privacy(request):
 
 
 def cab_uname(request, uname):
+    user = request.user
     user_id_query = User.objects.filter(username=uname)
     
     if len(user_id_query) != 1:
@@ -49,10 +50,15 @@ def cab_uname(request, uname):
 
     movieuserlist = MovieUserList.objects.all().filter(user=user_id)
 
+    if user.is_authenticated:
+        show_view_title = user.user_profile.show_view_title
+    else:
+        show_view_title = True
+
     return render(
         request,
         "main/view.html",
-        {"movieuserlist": movieuserlist, "usersettings": usersettings, "is_user_view": False},
+        {"movieuserlist": movieuserlist, "usersettings": usersettings, "is_user_view": False, "show_view_title": show_view_title},
     )
 
 
