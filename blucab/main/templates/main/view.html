@@ -149,7 +149,10 @@ blucab - View
                                     </div>
                                     <div>{{mu.movie.content}}</div>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer d-flex {% if is_user_view %}justify-content-between{% else %}justify-content-end{% endif %}">
+                                    {% if is_user_view %}
+                                        <button type="button" class="btn btn-outline-success">Edit</button>
+                                    {% endif %}
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
