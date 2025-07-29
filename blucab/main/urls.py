@@ -11,4 +11,5 @@ urlpatterns = [
     path("legal/privacy/", views.privacy, name="privacy"),
     path("user/import/", views.csv_import, name="import"),
     path("user/settings/", views.user_settings, name="settings"),
+    path("user/movie_settings/<int:movie_id>", views.user_movie_settings, name="user_movie_settings"),
 ]

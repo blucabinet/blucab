@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserSettings
+from .models import UserSettings, MovieUserList
 
 
 class UpdateUserSettings(forms.ModelForm):
@@ -19,3 +19,21 @@ class UpdateUserSettings(forms.ModelForm):
             "price_unit",
         ]
         exclude = ["user"]
+
+
+class UpdateMovieUserList(forms.ModelForm):
+    class Meta:
+        model = MovieUserList
+        fields = [
+            "activated",
+            "rating",
+            "viewed",
+            "rented",
+            "rented_to",
+            "date_added",
+            "price",
+        ]
+        exclude = [
+            "user",
+            "movie",
+        ]

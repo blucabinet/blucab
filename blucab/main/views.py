@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from .models import UserSettings, MovieUserList, User
-from .forms import UpdateUserSettings
+from .forms import UpdateUserSettings, UpdateMovieUserList
 from django.core.files.storage import FileSystemStorage
 
 import os
@@ -161,4 +161,26 @@ def user_settings(request):
         form = UpdateUserSettings(instance=user_settings_model)
 
     return render(request, "main/settings_user.html", {"form": form})
+
+
+def user_movie_settings(request, movie_id):
+    user = request.user
+
+    if not user.is_authenticated:
+        return render(request, "error/403.html", {})
+
+    user_movie_model = MovieUserList.objects.get(user=user, movie=movie_id)
+
+    if request.method == "POST":
+        form = UpdateMovieUserList(request.POST)
+
+        if form.is_valid():
+            for field, value in form.cleaned_data.items():
+                print(field)
+                user_movie_model.__dict__[field] = value
+            user_movie_model.save()
+    else:
+        form = UpdateMovieUserList(instance=user_movie_model)
+
+    return render(request, "main/settings_user_movie.html", {"form": form, "movie": user_movie_model.movie})
 
