@@ -169,7 +169,10 @@ def user_movie_settings(request, movie_id):
     if not user.is_authenticated:
         return render(request, "error/403.html", status=403)
 
-    user_movie_model = MovieUserList.objects.get(user=user, movie=movie_id)
+    try:
+        user_movie_model = MovieUserList.objects.get(user=user, movie=movie_id)
+    except MovieUserList.DoesNotExist:
+        return render(request, "error/404.html", status=404)
 
     if request.method == "POST":
         form = UpdateMovieUserList(request.POST)
