@@ -39,14 +39,14 @@ def cab_uname(request, uname):
     user_id_query = User.objects.filter(username=uname)
 
     if len(user_id_query) != 1:
-        return render(request, "error/403_user_not_public.html", {})
+        return render(request, "error/403_user_not_public.html", status=403)
 
     user_id = user_id_query[0].id
     usersettings = UserSettings.objects.all().filter(user=user_id)[0]
     view_is_public = usersettings.view_is_public
 
     if not view_is_public:
-        return render(request, "error/403_user_not_public.html", {})
+        return render(request, "error/403_user_not_public.html", status=403)
 
     movieuserlist = MovieUserList.objects.all().filter(user=user_id)
 
@@ -74,7 +74,7 @@ def view(request):
     user = request.user
 
     if not user.is_authenticated:
-        return render(request, "error/403.html", {})
+        return render(request, "error/403.html", status=403)
 
     usersettings = user.user_profile
     movieuserlist = MovieUserList.objects.all().filter(user=user)
@@ -94,7 +94,7 @@ def csv_import(request):
     user = request.user
 
     if not user.is_authenticated:
-        return render(request, "error/403.html", {})
+        return render(request, "error/403.html", status=403)
 
     if request.method == "POST":
         file = request.FILES.get("myfile", None)
@@ -136,7 +136,7 @@ def add_movie(request):
     user = request.user
 
     if not user.is_authenticated:
-        return render(request, "error/403.html", {})
+        return render(request, "error/403.html", status=403)
 
     return render(request, "main/add_movie.html", {})
 
@@ -145,7 +145,7 @@ def user_settings(request):
     user = request.user
 
     if not user.is_authenticated:
-        return render(request, "error/403.html", {})
+        return render(request, "error/403.html", status=403)
 
     user_settings_model = UserSettings.objects.get(user=user)
 
@@ -167,7 +167,7 @@ def user_movie_settings(request, movie_id):
     user = request.user
 
     if not user.is_authenticated:
-        return render(request, "error/403.html", {})
+        return render(request, "error/403.html", status=403)
 
     user_movie_model = MovieUserList.objects.get(user=user, movie=movie_id)
 
