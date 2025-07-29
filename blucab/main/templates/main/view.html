@@ -129,7 +129,13 @@ blucab - View
                                                         Price: {{mu.price}} {{usersettings.price_unit}}<br>
                                                     {% endif %}
                                                     Added: {{mu.date_added}}<br>
+                                                    {% if mu.rating != 0 %}
+                                                        Rating: {{mu.rating}}<br>
+                                                    {% endif %}
                                                     <br>
+                                                    {% if mu.viewed %}
+                                                        Already viewed<br>
+                                                    {% endif %}
                                                     {% if mu.rented %}
                                                         {% if mu.rented_to %}
                                                             Rented to {{mu.rented_to}}<br><br>
