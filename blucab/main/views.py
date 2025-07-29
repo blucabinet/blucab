@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from .models import UserSettings, MovieUserList, User
 from .forms import UpdateUserSettings, UpdateMovieUserList
@@ -182,6 +182,7 @@ def user_movie_settings(request, movie_id):
                 print(field)
                 user_movie_model.__dict__[field] = value
             user_movie_model.save()
+            return redirect('/view')
     else:
         form = UpdateMovieUserList(instance=user_movie_model)
 
