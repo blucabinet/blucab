@@ -160,4 +160,5 @@ def user_settings(request):
     else:
         form = UpdateUserSettings(instance=user_settings_model)
 
-    return render(request, "main/settings.html", {"form": form})
+    return render(request, "main/settings_user.html", {"form": form})
+
