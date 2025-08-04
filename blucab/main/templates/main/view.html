@@ -158,7 +158,7 @@ blucab - View
                                 <div class="modal-footer d-flex {% if is_user_view %}justify-content-between{% else %}justify-content-end{% endif %}">
                                     {% if is_user_view %}
                                         {% if user.is_superuser %}
-                                            <a href="/admin/main/movie/{{mu.movie.id}}/change" class="btn btn-outline-warning" role="button">Movie</a>
+                                            <a href="/movie_settings/{{mu.movie.id}}" class="btn btn-outline-warning" role="button">Movie</a>
                                         {% endif %}
                                         <a href="/user/movie_settings/{{mu.movie.id}}" class="btn btn-outline-success" role="button">Edit</a>
                                     {% endif %}

@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+blucab - Movie Settings
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>{{movie.title_clean}}</h1>
+
+{% if user.is_authenticated %}
+    <div>Let's modify the movie!</div>
+    <br>
+    
+    <div class="card" style="max-width: 28rem;">
+        <div class="card-body">
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+    <div>Welcome!</div>
+    <a class="nav-link" href="/login">Login</a>
+{% endif %}
+
+{% endblock %}

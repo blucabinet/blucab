@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .models import UserSettings, MovieUserList, User
-from .forms import UpdateUserSettings, UpdateMovieUserList
+from .models import UserSettings, MovieUserList, User, Movie
+from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
 from django.core.files.storage import FileSystemStorage
 
 import os
@@ -161,6 +161,32 @@ def user_settings(request):
         form = UpdateUserSettings(instance=user_settings_model)
 
     return render(request, "main/settings_user.html", {"form": form})
+
+
+def movie_settings(request, movie_id):
+    user = request.user
+
+    if not user.is_superuser:
+        return render(request, "error/403.html", status=403)
+
+    try:
+        movie_model = Movie.objects.get(id=movie_id)
+    except Movie.DoesNotExist:
+        return render(request, "error/404.html", status=404)
+
+    if request.method == "POST":
+        form = UpdateMovie(request.POST)
+
+        if form.is_valid():
+            for field, value in form.cleaned_data.items():
+                print(field)
+                movie_model.__dict__[field] = value
+            movie_model.save()
+            return redirect('/view')
+    else:
+        form = UpdateMovie(instance=movie_model)
+
+    return render(request, "main/settings_movie.html", {"form": form, "movie": movie_model})
 
 
 def user_movie_settings(request, movie_id):
