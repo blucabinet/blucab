@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import HttpResponse
 from main.models import Movie, MovieUserList
 from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS
 from .picture_helper import pictureHelper
@@ -70,6 +71,39 @@ class handler:
                     )
                     list_item.save()
         return
+    def csv_exporter(self, user) -> HttpResponse:
+        queryset = MovieUserList.objects.filter(user=user)
+        opts_mul = queryset.model._meta
+        opts_ml = Movie.objects.model._meta
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = "attachment;filename=export.csv"
+
+        writer = csv.writer(response)
+        field_names_mul = [field.name for field in opts_mul.fields]
+        field_names_ml = [field.name for field in opts_ml.fields]
+
+        remove_items = {"id", "user", "needs_parsing", "picture_processed", "picture_available"}
+        for item in remove_items:
+            try:
+                field_names_mul.remove(item)
+            except:
+                pass
+            try:
+                field_names_ml.remove(item)
+            except:
+                pass
+
+        # Write the csv header
+        writer.writerow(field_names_mul + field_names_ml)
+
+        for obj in queryset:
+            row_mul = [getattr(obj, field) for field in field_names_mul]
+            row_ml = [getattr(obj.movie, field) for field in field_names_ml]
+
+            writer.writerow(row_mul + row_ml)
+
+        return response
 
     def add_new_movie(self, ean: str) -> bool:
         pars = contentParser(ean, item_limit=1)

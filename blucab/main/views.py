@@ -128,6 +128,18 @@ def csv_import(request):
     return render(request, "main/csv_import.html", {})
 
 
+def csv_export(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return render(request, "error/403.html", status=403)
+
+    ch = handler()
+    data = ch.csv_exporter(user=user)
+
+    return HttpResponse(data, content_type="text/csv")
+
+
 def home(request):
     return render(request, "main/home.html", {})
 
