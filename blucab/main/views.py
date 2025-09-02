@@ -3,6 +3,7 @@ from django.conf import settings
 from .models import UserSettings, MovieUserList, User, Movie
 from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
 from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse, HttpResponse
 
 import os
 
