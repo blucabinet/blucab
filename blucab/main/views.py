@@ -114,10 +114,14 @@ def csv_import(request):
         uploaded_file_url = filestorage.url(filename)
 
         ch = handler()
-        ch.csv_importer(filename=filename, user=user)
-        ch.content_update()
+        success = ch.csv_importer(filename=filename, user=user)
 
-        os.remove(os.path.join(settings.BASE_DIR, "import", filename))
+        if success:
+            ch.content_update()
+
+            os.remove(os.path.join(settings.BASE_DIR, "import", filename))
+        else:
+            uploaded_file_url = "Error. Unknown CSV format."
 
         return render(
             request,

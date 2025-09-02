@@ -11,6 +11,9 @@ import random
 
 CSV_ENCODING = "ISO-8859-1"
 
+IDENTIFIER_FLICKRACK = ['Position', 'EAN', 'ASIN', 'Titel', 'Titel ohne Zusatz', 'Format', 'Release', 'Laufzeit', 'FSK', 'Inhalt', 'Schauspieler', 'Regisseur/e', 'Studio', 'Bewertung']
+IDENTIFIER_BLUCAB = ['movie', 'activated', 'rating', 'viewed', 'rented', 'rented_to', 'date_added', 'price', 'ean', 'asin', 'title', 'title_clean', 'format', 'release_year', 'runtime', 'fsk', 'fsk_nbr', 'content', 'actor', 'regisseur', 'studio', 'genre', 'language', 'disc_count', 'movie_count', 'season_count', 'episode_count', 'is_series', 'is_bluray_uhd', 'picture_url_original', 'picture_url_original_hd', 'imdb_id']
+
 ph = pictureHelper()
 
 
@@ -31,46 +34,53 @@ class handler:
         else:
             return str(input)
 
-    def csv_importer(self, filename: str, user) -> None:
+    def csv_importer(self, filename: str, user) -> bool:
         with open(
             os.path.join(settings.BASE_DIR, "import", filename), encoding=CSV_ENCODING
         ) as csv_file:
             reader = csv.reader(csv_file, delimiter=",")
-            next(reader, None)  # Skip CSV header
-            for row in reader:
-                csv_ean = row[1]
-                csv_rating = self._check_int_string(row[13])
+            header = next(reader, None)
+            
+            if header == IDENTIFIER_FLICKRACK:
+                for row in reader:
+                    csv_ean = row[1]
+                    csv_rating = self._check_int_string(row[13])
+                    
+                    if not Movie.objects.filter(ean=csv_ean).exists():
+                        m = Movie(
+                            ean=csv_ean,
+                            asin=self._check_string(row[2]),
+                            title=self._check_string(row[3]),
+                            title_clean=self._check_string(row[4]),
+                            format=self._check_string(row[5]),
+                            release_year=self._check_int_string(row[6]),
+                            runtime=self._check_int_string(row[7]),
+                            fsk=self._check_string(row[8]),
+                            fsk_nbr=None,
+                            content=self._check_string(row[9]),
+                            actor=self._check_string(row[10]),
+                            regisseur=self._check_string(row[11]),
+                            studio=self._check_string(row[12]),
+                            needs_parsing=True,
+                        )
 
-                if not Movie.objects.filter(ean=csv_ean).exists():
-                    m = Movie(
-                        ean=csv_ean,
-                        asin=self._check_string(row[2]),
-                        title=self._check_string(row[3]),
-                        title_clean=self._check_string(row[4]),
-                        format=self._check_string(row[5]),
-                        release_year=self._check_int_string(row[6]),
-                        runtime=self._check_int_string(row[7]),
-                        fsk=self._check_string(row[8]),
-                        fsk_nbr=None,
-                        content=self._check_string(row[9]),
-                        actor=self._check_string(row[10]),
-                        regisseur=self._check_string(row[11]),
-                        studio=self._check_string(row[12]),
-                        needs_parsing=True,
-                    )
+                        m.save()
 
-                    m.save()
+                    db_movie = Movie.objects.get(ean=csv_ean)
 
-                db_movie = Movie.objects.get(ean=csv_ean)
+                    if not MovieUserList.objects.filter(user=user, movie=db_movie).exists():
+                        list_item = MovieUserList(
+                            user=user,
+                            movie=db_movie,
+                            rating=csv_rating,
+                        )
+                        list_item.save()
 
-                if not MovieUserList.objects.filter(user=user, movie=db_movie).exists():
-                    list_item = MovieUserList(
-                        user=user,
-                        movie=db_movie,
-                        rating=csv_rating,
-                    )
-                    list_item.save()
-        return
+                    return True
+            else:
+                #CSV not detected
+                return False
+
     def csv_exporter(self, user) -> HttpResponse:
         queryset = MovieUserList.objects.filter(user=user)
         opts_mul = queryset.model._meta
