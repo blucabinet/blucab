@@ -76,7 +76,7 @@ class handler:
                         )
                         list_item.save()
 
-                    return True
+                return True
             else:
                 #CSV not detected
                 return False
