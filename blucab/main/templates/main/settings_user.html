@@ -24,13 +24,22 @@ blucab - User Settings
     </div>
 
     <br>
-    <a href="/user/change_password" class="btn btn-outline-success" role="button">Change Password</a>
-    <br><br>
-    <a href="/user/import" class="btn btn-outline-success" role="button">Import Movies</a>
-    <br><br>
-    <a href="/user/export" class="btn btn-outline-success" role="button">Export your Movies in blucab format</a>
-    <br><br>
-    <a href="/user/delete/" class="btn btn-outline-danger" role="button">Delete Account</a>
+    <div class="card" style="max-width: 28rem;">
+        <div class="card-body">
+            <a href="/user/import" class="btn btn-outline-success" role="button">Import Movies</a>
+            <br><br>
+            <a href="/user/export" class="btn btn-outline-success" role="button">Export your Movies in blucab format</a>
+        </div>
+    </div>
+
+    <br>
+    <div class="card" style="max-width: 28rem;">
+        <div class="card-body">
+            <a href="/user/change_password" class="btn btn-outline-success" role="button">Change Password</a>
+            <br><br>
+            <a href="/user/delete/" class="btn btn-outline-danger" role="button">Delete Account</a>
+        </div>
+    </div>
 
 {% else %}
     <div>Welcome!</div>
