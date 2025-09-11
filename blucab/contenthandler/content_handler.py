@@ -165,6 +165,7 @@ class handler:
             else:
                 # CSV Format not known
                 return False
+        return False
 
     def csv_exporter(self, user) -> HttpResponse:
         queryset = MovieUserList.objects.filter(user=user)
