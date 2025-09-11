@@ -43,13 +43,16 @@ def cab_uname(request, uname):
         return render(request, "error/403_user_not_public.html", status=403)
 
     user_id = user_id_query[0].id
-    usersettings = UserSettings.objects.all().filter(user=user_id)[0]
+    usersettings = UserSettings.objects.filter(user=user_id)[0]
     view_is_public = usersettings.view_is_public
 
     if not view_is_public:
         return render(request, "error/403_user_not_public.html", status=403)
 
-    movieuserlist = MovieUserList.objects.all().filter(user=user_id)
+    movieuserlist = MovieUserList.objects.filter(user=user_id)
+    count_dvd = MovieUserList.objects.filter(user=user, movie__format="DVD").count()
+    count_bd = MovieUserList.objects.filter(user=user, movie__format="Blu-Ray").count()
+    count_total = movieuserlist.count()
 
     if user.is_authenticated:
         show_view_title = user.user_profile.show_view_title
@@ -67,6 +70,9 @@ def cab_uname(request, uname):
             "is_user_view": False,
             "show_view_title": show_view_title,
             "show_card_body": show_card_body,
+            "count_dvd": count_dvd,
+            "count_bd": count_bd,
+            "count_total": count_total,
         },
     )
 
@@ -78,7 +84,11 @@ def view(request):
         return render(request, "error/403.html", status=403)
 
     usersettings = user.user_profile
-    movieuserlist = MovieUserList.objects.all().filter(user=user)
+    movieuserlist = MovieUserList.objects.filter(user=user)
+    count_dvd = MovieUserList.objects.filter(user=user, movie__format="DVD").count()
+    count_bd = MovieUserList.objects.filter(user=user, movie__format="Blu-Ray").count()
+    count_total = movieuserlist.count()
+
     return render(
         request,
         "main/view.html",
@@ -87,6 +97,9 @@ def view(request):
             "usersettings": usersettings,
             "is_user_view": True,
             "show_card_body": True,
+            "count_dvd": count_dvd,
+            "count_bd": count_bd,
+            "count_total": count_total,
         },
     )
 
