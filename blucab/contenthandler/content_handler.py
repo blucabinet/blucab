@@ -8,6 +8,7 @@ import csv
 import os
 import time
 import random
+import re
 
 CSV_ENCODING_UTF8 = "utf-8"
 CSV_ENCODING_FLICKRACK = "ISO-8859-1"
@@ -71,7 +72,7 @@ class handler:
                                 release_year=self._check_int_string(row[6]),
                                 runtime=self._check_int_string(row[7]),
                                 fsk=self._check_string(row[8]),
-                                fsk_nbr=None,
+                                fsk_nbr=re.findall(r"\b\d+\b", row[8])[0],
                                 content=self._check_string(row[9]),
                                 actor=self._check_string(row[10]),
                                 regisseur=self._check_string(row[11]),
