@@ -14,17 +14,20 @@ blucab - Import
     <br>
     <div class="card" style="max-width: 28rem;">
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" id="importForm" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="file" name="myfile">
+                <input id="fileBtn" type="file" name="myfile">
                 <br>
                 {% if message %}
                     <p>{{ message }}</p>
                 {% else %}
                     <br>
                 {% endif %}
-                <button type="submit" class="btn btn-success">Import</button>
+                <button id="submitBtn" type="submit" class="btn btn-success">
+                    <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    <span id="btnText">Import</span>
+                </button>
             </form>
         </div>
     </div>
@@ -35,6 +38,19 @@ blucab - Import
         <br><br>
         <p>Processed the file: {{ uploaded_file_url }}</p>
     {% endif %}
+
+    <script>
+        const form = document.getElementById("importForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const spinner = document.getElementById("spinner");
+
+        form.addEventListener("submit", () => {
+            submitBtn.disabled = true;
+            btnText.textContent = "Importing...";
+            spinner.classList.remove("d-none");
+        });
+    </script>
 
 {% else %}
     <div>Welcome!</div>
