@@ -14,6 +14,9 @@ blucab - User Settings
     <br>
     
     <div class="card" style="max-width: 28rem;">
+        <div class="card-header">
+            General Settings
+        </div>
         <div class="card-body">
             <form method="post" class="form-group">
                 {% csrf_token %}
@@ -25,15 +28,21 @@ blucab - User Settings
 
     <br>
     <div class="card" style="max-width: 28rem;">
+        <div class="card-header">
+            Import/Export
+        </div>
         <div class="card-body">
             <a href="/user/import" class="btn btn-outline-success" role="button">Import Movies</a>
             <br><br>
-            <a href="/user/export" class="btn btn-outline-success" role="button">Export your Movies in blucab format</a>
+            <a href="/user/export" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="Export your Movies in blucab format">Export</a>
         </div>
     </div>
 
     <br>
     <div class="card" style="max-width: 28rem;">
+        <div class="card-header">
+            Account Settings
+        </div>
         <div class="card-body">
             <a href="/user/change_password" class="btn btn-outline-success" role="button">Change Password</a>
             <br><br>
