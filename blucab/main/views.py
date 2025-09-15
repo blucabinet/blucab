@@ -132,11 +132,11 @@ def csv_import(request):
 
         if success:
             ch.content_update()
-
-            os.remove(os.path.join(settings.BASE_DIR, "import", filename))
         else:
             uploaded_file_url = "Error. Unknown CSV format."
 
+        os.remove(os.path.join(settings.BASE_DIR, "import", filename))
+        
         return render(
             request,
             "main/csv_import.html",
