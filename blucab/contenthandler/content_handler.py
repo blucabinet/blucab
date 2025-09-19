@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponse
 from main.models import Movie, MovieUserList
-from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS
+from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS, AMAZON_STR_FSK_NO
 from .picture_helper import pictureHelper
 
 import csv
@@ -61,6 +61,15 @@ class handler:
                     for row in reader:
                         csv_ean = row[1]
                         csv_rating = self._check_int_string(row[13])
+                        csv_fsk_nbr = row[8]
+                        
+                        try:
+                            fsk_nbr = re.findall(r"\b\d+\b", csv_fsk_nbr)[0]
+                        except:
+                            if csv_fsk_nbr == AMAZON_STR_FSK_NO:
+                                fsk_nbr = 0
+                            else:
+                                fsk_nbr = None
 
                         if not Movie.objects.filter(ean=csv_ean).exists():
                             m = Movie(
@@ -72,7 +81,7 @@ class handler:
                                 release_year=self._check_int_string(row[6]),
                                 runtime=self._check_int_string(row[7]),
                                 fsk=self._check_string(row[8]),
-                                fsk_nbr=re.findall(r"\b\d+\b", row[8])[0],
+                                fsk_nbr=fsk_nbr,
                                 content=self._check_string(row[9]),
                                 actor=self._check_string(row[10]),
                                 regisseur=self._check_string(row[11]),
