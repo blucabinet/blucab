@@ -131,7 +131,9 @@ def csv_import(request):
         success = ch.csv_importer(filename=filename, user=user)
 
         if success:
-            ch.content_update()
+            pass
+            #Add to a scheduler TBD
+            #ch.content_update()
         else:
             uploaded_file_url = "Error. Unknown CSV format."
 
