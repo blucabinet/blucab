@@ -14,4 +14,6 @@ urlpatterns = [
     path("user/settings/", views.user_settings, name="settings"),
     path("user/movie_settings/<int:movie_id>", views.user_movie_settings, name="user_movie_settings"),
     path("movie_settings/<int:movie_id>", views.movie_settings, name="movie_settings"),
+    path('scan/', views.scan_barcode, name='scan'),
+    path('submit-barcode/', views.submit_barcode, name='submit_barcode'),
 ]

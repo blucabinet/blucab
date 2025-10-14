@@ -253,3 +253,13 @@ def user_movie_settings(request, movie_id):
     )
 
 
+def scan_barcode(request):
+    return render(request, "main/add_movie.html")
+
+
+def submit_barcode(request):
+    if request.method == "POST":
+        ean = request.POST.get("barcode")
+        # Process barcode here (e.g., lookup in DB, store, etc.)
+        return JsonResponse({"status": "success", "barcode": ean})
+    return JsonResponse({"status": "error", "message": "Only POST allowed."})

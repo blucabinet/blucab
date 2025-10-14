@@ -9,6 +9,124 @@ blucab - Add Movie
 
 {% if user.is_authenticated %}
     <div>Seems you got something new {{ user.get_username }}!</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.js"></script>
+    <style>
+        #scanner-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        #scanner video,
+        #scanner canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+    </style>
+    
+    <body>
+        <div id="scanner-container">
+            <div id="scanner"></div>
+        </div>
+        <div id="result"></div>
+
+        <script>
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#scanner'),
+                    constraints: {
+                        facingMode: "environment", // Rear camera on mobile
+                        //width: 1920
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                    },
+                    area: { // defines rectangle of the detection/localization area
+                        top: "0%",    // top offset
+                        right: "0%",  // right offset
+                        left: "0%",   // left offset
+                        bottom: "0%"  // bottom offset
+                    },
+                    singleChannel: false // true: only the red color-channel is read
+                },
+                decoder: {
+                    readers: ["ean_reader"],//, "ean_8_reader", "code_128_reader"],
+                    debug: {
+                        drawBoundingBox: true,
+                        showFrequency: false,
+                        drawScanline: true,
+                        showPattern: false
+                    }
+                },
+                locate: true,
+                locator: {
+                    patchSize: "large",
+                    halfSample: false
+                ,}
+            }, function(err) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                Quagga.start();
+            });
+
+            let lastScans = [];
+            const SCAN_BUFFER_SIZE = 5;
+            const REQUIRED_IDENTICAL_MATCHES = 3;
+
+            Quagga.onDetected(data => {
+                const code = data.codeResult.code;
+                document.getElementById("result").innerText = "Detected EAN: " + code;
+
+                // Stop after first read
+                Quagga.stop();
+
+                // Submit the code to the server
+                fetch('/submit-barcode/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: new URLSearchParams({ barcode: code })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("Barcode submitted: " + data.barcode);
+                    }
+                });
+            });
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        </script>
+    </body>
 {% else %}
     <a class="nav-link" href="/login">Login</a>
 {% endif %}
