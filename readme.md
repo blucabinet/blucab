@@ -27,6 +27,12 @@ General plan of this project:
 The project is based around Movie information in German only right now.
 Disk identification is based on the European Article Number (EAN). 
 
+
+## Preview
+
+![Movie View](./Documentation/MovieView.png "Movie View")
+
+
 ## Usage (Not updated for a long time!)
 
 This service is meant to be be self-hosted. To run it a docker-based and a manual way are available.
