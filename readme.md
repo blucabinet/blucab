@@ -32,6 +32,7 @@ Disk identification is based on the European Article Number (EAN).
 
 ![Movie View](./Documentation/MovieView.png "Movie View")
 
+![Movie Detail View](./Documentation/MovieViewDetail.png "Movie Detail View")
 
 ## Usage (Not updated for a long time!)
 
