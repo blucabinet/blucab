@@ -4,6 +4,7 @@ from .models import UserSettings, MovieUserList, User, Movie
 from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse, HttpResponse
+from django.utils import timezone
 
 import os
 
@@ -150,12 +151,16 @@ def csv_import(request):
 
 def csv_export(request):
     user = request.user
+    user_settings_model = UserSettings.objects.get(user=user)
 
     if not user.is_authenticated:
         return render(request, "error/403.html", status=403)
 
     ch = handler()
     data = ch.csv_exporter(user=user)
+
+    user_settings_model.last_export = timezone.now()
+    user_settings_model.save()
 
     return HttpResponse(data, content_type="text/csv")
 
@@ -192,7 +197,14 @@ def user_settings(request):
     else:
         form = UpdateUserSettings(instance=user_settings_model)
 
-    return render(request, "main/settings_user.html", {"form": form})
+    return render(
+        request,
+        "main/settings_user.html",
+        {
+            "form": form,
+            "usersettings": user_settings_model,
+        },
+    )
 
 
 def movie_settings(request, movie_id):
@@ -251,5 +263,3 @@ def user_movie_settings(request, movie_id):
         "main/settings_user_movie.html",
         {"form": form, "movie": user_movie_model.movie},
     )
-
-
