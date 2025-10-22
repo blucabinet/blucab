@@ -120,6 +120,9 @@ class UserSettings(models.Model):
     show_view_button_share = models.BooleanField(
         default=True, verbose_name="Show the share button"
     )
+    last_export = models.DateTimeField(
+        blank=True, null=True, verbose_name="Last time an export was executed"
+    )
 
     class Meta:
         verbose_name = "User Settings"
