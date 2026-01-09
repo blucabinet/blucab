@@ -16,8 +16,8 @@ Some planned features are hidden within the GitHub Issue-Tracker.
 General plan of this project:
 
 - Create a solution to manage your DVD and Blu-Ray library (Vinyls as well in the future? 🤔)
-- Be a replacement for the sunset flickrack.com (Do a .json export as long as you can! 😉)
-  - A importer for the flickrack .json is working fine already
+- Be a replacement for the sunset flickrack.com (Do a FlickRack .csv export as long as you can! "Mein Account -> Export" 😉)
+  - A importer for the flickrack .csv is working fine already
 - Be stable and self-hostable at some point (there are unresolved issues)
   - Get releases build automatically and pushed to Docker-Hub or similar
   - Host a webpage for everyone? (Funding?, Legal aspects due to user-data?)
