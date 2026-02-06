@@ -15,3 +15,8 @@ services:
       - DEBUG=False
       - SECRET_KEY="django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
       - DJANGO_ALLOWED_HOSTS=".localhost 127.0.0.1"
+      # Superuser settings only for the first run and initial database initialization, then delete these entries or comment them out!
+      # Select your own unique password!
+      #- DJANGO_SUPERUSER_USERNAME=admin
+      #- DJANGO_SUPERUSER_PASSWORD=hululu
+      #- DJANGO_SUPERUSER_EMAIL=example@example.com
