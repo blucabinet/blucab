@@ -51,7 +51,7 @@ A environment-file _.env.dev_ can be derived from the _.env.dev.example_ and inc
 For a productive instance make sure:
 
 - DEBUG is set to False
-- SECRET_KEY is a long random unique string
+- SECRET_KEY is a long random unique string with at least 50 characters with a minimum of 5 unique ones
 
 As mentioned in the example file the "DJANGO_SUPERUSER\_" variables are only needed for the initial setup of the database and can be removed from the _.env.dev_ after the first executions. Note this assumes your database is persistent.
 
