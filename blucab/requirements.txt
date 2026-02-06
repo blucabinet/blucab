@@ -1,17 +1,17 @@
 # https://versionlog.com/django/
 Django==5.2
-django-filter==25.1
-django-crispy-forms==2.3
-djangorestframework==3.15.2
+django-filter==25.2
+django-crispy-forms==2.5
+djangorestframework==3.16.1
 django-rest-knox==5.0.2
 
-crispy-bootstrap5==2024.10
+crispy-bootstrap5==2025.6
 
-markdown==3.7
-environs==14.1.1
+markdown==3.10.1
+environs==14.5.0
 
-beautifulsoup4==4.13.3
-requests==2.32.3
-lxml==5.3.1
+beautifulsoup4==4.14.3
+requests==2.32.5
+lxml==6.0.2
 
-pillow==11.1.0
+pillow==12.1.0
