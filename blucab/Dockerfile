@@ -1,5 +1,5 @@
 # Base image: Debian with current python 3 version installed
-FROM python:3
+FROM python:3.12
 
 WORKDIR /app
 
