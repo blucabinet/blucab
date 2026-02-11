@@ -6,11 +6,8 @@ from django.contrib.auth import authenticate, login
 from .forms import RegisterForm, ChangePasswordForm
 
 from environs import Env
-from dotenv import load_dotenv
-from dotenv import find_dotenv
-
 env = Env()
-load_dotenv(find_dotenv())
+env.read_env()
 
 ALLOW_REGISTRATION = env.bool("BLUCAB_ALLOW_REGISTER", False)
 
