@@ -7,9 +7,15 @@ from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
 import os
+from environs import Env
 
 from contenthandler.content_handler import handler
 
+
+env = Env()
+env.read_env()
+
+DEBUG = env.bool("DEBUG", False)
 
 # Create your views here.
 def handler_400(request, exception):
@@ -166,8 +172,10 @@ def csv_export(request):
 
 
 def home(request):
-    return render(request, "main/home.html", {})
-
+    if DEBUG:
+        return render(request, "main/home.html", {"alert_text": "DEBUG mode is activated! Not for production usage!", "alert_type": "alert-danger"})
+    else:
+        return render(request, "main/home.html", {})
 
 def add_movie(request):
     user = request.user
