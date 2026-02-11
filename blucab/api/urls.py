@@ -11,13 +11,22 @@ from .views import (
     RegistrationAPIView,
 )
 
-urlpatterns = [
-    path(r"auth/", include(knox_urls)),  # auth/logoutall/, auth/logout/, auth/login/
-    path("login/", LoginAPIView.as_view()),  # works better than auth/login/
-    path("register/", RegistrationAPIView.as_view()),
-    path("movie/", MovieListApiView.as_view()),
-    path("movie/ean/<str:ean>", MovieEanApiView.as_view()),
-    path("movie/id/<int:id>", MovieIdApiView.as_view()),
-    path("movie/user/", MovieUserListApiView.as_view()),
-    path("user/settings/", UserSettingsListApiView.as_view()),
-]
+from environs import Env
+env = Env()
+env.read_env()
+
+ALLOW_API = env.bool("BLUCAB_ALLOW_API", False)
+
+urlpatterns = []
+
+if ALLOW_API:
+    urlpatterns = [
+        path(r"auth/", include(knox_urls)),  # auth/logoutall/, auth/logout/, auth/login/
+        path("login/", LoginAPIView.as_view()),  # works better than auth/login/
+        path("register/", RegistrationAPIView.as_view()),
+        path("movie/", MovieListApiView.as_view()),
+        path("movie/ean/<str:ean>", MovieEanApiView.as_view()),
+        path("movie/id/<int:id>", MovieIdApiView.as_view()),
+        path("movie/user/", MovieUserListApiView.as_view()),
+        path("user/settings/", UserSettingsListApiView.as_view()),
+    ]
