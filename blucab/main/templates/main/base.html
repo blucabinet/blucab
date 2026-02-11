@@ -108,6 +108,12 @@
             </div>
           </div>
         </nav>
+        
+        {% if alert_text %}
+          <div class="alert text-center {{ alert_type|default:'alert-info' }}" role="alert">
+            {{ alert_text }}
+          </div>
+        {% endif %}
 
         <div id="content", name="content", class="main">
             <div class="row justify-content-center">
