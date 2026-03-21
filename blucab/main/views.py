@@ -43,7 +43,7 @@ def privacy(request):
 
 
 def cab_uname(request, uname):
-    user = request.user
+    request_user = request.user
     user_id_query = User.objects.filter(username=uname)
 
     if len(user_id_query) != 1:
@@ -57,12 +57,12 @@ def cab_uname(request, uname):
         return render(request, "error/403_user_not_public.html", status=403)
 
     movieuserlist = MovieUserList.objects.filter(user=user_id)
-    count_dvd = MovieUserList.objects.filter(user=user, movie__format="DVD").count()
-    count_bd = MovieUserList.objects.filter(user=user, movie__format="Blu-Ray").count()
+    count_dvd = MovieUserList.objects.filter(user=user_id, movie__format="DVD").count()
+    count_bd = MovieUserList.objects.filter(user=user_id, movie__format="Blu-Ray").count()
     count_total = movieuserlist.count()
 
-    if user.is_authenticated:
-        show_view_title = user.user_profile.show_view_title
+    if request_user.is_authenticated:
+        show_view_title = request_user.user_profile.show_view_title
         show_card_body = show_view_title
     else:
         show_view_title = True
