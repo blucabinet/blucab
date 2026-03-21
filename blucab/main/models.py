@@ -67,6 +67,7 @@ class MovieUserList(models.Model):
     rented_to = models.CharField(max_length=100, blank=True)
     date_added = models.DateField(default=timezone.now)
     price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
+    archived = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (

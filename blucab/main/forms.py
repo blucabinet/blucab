@@ -60,6 +60,7 @@ class UpdateMovieUserList(forms.ModelForm):
         model = MovieUserList
         fields = [
             "activated",
+            "archived",
             "rating",
             "viewed",
             "rented",

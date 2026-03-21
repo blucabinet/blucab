@@ -136,15 +136,18 @@ blucab - View
                                                     {% if mu.viewed %}
                                                         Already viewed<br>
                                                     {% endif %}
+                                                    {% if mu.archived %}
+                                                        Movie is archived<br>
+                                                    {% endif %}
                                                     {% if mu.rented %}
                                                         {% if mu.rented_to %}
-                                                            Rented to {{mu.rented_to}}<br><br>
+                                                            Rented to {{mu.rented_to}}<br>
                                                         {% else %}
-                                                            Rented<br><br>
+                                                            Rented<br>
                                                         {% endif %}
                                                     {% endif %}
+                                                    <br>
                                                 {% endif %}
-
                                                 EAN: {{mu.movie.ean}}<br>
                                                 ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
                                                 {% if not mu.movie.imdb_id is none %}
