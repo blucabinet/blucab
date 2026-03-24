@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-24 21:00+0100\n"
+"POT-Creation-Date: 2026-03-24 21:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,9 @@ msgid "View of your cabinet"
 msgstr "Ansicht deines Schranks"
 
 #: main/templates/main/view.html:21
-msgid "Public view of"
-msgstr "Öffentliche Ansicht von"
+#, python-format
+msgid "Public view of %(username)s's cabinet"
+msgstr "Öffentliche Ansicht von %(username)ss Schrank"
 
 #: main/views.py:177
 msgid "DEBUG mode is activated! Not for production usage!"

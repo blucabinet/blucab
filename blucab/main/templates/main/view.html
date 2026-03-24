@@ -18,7 +18,9 @@
             {% endif %}
         {% endif %}
     {% else %}
-        {% trans "Public view of" %} {{ usersettings.user.get_username }}'s cabinet
+        {% blocktrans with username=usersettings.user.get_username trimmed %}
+            Public view of {{ username }}'s cabinet
+        {% endblocktrans %}
     {% endif %}
 {% endblock %}
 
