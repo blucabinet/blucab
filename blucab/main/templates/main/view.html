@@ -1,13 +1,14 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block title %}
-blucab - View
+{% trans "blucab - View" %}
 {% endblock %}
 
 {% block contentTitle %}
     {% if is_user_view %}
         {% if user.is_authenticated %}
-            View of your cabinet
+            {% trans "View of your cabinet" %}
             {% if usersettings.show_view_button_share %}
                 {% if usersettings.view_is_public %}
                     <a href="/cab/{{ user.get_username }}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="Open public view">🔗 Share</a>
@@ -17,7 +18,7 @@ blucab - View
             {% endif %}
         {% endif %}
     {% else %}
-        Public view of {{ usersettings.user.get_username }}'s cabinet
+        {% trans "Public view of" %} {{ usersettings.user.get_username }}'s cabinet
     {% endif %}
 {% endblock %}
 

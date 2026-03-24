@@ -2,6 +2,8 @@
 # https://devguide.python.org/versions/
 FROM python:3.13
 
+RUN apt update && apt install -y gettext
+
 WORKDIR /app
 
 # Set environment variables

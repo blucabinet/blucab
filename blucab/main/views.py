@@ -5,6 +5,7 @@ from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 import os
 from environs import Env
@@ -173,7 +174,7 @@ def csv_export(request):
 
 def home(request):
     if DEBUG:
-        return render(request, "main/home.html", {"alert_text": "DEBUG mode is activated! Not for production usage!", "alert_type": "alert-danger"})
+        return render(request, "main/home.html", {"alert_text": _("DEBUG mode is activated! Not for production usage!"), "alert_type": "alert-danger"})
     else:
         return render(request, "main/home.html", {})
 
