@@ -1,27 +1,32 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - User Settings
+{% trans "blucab - User Settings" %}
 {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h1>User Settings</h1>
+<h1>{% trans "User Settings" %}</h1>
 
 {% if user.is_authenticated %}
-    <div>Let's check your settings {{ user.get_username }}!</div>
+    <div>
+        {% blocktrans with username=user.get_username trimmed %}
+            Let's check your settings {{ username }}!
+        {% endblocktrans %}
+    </div>
     <br>
     
     <div class="card" style="max-width: 28rem;">
         <div class="card-header">
-            General Settings
+            {% trans "General Settings" %}
         </div>
         <div class="card-body">
             <form method="post" class="form-group">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
             </form>
         </div>
     </div>
@@ -29,31 +34,31 @@ blucab - User Settings
     <br>
     <div class="card" style="max-width: 28rem;">
         <div class="card-header">
-            Import/Export
+            {% trans "Import/Export" %}
         </div>
         <div class="card-body">
-            <a href="/user/import" class="btn btn-outline-success" role="button">Import Movies</a>
+            <a href="/user/import" class="btn btn-outline-success" role="button">{% trans "Import Movies" %}</a>
             <br><br>
-            <a href="/user/export" class="btn btn-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="Export your Movies in blucab format">Export</a>
-            (Last export: {{ usersettings.last_export }})
+            <a href="/user/export" class="btn btn-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Export your Movies in blucab format" %}">{% trans "Export" %}</a>
+            ({% trans "Last export" %}: {{ usersettings.last_export }})
         </div>
     </div>
 
     <br>
     <div class="card" style="max-width: 28rem;">
         <div class="card-header">
-            Account Settings
+            {% trans "Account Settings" %}
         </div>
         <div class="card-body">
-            <a href="/user/change_password" class="btn btn-outline-success" role="button">Change Password</a>
+            <a href="/user/change_password" class="btn btn-outline-success" role="button">{% trans "Change Password" %}</a>
             <br><br>
-            <a href="/user/delete/" class="btn btn-outline-danger" role="button">Delete Account</a>
+            <a href="/user/delete/" class="btn btn-outline-danger" role="button">{% trans "Delete Account" %}</a>
         </div>
     </div>
 
 {% else %}
-    <div>Welcome!</div>
-    <a class="nav-link" href="/login">Login</a>
+    <div>{% trans "Welcome!" %}</div>
+    <a class="nav-link" href="/login">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}

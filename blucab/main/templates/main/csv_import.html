@@ -1,16 +1,21 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - Import
+{% trans "blucab - Import" %}
 {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h1>CSV-Import</h1>
+<h1>{% trans "CSV-Import" %}</h1>
 
 {% if user.is_authenticated %}
-    <div>This will import a flickrack or blucab exported library .csv for {{ user.get_username }}.</div>
+    <div>
+        {% blocktrans with username=user.get_username trimmed %}
+            This will import a flickrack or blucab exported library .csv for {{ username }}.
+        {% endblocktrans %}
+    </div>
     <br>
     <div class="card" style="max-width: 28rem;">
         <div class="card-body">
@@ -26,17 +31,21 @@ blucab - Import
                 {% endif %}
                 <button id="submitBtn" type="submit" class="btn btn-success">
                     <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                    <span id="btnText">Import</span>
+                    <span id="btnText">{% trans "Import" %}</span>
                 </button>
             </form>
         </div>
     </div>
     <br>
-    <a href="/user/settings" class="btn btn-light" role="button">Back to Settings</a>
+    <a href="/user/settings" class="btn btn-light" role="button">{% trans "Back to Settings" %}</a>
 
     {% if uploaded_file_url %}
         <br><br>
-        <p>Processed the file: {{ uploaded_file_url }}</p>
+        <p>
+            {% blocktrans with file_url=uploaded_file_url %}
+                Processed the file: {{ file_url }}
+            {% endblocktrans %}
+        </p>
     {% endif %}
 
     <script>
@@ -47,14 +56,14 @@ blucab - Import
 
         form.addEventListener("submit", () => {
             submitBtn.disabled = true;
-            btnText.textContent = "Importing...";
+            btnText.textContent = "{% trans "Importing..." %}";
             spinner.classList.remove("d-none");
         });
     </script>
 
 {% else %}
-    <div>Welcome!</div>
-    <a class="nav-link" href="/login">Login</a>
+    <div>{% trans "Welcome!" %}</div>
+    <a class="nav-link" href="/login">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}

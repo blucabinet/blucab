@@ -35,9 +35,9 @@
                             <div class="overlay_div" id="pictureOverlayIcons">
                                 <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                     {% if mu.movie.picture_available %}
-                                        <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" class="img-fluid" alt="Picture of the cover" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                        <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" class="img-fluid" alt="{% trans "Picture of the cover" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                     {% else %}
-                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Cover dummy" class="img-fluid" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="{% trans "Cover dummy" %}" class="img-fluid" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                     {% endif %}
 
                                     {% if usersettings.show_view_icon_new %}
@@ -71,18 +71,26 @@
                                             <p class="card-text">{{mu.movie.runtime}} min</p>
                                             {% if not mu.movie.disc_count is 1 %}
                                                 {% if usersettings.show_view_count_disc %}
-                                                    <p class="card-text">{{mu.movie.disc_count}} Disks</p>
+                                                    <p class="card-text">
+                                                        {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
+                                                            {{ disc_count }} Disks
+                                                        {% endblocktrans %}
+                                                    </p>
                                                 {% endif %}
                                             {% endif %}
                                             {% if not mu.movie.movie_count is 1 %}
                                                 {% if usersettings.show_view_count_movie %}
-                                                    <p class="card-text">{{mu.movie.movie_count}} Movies</p>
+                                                    <p class="card-text">
+                                                        {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
+                                                            {{ movie_count }} Movies
+                                                        {% endblocktrans %}
+                                                    </p>
                                                 {% endif %}
                                             {% endif %}
                                         {% endif %}
                                         {% if usersettings.show_view_button_details %}
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
-                                                Details
+                                                {% trans "Details" %}
                                             </button>
                                         {% endif %}
                                     {% endif %}
@@ -102,64 +110,108 @@
                                 <div class="modal-body">
                                     <div class="card border-light mb-3" style="width: 20rem;">
                                         {% if mu.movie.picture_available %}
-                                            <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                            <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
                                         {% else %}
-                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
                                         {% endif %}
                                         <div class="card-body">
                                             <p class="card-text">
                                                 {{mu.movie.format}}
                                                 {% if mu.movie.is_bluray_uhd %}
-                                                    UHD
-                                                {% endif %}<br>
+                                                    {% trans "UHD" %}
+                                                {% endif %}
+                                                <br>
                                                 
                                                 {% if mu.movie.disc_count is 1 %}
-                                                    {{mu.movie.disc_count}} Disk<br>
+                                                    {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
+                                                        {{ disc_count }} Disc
+                                                    {% endblocktrans %}
+                                                    <br>
                                                 {% else %}
-                                                    {{mu.movie.disc_count}} Disks<br>
+                                                    {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
+                                                        {{ disc_count }} Discs
+                                                    {% endblocktrans %}
+                                                    <br>
                                                 {% endif %}
 
                                                 {% if mu.movie.movie_count is 1 %}
-                                                    {{mu.movie.movie_count}} Movie<br>
+                                                    {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
+                                                        {{ movie_count }} Movie
+                                                    {% endblocktrans %}
+                                                    <br>
                                                 {% else %}
-                                                    {{mu.movie.movie_count}} Movies<br>
+                                                    {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
+                                                        {{ movie_count }} Movies
+                                                    {% endblocktrans %}
+                                                    <br>
                                                 {% endif %}
 
                                                 {% if not mu.movie.season_count is 0 %}
-                                                    {{mu.movie.season_count}} Seasons<br>
+                                                    {% blocktrans with season_count=mu.movie.season_count trimmed %}
+                                                        {{ season_count }} Seasons
+                                                    {% endblocktrans %}
+                                                    <br>
                                                 {% endif %}
 
                                                 {% if not mu.movie.episode_count is 0 %}
-                                                    {{mu.movie.episode_count}} Episodes<br>
+                                                    {% blocktrans with episode_count=mu.movie.episode_count trimmed %}
+                                                        {{ episode_count }} Episodes
+                                                    {% endblocktrans %}
+                                                    <br>
                                                 {% endif %}
-
-                                                Runtime: {{mu.movie.runtime}} min<br>
-                                                Release: {{mu.movie.release_year}}<br>
-                                                FSK: {{mu.movie.fsk}}<br>
+                                                
+                                                {% blocktrans with runtime=mu.movie.runtime trimmed %}
+                                                    Runtime: {{runtime}} min
+                                                {% endblocktrans %}
+                                                <br>
+                                                {% blocktrans with release_year=mu.movie.release_year trimmed %}
+                                                    Release: {{release_year}}
+                                                {% endblocktrans %}
+                                                <br>
+                                                {% blocktrans with fsk=mu.movie.fsk trimmed %}
+                                                    FSK: {{fsk}}
+                                                {% endblocktrans %}
+                                                <br>
                                                 {% if mu.movie.is_bluray_uhd %}
-                                                    UHD: Yes<br>
+                                                    {% trans "UHD: Yes" %}
+                                                    <br>
                                                 {% endif %}
                                                 <br>
                                                 {% if is_user_view %}
                                                     {% if mu.price != 0.00 %}
-                                                        Price: {{mu.price}} {{usersettings.price_unit}}<br>
+                                                        {% blocktrans with price=mu.price price_unit=usersettings.price_unit trimmed %}
+                                                            Price: {{price}} {{price_unit}}
+                                                        {% endblocktrans %}
+                                                        <br>
                                                     {% endif %}
-                                                    Added: {{mu.date_added}}<br>
+                                                    {% blocktrans with date_added=mu.date_added trimmed %}
+                                                        Added: {{date_added}}
+                                                    {% endblocktrans %}
+                                                    <br>
                                                     {% if mu.rating != 0 %}
-                                                        Rating: {{mu.rating}}<br>
+                                                        {% blocktrans with rating=mu.rating trimmed %}
+                                                            Rating: {{rating}}
+                                                        {% endblocktrans %}
+                                                        <br>
                                                     {% endif %}
                                                     <br>
                                                     {% if mu.viewed %}
-                                                        Already viewed<br>
+                                                        {% trans "Already viewed" %}
+                                                        <br>
                                                     {% endif %}
                                                     {% if mu.archived %}
-                                                        Movie is archived<br>
+                                                        {% trans "Movie is archived" %}
+                                                        <br>
                                                     {% endif %}
                                                     {% if mu.rented %}
                                                         {% if mu.rented_to %}
-                                                            Rented to {{mu.rented_to}}<br>
+                                                            {% blocktrans with rented_to=mu.rented_to trimmed %}
+                                                                Rented to {{rented_to}}
+                                                            {% endblocktrans %}
+                                                            <br>
                                                         {% else %}
-                                                            Rented<br>
+                                                            {% trans "Rented" %}
+                                                            <br>
                                                         {% endif %}
                                                     {% endif %}
                                                     <br>
@@ -177,11 +229,17 @@
                                 <div class="modal-footer d-flex {% if is_user_view %}justify-content-between{% else %}justify-content-end{% endif %}">
                                     {% if is_user_view %}
                                         {% if user.is_superuser %}
-                                            <a href="/movie_settings/{{mu.movie.id}}" class="btn btn-outline-warning" role="button">Movie</a>
+                                            <a href="/movie_settings/{{mu.movie.id}}" class="btn btn-outline-warning" role="button">
+                                                {% trans "Movie" %}
+                                            </a>
                                         {% endif %}
-                                        <a href="/user/movie_settings/{{mu.movie.id}}" class="btn btn-outline-success" role="button">Edit</a>
+                                        <a href="/user/movie_settings/{{mu.movie.id}}" class="btn btn-outline-success" role="button">
+                                            {% trans "Edit" %}
+                                        </a>
                                     {% endif %}
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        {% trans "Close" %}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -195,6 +253,8 @@
 
 {% block footer %}
     <div>
-        Blu-Rays: {{count_bd}} / DVDs: {{count_dvd}} / Total: {{count_total}}
+        {% blocktrans trimmed %}
+            Blu-Rays: {{count_bd}} / DVDs: {{count_dvd}} / Total: {{count_total}}
+        {% endblocktrans %}
     </div>
 {% endblock %}

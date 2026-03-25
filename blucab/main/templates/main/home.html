@@ -1,17 +1,18 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - Home
+{% trans "blucab - Home" %}
 {% endblock %}
 
 {% block content %}
-<h1>Homepage</h1>
+<h1>{% trans "Homepage" %}</h1>
 
 {% if user.is_authenticated %}
-    <div>Welcome back {{ user.get_username }}!</div>
+    <div>{% trans "Welcome back" %} {{ user.get_username }}!</div>
 {% else %}
-    <div>Welcome!</div>
-    <a class="nav-link" href="/login">Login</a>
+    <div>{% trans "Welcome!" %}</div>
+    <a class="nav-link" href="/login">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}

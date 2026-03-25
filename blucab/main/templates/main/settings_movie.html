@@ -1,7 +1,8 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - Movie Settings
+{% trans "blucab - Movie Settings" %}
 {% endblock %}
 
 {% load crispy_forms_tags %}
@@ -11,9 +12,9 @@ blucab - Movie Settings
 
 {% if user.is_authenticated %}
     {% load static %}
-    <div>Let's modify the movie!</div>
+    <div>{% trans "Let's modify the movie!" %}</div>
     <br>
-    <div>Picture</div>
+    <div>{% trans "Picture" %}</div>
     {% if movie.picture_available %}
         <img src="{% get_static_prefix %}main/cover/{{movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
     {% else %}
@@ -25,13 +26,13 @@ blucab - Movie Settings
             <form method="post" class="form-group">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
             </form>
         </div>
     </div>
 {% else %}
-    <div>Welcome!</div>
-    <a class="nav-link" href="/login">Login</a>
+    <div>{% trans "Welcome!" %}</div>
+    <a class="nav-link" href="/login">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}
