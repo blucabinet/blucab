@@ -28,218 +28,217 @@ msgstr ""
 
 #: main/models.py:13
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: main/models.py:14
 msgid "Title Clean"
-msgstr ""
+msgstr "Titel bereinigt"
 
 #: main/models.py:15
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: main/models.py:21
 msgid "Release Year"
-msgstr ""
+msgstr "Erscheinungsjahr"
 
 #: main/models.py:23
 msgid "Runtime"
-msgstr ""
+msgstr "Laufzeit"
 
 #: main/models.py:24
 msgid "FSK"
-msgstr ""
+msgstr "FSK"
 
 #: main/models.py:30
 msgid "FSK NBR"
-msgstr ""
+msgstr "FSK Nbr"
 
 #: main/models.py:32
 msgid "Content"
-msgstr ""
+msgstr "Inhalt"
 
 #: main/models.py:33
 msgid "Actor"
-msgstr ""
+msgstr "Schauspieler"
 
 #: main/models.py:34
 msgid "Regisseur"
-msgstr ""
+msgstr "Regisseur"
 
 #: main/models.py:35
 msgid "Studio"
-msgstr ""
+msgstr "Studio"
 
 #: main/models.py:36
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: main/models.py:37
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: main/models.py:38
 msgid "Disc Count"
-msgstr ""
+msgstr "Anzahl der Discs"
 
 #: main/models.py:39
 msgid "Movie Count"
-msgstr ""
+msgstr "Anzahl der Filme"
 
 #: main/models.py:40
 msgid "Season Count"
-msgstr ""
+msgstr "Anzahl der Staffeln"
 
 #: main/models.py:41
 msgid "Episode Count"
-msgstr ""
+msgstr "Anzahl der Episoden"
 
 #: main/models.py:42
 msgid "Is Series"
-msgstr ""
+msgstr "Ist eine Serie"
 
 #: main/models.py:43
 msgid "Is Blu-ray UHD"
-msgstr ""
+msgstr "Ist eine UHD Blu-ray"
 
 #: main/models.py:44
 msgid "Picture Available"
-msgstr ""
+msgstr "Bild verfügbar"
 
 #: main/models.py:45
 msgid "Picture URL Original"
-msgstr ""
+msgstr "Original Bild URL"
 
 #: main/models.py:46
 msgid "Picture URL Original HD"
-msgstr ""
+msgstr "Original Bild URL HD"
 
 #: main/models.py:47
 msgid "Picture Processed"
-msgstr ""
+msgstr "Bild verarbeitet"
 
 #: main/models.py:48
 msgid "Needs Parsing"
-msgstr ""
+msgstr "Benötigt parsing"
 
 #: main/models.py:49
 msgid "IMDb ID"
-msgstr ""
+msgstr "IMDb ID"
 
 #: main/models.py:52
 msgid "Movies"
-msgstr ""
+msgstr "Filme"
 
 #: main/models.py:61 main/models.py:92
 msgid "User"
-msgstr ""
+msgstr "Nutzer"
 
 #: main/models.py:63 main/templates/main/view.html:233
 msgid "Movie"
-msgstr ""
+msgstr "Film"
 
 #: main/models.py:64
 msgid "Activated"
-msgstr ""
+msgstr "Aktiviert"
 
 #: main/models.py:66
 msgid "Rating"
-msgstr ""
+msgstr "Bewertung"
 
 #: main/models.py:68
 msgid "Viewed"
-msgstr ""
+msgstr "Bereits gesehen"
 
 #: main/models.py:69 main/templates/main/view.html:213
 msgid "Rented"
-msgstr ""
+msgstr "Verliehen"
 
 #: main/models.py:70
 msgid "Rented to"
-msgstr ""
+msgstr "Verliehen an"
 
 #: main/models.py:71
 msgid "Date added"
-msgstr ""
+msgstr "Hinzugefügt am"
 
 #: main/models.py:72
 msgid "Price"
-msgstr ""
+msgstr "Preis"
 
 #: main/models.py:73
 msgid "Archived"
-msgstr ""
+msgstr "Archiviert"
 
 #: main/models.py:80
 msgid "User Movie List"
-msgstr ""
+msgstr "Nutzer Film Liste"
 
 #: main/models.py:95
 msgid "Price Unit"
-msgstr ""
+msgstr "Preis Einheit"
 
 #: main/models.py:100
 msgid "Days since adding a movie to show the new sign"
-msgstr ""
+msgstr "Tage seit dem Hinzufügen eines Films, um das NEW Schild zu zeigen"
 
 #: main/models.py:103
 msgid "The library can be viewed publicly"
-msgstr ""
+msgstr "Die Bibliothek ist öffentlich einsehbar"
 
 #: main/models.py:106
 msgid "Show Movie title"
-msgstr ""
+msgstr "Filmtitel anzeigen"
 
 #: main/models.py:109
 msgid "Show Movie details"
-msgstr ""
+msgstr "Filmdetails anzeigen"
 
 #: main/models.py:112
 msgid "Show the new sign"
-msgstr ""
+msgstr "NEW Schild anzeigen"
 
 #: main/models.py:115
 msgid "Show the rented sign"
-msgstr ""
+msgstr "RENT Schild anzeigen"
 
 #: main/models.py:118
 msgid "Show the number of disks"
-msgstr ""
+msgstr "Anzahl der Discs anzeigen"
 
 #: main/models.py:121
 msgid "Show the number of movies"
-msgstr ""
+msgstr "Anzahl der Filme anzeigen"
 
 #: main/models.py:124
 msgid "Show the details button"
-msgstr ""
+msgstr "Details Knopf anzeigen"
 
 #: main/models.py:127
 msgid "Show the share button"
-msgstr ""
+msgstr "Teilen Knopf anzeigen"
 
 #: main/models.py:130
 msgid "Last time an export was executed"
-msgstr ""
+msgstr "Zeitpunkt des letzten Exports"
 
 #: main/models.py:134 main/templates/main/settings_user.html:11
 msgid "User Settings"
-msgstr ""
+msgstr "Benutzereinstellungen"
 
 #: main/templates/main/add_movie.html:5
 #, fuzzy
-#| msgid "blucab - View"
 msgid "blucab - Add Movie"
-msgstr "blucab - View"
+msgstr "blucab - Film hinzufügen"
 
 #: main/templates/main/add_movie.html:9
 msgid "Add a Movie"
-msgstr ""
+msgstr "Füge einen Film hinzu"
 
 #: main/templates/main/add_movie.html:13
 #, python-format
 msgid "Seems you got something new %(username)s!"
-msgstr ""
+msgstr "Es scheint als hast du etwas neues %(username)s!"
 
 #: main/templates/main/add_movie.html:18 main/templates/main/base.html:96
 #: main/templates/main/csv_import.html:66 main/templates/main/home.html:15
@@ -247,57 +246,56 @@ msgstr ""
 #: main/templates/main/settings_user.html:61
 #: main/templates/main/settings_user_movie.html:28
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: main/templates/main/base.html:72
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: main/templates/main/base.html:75
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: main/templates/main/base.html:78
 msgid "View"
-msgstr ""
+msgstr "View"
 
 #: main/templates/main/base.html:82
 msgid "About"
-msgstr ""
+msgstr "Über"
 
 #: main/templates/main/base.html:85
 msgid "Imprint"
-msgstr ""
+msgstr "Impressum"
 
 #: main/templates/main/base.html:86
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Datenschutzerklärung"
 
 #: main/templates/main/base.html:93
 msgid "Logout"
-msgstr ""
+msgstr "Logout"
 
 #: main/templates/main/base.html:106
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: main/templates/main/base.html:134
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: main/templates/main/base.html:169
 msgid "Visit"
-msgstr ""
+msgstr "Besuche"
 
 #: main/templates/main/csv_import.html:5
 #, fuzzy
-#| msgid "blucab - View"
 msgid "blucab - Import"
-msgstr "blucab - View"
+msgstr "blucab - Importieren"
 
 #: main/templates/main/csv_import.html:11
 msgid "CSV-Import"
-msgstr ""
+msgstr "CSV-Import"
 
 #: main/templates/main/csv_import.html:15
 #, python-format
@@ -308,11 +306,11 @@ msgstr ""
 
 #: main/templates/main/csv_import.html:34
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #: main/templates/main/csv_import.html:40
 msgid "Back to Settings"
-msgstr ""
+msgstr "Zurück zu den Einstellungen"
 
 #: main/templates/main/csv_import.html:45
 #, python-format
@@ -324,98 +322,96 @@ msgstr ""
 
 #: main/templates/main/csv_import.html:59
 msgid "Importing..."
-msgstr ""
+msgstr "Importiere..."
 
 #: main/templates/main/csv_import.html:65 main/templates/main/home.html:14
 #: main/templates/main/settings_movie.html:34
 #: main/templates/main/settings_user.html:60
 #: main/templates/main/settings_user_movie.html:27
 msgid "Welcome!"
-msgstr ""
+msgstr "Willkommen!"
 
 #: main/templates/main/home.html:5
 #, fuzzy
-#| msgid "blucab - View"
 msgid "blucab - Home"
-msgstr "blucab - View"
+msgstr "blucab - Home"
 
 #: main/templates/main/home.html:9
 msgid "Homepage"
-msgstr ""
+msgstr "Startseite"
 
 #: main/templates/main/home.html:12
 msgid "Welcome back"
-msgstr ""
+msgstr "Willkommen zurück"
 
 #: main/templates/main/settings_movie.html:5
 #: main/templates/main/settings_user_movie.html:5
 #, fuzzy
-#| msgid "blucab - View"
 msgid "blucab - Movie Settings"
-msgstr "blucab - View"
+msgstr "blucab - Film Einstellungen"
 
 #: main/templates/main/settings_movie.html:15
 msgid "Let's modify the movie!"
-msgstr ""
+msgstr "Lass uns den Film bearbeiten!"
 
 #: main/templates/main/settings_movie.html:17
 msgid "Picture"
-msgstr ""
+msgstr "Bild"
 
 #: main/templates/main/settings_movie.html:29
 #: main/templates/main/settings_user.html:29
 #: main/templates/main/settings_user_movie.html:22
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: main/templates/main/settings_user.html:5
 msgid "blucab - User Settings"
-msgstr ""
+msgstr "blucab - Benutzereinstellungen"
 
 #: main/templates/main/settings_user.html:15
 #, python-format
 msgid "Let's check your settings %(username)s!"
-msgstr ""
+msgstr "Lass uns deine Einstellungen prüfen %(username)s!"
 
 #: main/templates/main/settings_user.html:23
 msgid "General Settings"
-msgstr ""
+msgstr "Generelle Einstellungen"
 
 #: main/templates/main/settings_user.html:37
 msgid "Import/Export"
-msgstr ""
+msgstr "Import/Export"
 
 #: main/templates/main/settings_user.html:40
 msgid "Import Movies"
-msgstr ""
+msgstr "Filme importieren"
 
 #: main/templates/main/settings_user.html:42
 msgid "Export your Movies in blucab format"
-msgstr ""
+msgstr "Exportiere deine Filme im blucab format"
 
 #: main/templates/main/settings_user.html:42
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #: main/templates/main/settings_user.html:43
 msgid "Last export"
-msgstr ""
+msgstr "Letzter Export"
 
 #: main/templates/main/settings_user.html:50
 msgid "Account Settings"
-msgstr ""
+msgstr "Benutzereinstellungen"
 
 #: main/templates/main/settings_user.html:53
 msgid "Change Password"
-msgstr ""
+msgstr "Passwort ändern"
 
 #: main/templates/main/settings_user.html:55
 msgid "Delete Account"
-msgstr ""
+msgstr "Benutzerkonto löschen"
 
 #: main/templates/main/settings_user_movie.html:14
 msgid "Let's check your movie"
-msgstr ""
+msgstr "Lass uns deinen Film prüfen"
 
 #: main/templates/main/view.html:5
 msgid "blucab - View"
@@ -433,114 +429,114 @@ msgstr "Öffentliche Ansicht von %(username)ss Schrank"
 #: main/templates/main/view.html:38 main/templates/main/view.html:113
 #: main/templates/main/view.html:115
 msgid "Picture of the cover"
-msgstr ""
+msgstr "Titelbild"
 
 #: main/templates/main/view.html:40
 msgid "Cover dummy"
-msgstr ""
+msgstr "Titelbild Platzhalter"
 
 #: main/templates/main/view.html:75
 #, python-format
 msgid "%(disc_count)s Disks"
-msgstr ""
+msgstr "%(disc_count)s Discs"
 
 #: main/templates/main/view.html:84 main/templates/main/view.html:143
 #, python-format
 msgid "%(movie_count)s Movies"
-msgstr ""
+msgstr "%(movie_count)s Filme"
 
 #: main/templates/main/view.html:93
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: main/templates/main/view.html:121
 msgid "UHD"
-msgstr ""
+msgstr "UHD"
 
 #: main/templates/main/view.html:126
 #, python-format
 msgid "%(disc_count)s Disc"
-msgstr ""
+msgstr "%(disc_count)s Disc"
 
 #: main/templates/main/view.html:131
 #, python-format
 msgid "%(disc_count)s Discs"
-msgstr ""
+msgstr "%(disc_count)s Discs"
 
 #: main/templates/main/view.html:138
 #, python-format
 msgid "%(movie_count)s Movie"
-msgstr ""
+msgstr "%(movie_count)s Film"
 
 #: main/templates/main/view.html:150
 #, python-format
 msgid "%(season_count)s Seasons"
-msgstr ""
+msgstr "%(season_count)s Staffeln"
 
 #: main/templates/main/view.html:157
 #, python-format
 msgid "%(episode_count)s Episodes"
-msgstr ""
+msgstr "%(episode_count)s Folgen"
 
 #: main/templates/main/view.html:163
 #, python-format
 msgid "Runtime: %(runtime)s min"
-msgstr ""
+msgstr "Laufzeit: %(runtime)s min"
 
 #: main/templates/main/view.html:167
 #, python-format
 msgid "Release: %(release_year)s"
-msgstr ""
+msgstr "Erscheinungsjahr: %(release_year)s"
 
 #: main/templates/main/view.html:171
 #, python-format
 msgid "FSK: %(fsk)s"
-msgstr ""
+msgstr "FSK: %(fsk)s"
 
 #: main/templates/main/view.html:176
 msgid "UHD: Yes"
-msgstr ""
+msgstr "UHD: Ja"
 
 #: main/templates/main/view.html:182
 #, python-format
 msgid "Price: %(price)s %(price_unit)s"
-msgstr ""
+msgstr "Preis: %(price)s %(price_unit)s"
 
 #: main/templates/main/view.html:187
 #, python-format
 msgid "Added: %(date_added)s"
-msgstr ""
+msgstr "Hinzugefügt: %(date_added)s"
 
 #: main/templates/main/view.html:192
 #, python-format
 msgid "Rating: %(rating)s"
-msgstr ""
+msgstr "Bewertung: %(rating)s"
 
 #: main/templates/main/view.html:199
 msgid "Already viewed"
-msgstr ""
+msgstr "Bereits angesehen"
 
 #: main/templates/main/view.html:203
 msgid "Movie is archived"
-msgstr ""
+msgstr "Film ist archiviert"
 
 #: main/templates/main/view.html:208
 #, python-format
 msgid "Rented to %(rented_to)s"
-msgstr ""
+msgstr "Ausgeliehen an %(rented_to)s"
 
 #: main/templates/main/view.html:237
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: main/templates/main/view.html:241
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: main/templates/main/view.html:256
 #, python-format
 msgid "Blu-Rays: %(count_bd)s / DVDs: %(count_dvd)s / Total: %(count_total)s"
-msgstr ""
+msgstr "Blu-Rays: %(count_bd)s / DVDs: %(count_dvd)s / Total: %(count_total)s"
 
 #: main/views.py:177
 msgid "DEBUG mode is activated! Not for production usage!"
