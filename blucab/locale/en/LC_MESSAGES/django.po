@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-25 19:40+0000\n"
+"POT-Creation-Date: 2026-03-26 19:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -226,6 +226,96 @@ msgstr ""
 msgid "User Settings"
 msgstr ""
 
+#: main/templates/error/400.html:5
+msgid "blucab - 400"
+msgstr ""
+
+#: main/templates/error/400.html:9 main/templates/error/403.html:9
+#: main/templates/error/403_user_not_public.html:9
+#: main/templates/error/404.html:9 main/templates/error/500.html:9
+msgid "Error"
+msgstr ""
+
+#: main/templates/error/400.html:11
+msgid "Bad request."
+msgstr ""
+
+#: main/templates/error/403.html:5
+#: main/templates/error/403_user_not_public.html:5
+msgid "blucab - 403"
+msgstr ""
+
+#: main/templates/error/403.html:11
+msgid "The requested page is forbidden."
+msgstr ""
+
+#: main/templates/error/403.html:12
+msgid "You might need to"
+msgstr ""
+
+#: main/templates/error/403.html:12 main/templates/main/add_movie.html:18
+#: main/templates/main/base.html:96 main/templates/main/csv_import.html:66
+#: main/templates/main/home.html:15 main/templates/main/settings_movie.html:35
+#: main/templates/main/settings_user.html:61
+#: main/templates/main/settings_user_movie.html:28
+#: register/templates/registration/login.html:15
+msgid "Login"
+msgstr ""
+
+#: main/templates/error/403_user_not_public.html:11
+msgid "The user is not public or not available."
+msgstr ""
+
+#: main/templates/error/404.html:5
+msgid "blucab - 404"
+msgstr ""
+
+#: main/templates/error/404.html:11
+msgid "The requested page was not found."
+msgstr ""
+
+#: main/templates/error/500.html:5
+msgid "blucab - 500"
+msgstr ""
+
+#: main/templates/error/500.html:11
+msgid "Internal server error."
+msgstr ""
+
+#: main/templates/legal/legal.html:5
+msgid "blucab - Imprint"
+msgstr ""
+
+#: main/templates/legal/legal.html:9 main/templates/main/base.html:85
+msgid "Imprint"
+msgstr ""
+
+#: main/templates/legal/legal.html:11
+msgid "Non commercial. Just for family and friends."
+msgstr ""
+
+#: main/templates/legal/privacy.html:5
+msgid "blucab - Privacy Policy"
+msgstr ""
+
+#: main/templates/legal/privacy.html:9 main/templates/main/base.html:86
+msgid "Privacy Policy"
+msgstr ""
+
+#: main/templates/legal/privacy.html:11
+msgid "This website uses bootstrap5 to work properly."
+msgstr ""
+
+#: main/templates/legal/privacy.html:12
+msgid "No liability for the external site."
+msgstr ""
+
+#: main/templates/legal/privacy.html:14
+msgid ""
+"This page does not save any data except the ones, the user enters for its "
+"profile creation."
+msgstr ""
+
 #: main/templates/main/add_movie.html:5
 msgid "blucab - Add Movie"
 msgstr ""
@@ -237,14 +327,6 @@ msgstr ""
 #: main/templates/main/add_movie.html:13
 #, python-format
 msgid "Seems you got something new %(username)s!"
-msgstr ""
-
-#: main/templates/main/add_movie.html:18 main/templates/main/base.html:96
-#: main/templates/main/csv_import.html:66 main/templates/main/home.html:15
-#: main/templates/main/settings_movie.html:35
-#: main/templates/main/settings_user.html:61
-#: main/templates/main/settings_user_movie.html:28
-msgid "Login"
 msgstr ""
 
 #: main/templates/main/base.html:72
@@ -263,15 +345,8 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: main/templates/main/base.html:85
-msgid "Imprint"
-msgstr ""
-
-#: main/templates/main/base.html:86
-msgid "Privacy Policy"
-msgstr ""
-
 #: main/templates/main/base.html:93
+#: register/templates/registration/logout.html:13
 msgid "Logout"
 msgstr ""
 
@@ -307,6 +382,9 @@ msgid "Import"
 msgstr ""
 
 #: main/templates/main/csv_import.html:40
+#: register/templates/register/change_password.html:23
+#: register/templates/register/change_password_done.html:14
+#: register/templates/register/delete_user_confirm.html:23
 msgid "Back to Settings"
 msgstr ""
 
@@ -398,6 +476,7 @@ msgid "Account Settings"
 msgstr ""
 
 #: main/templates/main/settings_user.html:53
+#: register/templates/register/change_password.html:18
 msgid "Change Password"
 msgstr ""
 
@@ -415,6 +494,18 @@ msgstr ""
 
 #: main/templates/main/view.html:11
 msgid "View of your cabinet"
+msgstr ""
+
+#: main/templates/main/view.html:14
+msgid "Open public view"
+msgstr ""
+
+#: main/templates/main/view.html:14 main/templates/main/view.html:16
+msgid "Share"
+msgstr ""
+
+#: main/templates/main/view.html:16
+msgid "Public view is deactivated. Open Settings."
 msgstr ""
 
 #: main/templates/main/view.html:21
@@ -534,6 +625,109 @@ msgstr ""
 msgid "Blu-Rays: %(count_bd)s / DVDs: %(count_dvd)s / Total: %(count_total)s"
 msgstr ""
 
+#: main/views.py:128
+msgid "Please select a file to upload."
+msgstr ""
+
+#: main/views.py:146
+msgid "Error. Unknown CSV format."
+msgstr ""
+
 #: main/views.py:177
 msgid "DEBUG mode is activated! Not for production usage!"
+msgstr ""
+
+#: register/templates/register/change_password.html:5
+msgid "blucab - Change your password"
+msgstr ""
+
+#: register/templates/register/change_password.html:11
+#: register/templates/register/change_password_done.html:11
+msgid "Password Change"
+msgstr ""
+
+#: register/templates/register/change_password_done.html:5
+msgid "blucab - Changed your password"
+msgstr ""
+
+#: register/templates/register/change_password_done.html:12
+msgid "Password Change Successful"
+msgstr ""
+
+#: register/templates/register/change_password_done.html:13
+msgid "Your password has been changed successfully!"
+msgstr ""
+
+#: register/templates/register/delete_user_confirm.html:5
+msgid "blucab - User deletion"
+msgstr ""
+
+#: register/templates/register/delete_user_confirm.html:11
+msgid "Are you sure?"
+msgstr ""
+
+#: register/templates/register/delete_user_confirm.html:13
+#, python-format
+msgid ""
+"Everything assigned to your account %(username)s will be deleted permanently!"
+msgstr ""
+
+#: register/templates/register/delete_user_confirm.html:20
+msgid "Are you sure that you want to delete the account?"
+msgstr ""
+
+#: register/templates/register/delete_user_confirm.html:22
+msgid "Yes, Delete"
+msgstr ""
+
+#: register/templates/register/delete_user_done.html:5
+msgid "blucab - User deleted"
+msgstr ""
+
+#: register/templates/register/delete_user_done.html:11
+msgid "User Deleted"
+msgstr ""
+
+#: register/templates/register/delete_user_done.html:12
+msgid "Sad to see you go 😢"
+msgstr ""
+
+#: register/templates/register/delete_user_done.html:13
+msgid "The user has been deleted successfully!"
+msgstr ""
+
+#: register/templates/register/register.html:5
+msgid "blucab - Create an Account"
+msgstr ""
+
+#: register/templates/register/register.html:14
+msgid "Register"
+msgstr ""
+
+#: register/templates/registration/login.html:5
+msgid "Login Here"
+msgstr ""
+
+#: register/templates/registration/login.html:14
+msgid "Don't have an account?"
+msgstr ""
+
+#: register/templates/registration/login.html:14
+msgid "Create one"
+msgstr ""
+
+#: register/templates/registration/login.html:14
+msgid "here"
+msgstr ""
+
+#: register/templates/registration/logout.html:5
+msgid "Logout Here"
+msgstr ""
+
+#: register/views.py:43
+msgid "Your password was successfully updated!"
+msgstr ""
+
+#: register/views.py:46
+msgid "Please correct the error below."
 msgstr ""
