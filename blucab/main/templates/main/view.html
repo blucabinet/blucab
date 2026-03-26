@@ -11,9 +11,9 @@
             {% trans "View of your cabinet" %}
             {% if usersettings.show_view_button_share %}
                 {% if usersettings.view_is_public %}
-                    <a href="/cab/{{ user.get_username }}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="Open public view">🔗 Share</a>
+                    <a href="/cab/{{ user.get_username }}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Open public view" %}">🔗 {% trans "Share" %}</a>
                 {% else %}
-                    <a href="/user/settings/" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="Public view is deactivated. Open Settings.">Share</a>
+                    <a href="/user/settings/" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">🔗 {% trans "Share" %}</a>
                 {% endif %}
             {% endif %}
         {% endif %}

@@ -4,6 +4,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .forms import RegisterForm, ChangePasswordForm
+from django.utils.translation import gettext as _
 
 from environs import Env
 env = Env()
@@ -39,10 +40,10 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, "Your password was successfully updated!")
+            messages.success(request, _("Your password was successfully updated!"))
             return redirect("/user/change_password/done")
         else:
-            messages.error(request, "Please correct the error below.")
+            messages.error(request, _("Please correct the error below."))
     else:
         form = ChangePasswordForm(request.user)
 

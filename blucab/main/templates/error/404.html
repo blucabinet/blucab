@@ -1,12 +1,13 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - 404
+{% trans "blucab - 404" %}
 {% endblock %}
 
 {% block content %}
-<h1>Error 404</h1>
+<h1>{% trans "Error" %} 404</h1>
 
-The requested page was not found.
+{% trans "The requested page was not found." %}
 
 {% endblock %}

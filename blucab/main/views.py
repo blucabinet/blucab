@@ -125,7 +125,7 @@ def csv_import(request):
             return render(
                 request,
                 "main/csv_import.html",
-                {"message": "Please select a file to upload."},
+                {"message": _("Please select a file to upload.")},
             )
 
         myfile = request.FILES["myfile"]
@@ -143,7 +143,7 @@ def csv_import(request):
             #Add to a scheduler TBD
             #ch.content_update()
         else:
-            uploaded_file_url = "Error. Unknown CSV format."
+            uploaded_file_url = _("Error. Unknown CSV format.")
 
         os.remove(os.path.join(settings.BASE_DIR, "import", filename))
         

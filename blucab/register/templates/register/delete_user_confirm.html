@@ -1,21 +1,26 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block title %}
-blucab - User deletion
+{% trans "blucab - User deletion" %}
 {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>Are you sure?</h1>
-    <p>Everything assigned to your account {{ user.get_username }} will be deleted permanently!</p>
+    <h1>{% trans "Are you sure?" %}</h1>
+    <p>
+      {% blocktrans with username=user.get_username trimmed %}
+        Everything assigned to your account {{ username }} will be deleted permanently!
+      {% endblocktrans %}
+    </p>
 
     <form method="POST">
         {% csrf_token %}
-        <p>Are you sure that you want to delete the account?</p>
+        <p>{% trans "Are you sure that you want to delete the account?" %}</p>
         <div>
-          <button type="submit" class="btn btn-danger">Yes, Delete</button>
-          <a href="/user/settings" class="btn btn-success" role="button">Back to Settings</a>
+          <button type="submit" class="btn btn-danger">{% trans "Yes, Delete" %}</button>
+          <a href="/user/settings" class="btn btn-success" role="button">{% trans "Back to Settings" %}</a>
         </div>
       </form>
     

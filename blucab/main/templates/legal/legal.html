@@ -1,12 +1,13 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-Impressum
+{% trans "blucab - Imprint" %}
 {% endblock %}
 
 {% block content %}
-<h1>Impressum</h1>
+<h1>{% trans "Imprint" %}</h1>
 
-Non commercial. Just for family and friends.
+<p>{% trans "Non commercial. Just for family and friends." %}</p>
 
 {% endblock %}

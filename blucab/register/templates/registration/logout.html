@@ -1,7 +1,8 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block title %}
-Logout Here
+{% trans "Logout Here" %}
 {% endblock %}
 
 {% load crispy_forms_tags %}
@@ -9,6 +10,6 @@ Logout Here
 {% block content %}
     <form action="{% url 'logout' %}" method="post" class="form-group">
         {% csrf_token %}
-        <button type="submit" class="btn btn-warning">Logout</button>
+        <button type="submit" class="btn btn-warning">{% trans "Logout" %}</button>
     </form>
 {% endblock %}

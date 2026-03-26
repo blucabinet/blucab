@@ -1,12 +1,13 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - 500
+{% trans "blucab - 500" %}
 {% endblock %}
 
 {% block content %}
-<h1>Error 500</h1>
+<h1>{% trans "Error" %} 500</h1>
 
-Internal server error.
+{% trans "Internal server error." %}
 
 {% endblock %}

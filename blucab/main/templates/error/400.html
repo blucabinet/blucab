@@ -1,12 +1,13 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-blucab - 400
+{% trans "blucab - 400" %}
 {% endblock %}
 
 {% block content %}
-<h1>Error 400</h1>
+<h1>{% trans "Error" %} 400</h1>
 
-Bad request.
+{% trans "Bad request." %}
 
 {% endblock %}

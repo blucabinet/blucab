@@ -1,15 +1,16 @@
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% block title %}
-Datenschutzerklärung
+{% trans "blucab - Privacy Policy" %}
 {% endblock %}
 
 {% block content %}
-<h1>Datenschutzerklärung</h1>
+<h1>{% trans "Privacy Policy" %}</h1>
 
-This website uses bootstrap5 to work properly.<br>
-No liability for the external site.<br><br>
+{% trans "This website uses bootstrap5 to work properly." %}<br>
+{% trans "No liability for the external site." %}<br><br>
 
-This page does not save any data except the ones, the user enters for its profile creation.
+{% trans "This page does not save any data except the ones, the user enters for its profile creation." %}
 
 {% endblock %}

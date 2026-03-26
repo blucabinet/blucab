@@ -1,7 +1,8 @@
 {% extends "main/base.html" %}
+{% load i18n %}
 
 {% block title %}
-Login Here
+{% trans "Login Here" %}
 {% endblock %}
 
 {% load crispy_forms_tags %}
@@ -10,7 +11,7 @@ Login Here
     <form method="post" class="form-group">
         {% csrf_token %}
         {{ form|crispy }}
-        <p>Don't have an account? Create one <a href="/register">here</a>.</p>
-        <button type="submit" class="btn btn-success">Login</button>
+        <p>{% trans "Don't have an account?" %} {% trans "Create one" %} <a href="/register">{% trans "here" %}</a>.</p>
+        <button type="submit" class="btn btn-success">{% trans "Login" %}</button>
     </form>
 {% endblock %}
