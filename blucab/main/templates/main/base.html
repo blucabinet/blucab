@@ -152,6 +152,14 @@
                 <div class="col-10">
                     <h1 class="mt-2">{% block contentTitle %}blucab{% endblock %}</h1>
                     <hr class="mt-0 mb-4">
+                    {% if messages %}
+                      {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                          {{ message }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                    
                     {% block content %}
                     {% endblock %}
                 </div>

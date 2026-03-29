@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from django.contrib.messages import constants as messages
+
 from pathlib import Path
 
 from environs import Env
@@ -173,3 +175,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = "view"
 LOGOUT_REDIRECT_URL = "/"
+
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
