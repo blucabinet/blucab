@@ -1,16 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from .forms import RegisterForm, ChangePasswordForm
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
+from django.utils.encoding import force_bytes, force_str
+from .forms import RegisterForm, ChangePasswordForm
 
 from environs import Env
 env = Env()
 env.read_env()
 
 ALLOW_REGISTRATION = env.bool("BLUCAB_ALLOW_REGISTER", False)
+EMAIL_ENABLED = env.bool("DJANGO_EMAIL_ENABLE", False)
 
 
 def register(request):
@@ -20,18 +27,55 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            new_user = authenticate(
-                username=form.cleaned_data["username"],
-                password=form.cleaned_data["password1"],
-            )
-            login(request, new_user)
+            if EMAIL_ENABLED:
+                user = form.save(commit=False)
+                user.is_active = False 
+                user.save()
 
-            return redirect("/user/settings")
+                current_site = get_current_site(request)
+                mail_subject = _("[blucab] Activate your blucab Account")
+                message = render_to_string('register/acc_active_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                })
+                to_email = form.cleaned_data.get('email')
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+
+                messages.info(request, _(f'You should have received an email to confirm your email address and complete the registration.'))
+                return redirect('login')
+            else:
+                form.save()
+                # Auto login after registration
+                new_user = authenticate(
+                    username=form.cleaned_data["username"],
+                    password=form.cleaned_data["password1"],
+                )
+                login(request, new_user)
+
+                return redirect("/user/settings")
     else:
         form = RegisterForm()
 
     return render(request, "register/register.html", {"form": form})
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, _("Thank you for the confirmation. You can now log in."))
+        return redirect('login')
+    else:
+        messages.error(request, _("The activation link is invalid or has expired!"))
+        return redirect('register')
 
 
 def change_password(request):
