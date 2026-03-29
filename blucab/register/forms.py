@@ -13,6 +13,9 @@ class RegisterForm(UserCreationForm):
         fields = ["username", "email", "email_confirm", "password1", "password2"]
 
     def clean(self):
+        """
+        Check if the email is entered correctly in both fields.
+        """
         cleaned_data = super().clean()
         email = cleaned_data.get("email")
         email_confirm = cleaned_data.get("email_confirm")
@@ -21,6 +24,16 @@ class RegisterForm(UserCreationForm):
             self.add_error('email_confirm', _("The Email confirmation does not match the Email."))
         
         return cleaned_data
+
+    def clean_email(self):
+        """
+        Check if the email is already used by another account.
+        The check is case-insensitive."
+        """
+        email = self.cleaned_data.get('email').lower()
+        if User.objects.filter(email__iexact=email).exists():
+            self.add_error('email', _("This email address is already used by another account."))
+        return email
 
 
 class ChangePasswordForm(PasswordChangeForm):
