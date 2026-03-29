@@ -121,6 +121,23 @@ REST_FRAMEWORK = {
 }
 
 
+# Email settings
+if env.bool("DJANGO_EMAIL_ENABLE", False):
+    if DEBUG:
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    else:
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_HOST = env.str("DJANGO_EMAIL_HOST", "localhost")
+        EMAIL_PORT = env.int("DJANGO_EMAIL_PORT", 25)
+        EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", True)
+        EMAIL_USE_SSL = env.bool("DJANGO_EMAIL_USE_SSL", False)
+        EMAIL_HOST_USER = env.str("DJANGO_EMAIL_HOST_USER", "example@localhost")
+        EMAIL_HOST_PASSWORD = env.str("DJANGO_EMAIL_HOST_PASSWORD", "password").strip('"')
+        EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[blucab] ").strip('"')
+        EMAIL_USE_LOCALTIME = env.bool("DJANGO_EMAIL_USE_LOCALTIME", True)
+        EMAIL_TIMEOUT = 30
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
