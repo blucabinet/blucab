@@ -142,7 +142,7 @@ if env.bool("DJANGO_EMAIL_ENABLE", False):
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 USE_I18N = True
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = env.str("BLUCAB_DEFAULT_LANGUAGE", "en")
 LANGUAGE_BIDI = False
 LANGUAGES = [
     ("en", "English"),
