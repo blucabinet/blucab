@@ -34,7 +34,7 @@ def register(request):
 
                 current_site = get_current_site(request)
                 mail_subject = _("[blucab] Activate your blucab Account")
-                message = render_to_string('register/acc_active_email.html', {
+                message = render_to_string('email/account_activation.html', {
                     'user': user,
                     'domain': current_site.domain,
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),

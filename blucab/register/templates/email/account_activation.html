@@ -6,6 +6,6 @@ Hello {{ username }},
 
 {% trans "Please click on the following link to activate your blucab account:" %}
 
-http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{{ protocol }}//{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
 {% trans "This link is only valid for a limited time. If you did not register, you can ignore this email." %}
