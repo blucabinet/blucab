@@ -11,7 +11,9 @@
     <form method="post" class="form-group">
         {% csrf_token %}
         {{ form|crispy }}
-        <p>{% trans "Don't have an account?" %} {% trans "Create one" %} <a href="/register">{% trans "here" %}</a>.</p>
+        <p>
+            {% trans "Don't have an account?" %} <a href="{% url 'register' %}">{% trans "Register" %}</a>.<br>
+        </p>
         <button type="submit" class="btn btn-success">{% trans "Login" %}</button>
     </form>
 {% endblock %}
