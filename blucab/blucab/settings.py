@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "knox",
     "api.apps.ApiConfig",
     "contenthandler.apps.ContenthandlerConfig",
+    "captcha",
 ]
 
 MIDDLEWARE = [

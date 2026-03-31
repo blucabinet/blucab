@@ -1,16 +1,19 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import PasswordResetForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
+from captcha.fields import CaptchaField
 
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(label=(_("Email")), required=True)
     email_confirm = forms.EmailField(label=(_("Email confirmation")), required=True)
 
+    captcha = CaptchaField(label=_("Are you a human?"))
+
     class Meta:
         model = User
-        fields = ["username", "email", "email_confirm", "password1", "password2"]
+        fields = ["username", "email", "email_confirm", "password1", "password2", "captcha"]
 
     def clean(self):
         """
@@ -34,6 +37,10 @@ class RegisterForm(UserCreationForm):
         if User.objects.filter(email__iexact=email).exists():
             self.add_error('email', _("This email address is already used by another account."))
         return email
+
+
+class ResetPasswordForm(PasswordResetForm):
+    captcha = CaptchaField(label=_("Are you a human?"))
 
 
 class ChangePasswordForm(PasswordChangeForm):

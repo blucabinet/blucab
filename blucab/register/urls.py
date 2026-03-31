@@ -1,8 +1,10 @@
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, include
 from . import views
+from .forms import ResetPasswordForm
 
 urlpatterns = [
+    path('captcha/', include('captcha.urls')),
     path("user/register/", views.register, name="register"),
     path("user/activate/<uidb64>/<token>/", views.activate, name="activate"),
     path("user/password_change/", views.change_password, name="change_password"),
@@ -16,6 +18,7 @@ urlpatterns = [
     path(
         "user/password_reset/",
         auth_views.PasswordResetView.as_view(
+            form_class=ResetPasswordForm,
             template_name="register/password_reset.html",
             email_template_name='email/password_reset_email.html',
             subject_template_name='email/password_reset_subject.txt'
