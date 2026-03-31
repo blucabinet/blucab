@@ -37,7 +37,7 @@
         </div>
     </div>
     <br>
-    <a href="/user/settings" class="btn btn-light" role="button">{% trans "Back to Settings" %}</a>
+    <a href="{% url 'settings' %}" class="btn btn-light" role="button">{% trans "Back to Settings" %}</a>
 
     {% if uploaded_file_url %}
         <br><br>
@@ -63,7 +63,7 @@
 
 {% else %}
     <div>{% trans "Welcome!" %}</div>
-    <a class="nav-link" href="/login">{% trans "Login" %}</a>
+    <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}

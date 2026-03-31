@@ -235,7 +235,7 @@ def movie_settings(request, movie_id):
                 print(field)
                 movie_model.__dict__[field] = value
             movie_model.save()
-            return redirect("/view")
+            return redirect("view")
     else:
         form = UpdateMovie(instance=movie_model)
 
@@ -263,7 +263,7 @@ def user_movie_settings(request, movie_id):
                 print(field)
                 user_movie_model.__dict__[field] = value
             user_movie_model.save()
-            return redirect("/view")
+            return redirect("view")
     else:
         form = UpdateMovieUserList(instance=user_movie_model)
 

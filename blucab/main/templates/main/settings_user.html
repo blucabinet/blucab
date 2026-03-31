@@ -37,9 +37,9 @@
             {% trans "Import/Export" %}
         </div>
         <div class="card-body">
-            <a href="/user/import" class="btn btn-outline-success" role="button">{% trans "Import Movies" %}</a>
+            <a href="{% url 'import' %}" class="btn btn-outline-success" role="button">{% trans "Import Movies" %}</a>
             <br><br>
-            <a href="/user/export" class="btn btn-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Export your Movies in blucab format" %}">{% trans "Export" %}</a>
+            <a href="{% url 'export' %}" class="btn btn-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Export your Movies in blucab format" %}">{% trans "Export" %}</a>
             ({% trans "Last export" %}: {{ usersettings.last_export }})
         </div>
     </div>
@@ -50,15 +50,15 @@
             {% trans "Account Settings" %}
         </div>
         <div class="card-body">
-            <a href="/user/change_password" class="btn btn-outline-success" role="button">{% trans "Change Password" %}</a>
+            <a href="{% url 'change_password' %}" class="btn btn-outline-success" role="button">{% trans "Change Password" %}</a>
             <br><br>
-            <a href="/user/delete/" class="btn btn-outline-danger" role="button">{% trans "Delete Account" %}</a>
+            <a href="{% url 'delete_user' %}" class="btn btn-outline-danger" role="button">{% trans "Delete Account" %}</a>
         </div>
     </div>
 
 {% else %}
     <div>{% trans "Welcome!" %}</div>
-    <a class="nav-link" href="/login">{% trans "Login" %}</a>
+    <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}

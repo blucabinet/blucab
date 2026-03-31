@@ -20,7 +20,7 @@
         <p>{% trans "Are you sure that you want to delete the account?" %}</p>
         <div>
           <button type="submit" class="btn btn-danger">{% trans "Yes, Delete" %}</button>
-          <a href="/user/settings" class="btn btn-success" role="button">{% trans "Back to Settings" %}</a>
+          <a href="{% url 'settings' %}" class="btn btn-success" role="button">{% trans "Back to Settings" %}</a>
         </div>
       </form>
     

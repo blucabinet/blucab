@@ -9,6 +9,6 @@
 <h1>{% trans "Error" %} 403</h1>
 
 {% trans "The requested page is forbidden." %}
-{% trans "You might need to" %} <a href="/login">{% trans "Login" %}</a>.
+{% trans "You might need to" %} <a href="{% url 'login' %}">{% trans "Login" %}</a>.
 
 {% endblock %}

@@ -32,7 +32,7 @@
     </div>
 {% else %}
     <div>{% trans "Welcome!" %}</div>
-    <a class="nav-link" href="/login">{% trans "Login" %}</a>
+    <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}

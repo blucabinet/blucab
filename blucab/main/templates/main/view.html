@@ -11,9 +11,9 @@
             {% trans "View of your cabinet" %}
             {% if usersettings.show_view_button_share %}
                 {% if usersettings.view_is_public %}
-                    <a href="/cab/{{ user.get_username }}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Open public view" %}">🔗 {% trans "Share" %}</a>
+                    <a href="{% url 'cab_uname' user.username %}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Open public view" %}">🔗 {% trans "Share" %}</a>
                 {% else %}
-                    <a href="/user/settings/" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">🔗 {% trans "Share" %}</a>
+                    <a href="{% url 'settings' %}" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">🔗 {% trans "Share" %}</a>
                 {% endif %}
             {% endif %}
         {% endif %}
@@ -229,11 +229,11 @@
                                 <div class="modal-footer d-flex {% if is_user_view %}justify-content-between{% else %}justify-content-end{% endif %}">
                                     {% if is_user_view %}
                                         {% if user.is_superuser %}
-                                            <a href="/movie_settings/{{mu.movie.id}}" class="btn btn-outline-warning" role="button">
+                                            <a href="{% url 'movie_settings' mu.movie.id %}" class="btn btn-outline-warning" role="button">
                                                 {% trans "Movie" %}
                                             </a>
                                         {% endif %}
-                                        <a href="/user/movie_settings/{{mu.movie.id}}" class="btn btn-outline-success" role="button">
+                                        <a href="{% url 'user_movie_settings' mu.movie.id%}" class="btn btn-outline-success" role="button">
                                             {% trans "Edit" %}
                                         </a>
                                     {% endif %}

@@ -55,7 +55,7 @@ def register(request):
                 )
                 login(request, new_user)
 
-                return redirect("/user/settings")
+                return redirect("settings")
     else:
         form = RegisterForm()
 
@@ -85,7 +85,7 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, _("Your password was successfully updated!"))
-            return redirect("/user/change_password/done")
+            return redirect("change_password_done")
         else:
             messages.error(request, _("Please correct the error below."))
     else:
@@ -110,7 +110,7 @@ def delete_user(request):
         user_object = User.objects.get(username=user)
         user_object.delete()
         update_session_auth_hash(request, user)
-        return redirect("/user/delete/done")
+        return redirect("delete_user_done")
 
 
 def delete_user_done(request):

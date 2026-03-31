@@ -15,7 +15,7 @@
         {% endblocktrans %}
     </div>
 {% else %}
-    <a class="nav-link" href="/login">{% trans "Login" %}</a>
+    <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
 {% endif %}
 
 {% endblock %}
