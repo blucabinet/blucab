@@ -381,9 +381,9 @@ msgstr "CSV-Import"
 #: main/templates/main/csv_import.html:15
 #, python-format
 msgid ""
-"This will import a flickrack or blucab exported library .csv for "
-"%(username)s."
+"This will import a flickrack or blucab exported library .csv for %(username)s."
 msgstr ""
+"Dies wird eine flickrack oder blucab exportierte Bibliothek im .csv-Format für %(username)s importieren."
 
 #: main/templates/main/csv_import.html:34
 msgid "Import"
@@ -704,7 +704,7 @@ msgid ""
 "will stay as it is, and we'll just pretend this never happened.\n"
 msgstr ""
 "\n"
-"Falls du die Anfrage nicht gestellt hast kannst du diese E-Mail ignorieren."
+"Falls du die Anfrage nicht gestellt hast kannst du diese E-Mail ignorieren. "
 "Dein Passwort wird nicht geändert und wir nehmen an, dass das hier niemals passiert ist.\n"
 
 #: register/templates/email/password_reset_email.html:16
@@ -813,7 +813,7 @@ msgid ""
 "If the email address you entered is valid for an active account, you should "
 "receive an email with instructions to reset your password."
 msgstr ""
-"Wenn die eingegebene E-Mail-Adresse einem aktiven Benutzerkonto zugeordnet ist,"
+"Wenn die eingegebene E-Mail-Adresse einem aktiven Benutzerkonto zugeordnet ist, "
 "solltest du eine E-Mail mit Informationen zum zurücksetzen erhalten haben."
 
 #: register/templates/register/register.html:5
