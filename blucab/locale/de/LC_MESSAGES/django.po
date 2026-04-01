@@ -28,11 +28,11 @@ msgstr "blucab Administration"
 
 #: main/models.py:11
 msgid "EAN"
-msgstr ""
+msgstr "EAN"
 
 #: main/models.py:12
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: main/models.py:13
 msgid "Title"
@@ -403,6 +403,9 @@ msgid ""
 "                Processed the file: %(file_url)s\n"
 "            "
 msgstr ""
+"\n"
+"                Datei wurde verarbeitet: %(file_url)s\n"
+"            "
 
 #: main/templates/main/csv_import.html:59
 msgid "Importing..."
@@ -782,11 +785,11 @@ msgstr "blucab - Passwort zurücksetzen"
 
 #: register/templates/register/password_reset.html:14
 msgid "Send Password Reset Email"
-msgstr ""
+msgstr "Sende E-Mail für Passwort Reset"
 
 #: register/templates/register/password_reset_complete.html:5
 msgid "blucab - Password Reset Complete"
-msgstr "blucab - Passwort reset abgeschlossen"
+msgstr "blucab - Passwort Reset abgeschlossen"
 
 #: register/templates/register/password_reset_complete.html:11
 msgid "Your password has been reset successfully!"
