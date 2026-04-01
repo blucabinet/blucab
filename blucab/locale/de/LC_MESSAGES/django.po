@@ -817,7 +817,7 @@ msgid ""
 "receive an email with instructions to reset your password."
 msgstr ""
 "Wenn die eingegebene E-Mail-Adresse einem aktiven Benutzerkonto zugeordnet ist, "
-"solltest du eine E-Mail mit Informationen zum zurücksetzen erhalten haben."
+"solltest du eine E-Mail mit Anweisungen zum Zurücksetzen des Passworts erhalten."
 
 #: register/templates/register/register.html:5
 msgid "blucab - Create an Account"
