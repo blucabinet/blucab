@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.contrib import messages
 from .models import UserSettings, MovieUserList, User, Movie
 from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
 from django.core.files.storage import FileSystemStorage
@@ -143,7 +144,7 @@ def csv_import(request):
             #Add to a scheduler TBD
             #ch.content_update()
         else:
-            uploaded_file_url = _("Error. Unknown CSV format.")
+            messages.error(request,_("Error. Unknown CSV format."))
 
         os.remove(os.path.join(settings.BASE_DIR, "import", filename))
         
