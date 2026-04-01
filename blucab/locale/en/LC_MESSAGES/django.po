@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 19:54+0000\n"
+"POT-Creation-Date: 2026-04-01 05:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/admin.py:10
+msgid "blucab site admin"
+msgstr ""
+
+#: main/admin.py:11
+msgid "blucab administration"
+msgstr ""
 
 #: main/models.py:11
 msgid "EAN"
@@ -258,7 +266,7 @@ msgstr ""
 #: main/templates/main/home.html:15 main/templates/main/settings_movie.html:35
 #: main/templates/main/settings_user.html:61
 #: main/templates/main/settings_user_movie.html:28
-#: register/templates/registration/login.html:15
+#: register/templates/registration/login.html:18
 msgid "Login"
 msgstr ""
 
@@ -358,7 +366,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: main/templates/main/base.html:169
+#: main/templates/main/base.html:177
 msgid "Visit"
 msgstr ""
 
@@ -383,7 +391,7 @@ msgstr ""
 
 #: main/templates/main/csv_import.html:40
 #: register/templates/register/change_password.html:23
-#: register/templates/register/change_password_done.html:14
+#: register/templates/register/change_password_done.html:13
 #: register/templates/register/delete_user_confirm.html:23
 msgid "Back to Settings"
 msgstr ""
@@ -637,6 +645,75 @@ msgstr ""
 msgid "DEBUG mode is activated! Not for production usage!"
 msgstr ""
 
+#: register/forms.py:9
+msgid "Email"
+msgstr ""
+
+#: register/forms.py:10
+msgid "Email confirmation"
+msgstr ""
+
+#: register/forms.py:12 register/forms.py:43
+msgid "Are you a human?"
+msgstr ""
+
+#: register/forms.py:27
+msgid "The Email confirmation does not match the Email."
+msgstr ""
+
+#: register/forms.py:38
+msgid "This email address is already used by another account."
+msgstr ""
+
+#: register/templates/email/account_activation.html:3
+#, python-format
+msgid "Hello %(username)s,"
+msgstr ""
+
+#: register/templates/email/account_activation.html:7
+msgid "Please click on the following link to activate your blucab account:"
+msgstr ""
+
+#: register/templates/email/account_activation.html:11
+msgid ""
+"This link is only valid for a limited time. If you did not register, you can "
+"ignore this email."
+msgstr ""
+
+#: register/templates/email/password_reset_email.html:2
+msgid "Hello"
+msgstr ""
+
+#: register/templates/email/password_reset_email.html:4
+msgid ""
+"\n"
+"Someone (hopefully you) requested a new password for your blucab account.\n"
+msgstr ""
+
+#: register/templates/email/password_reset_email.html:8
+msgid "To reset your password, please click the link below:"
+msgstr ""
+
+#: register/templates/email/password_reset_email.html:12
+msgid ""
+"\n"
+"If you didn't request this, you can safely ignore this email. Your password "
+"will stay as it is, and we'll just pretend this never happened.\n"
+msgstr ""
+
+#: register/templates/email/password_reset_email.html:16
+msgid "Best regards,"
+msgstr ""
+
+#: register/templates/email/password_reset_email.html:17
+msgid "Your blucab Team"
+msgstr ""
+
+#: register/templates/email/password_reset_subject.txt:2
+#, python-format
+msgid "[blucab] Password reset for your blucab account (%(username)s)"
+msgstr ""
+
 #: register/templates/register/change_password.html:5
 msgid "blucab - Change your password"
 msgstr ""
@@ -651,10 +728,6 @@ msgid "blucab - Changed your password"
 msgstr ""
 
 #: register/templates/register/change_password_done.html:12
-msgid "Password Change Successful"
-msgstr ""
-
-#: register/templates/register/change_password_done.html:13
 msgid "Your password has been changed successfully!"
 msgstr ""
 
@@ -696,11 +769,50 @@ msgstr ""
 msgid "The user has been deleted successfully!"
 msgstr ""
 
+#: register/templates/register/password_reset.html:5
+msgid "blucab - Password Reset"
+msgstr ""
+
+#: register/templates/register/password_reset.html:14
+msgid "Send Password Reset Email"
+msgstr ""
+
+#: register/templates/register/password_reset_complete.html:5
+msgid "blucab - Password Reset Complete"
+msgstr ""
+
+#: register/templates/register/password_reset_complete.html:11
+msgid "Your password has been reset successfully!"
+msgstr ""
+
+#: register/templates/register/password_reset_complete.html:12
+msgid "You can now <a href=\"/login\">login</a> with your new password."
+msgstr ""
+
+#: register/templates/register/password_reset_confirm.html:5
+msgid "blucab - Set new Password"
+msgstr ""
+
+#: register/templates/register/password_reset_confirm.html:14
+msgid "Save Password"
+msgstr ""
+
+#: register/templates/register/password_reset_done.html:5
+msgid "blucab - Password Reset Email Sent"
+msgstr ""
+
+#: register/templates/register/password_reset_done.html:11
+msgid ""
+"If the email address you entered is valid for an active account, you should "
+"receive an email with instructions to reset your password."
+msgstr ""
+
 #: register/templates/register/register.html:5
 msgid "blucab - Create an Account"
 msgstr ""
 
 #: register/templates/register/register.html:14
+#: register/templates/registration/login.html:15
 msgid "Register"
 msgstr ""
 
@@ -708,26 +820,44 @@ msgstr ""
 msgid "Login Here"
 msgstr ""
 
-#: register/templates/registration/login.html:14
+#: register/templates/registration/login.html:15
 msgid "Don't have an account?"
 msgstr ""
 
-#: register/templates/registration/login.html:14
-msgid "Create one"
+#: register/templates/registration/login.html:16
+msgid "Forgot your password?"
 msgstr ""
 
-#: register/templates/registration/login.html:14
-msgid "here"
+#: register/templates/registration/login.html:16
+msgid "Reset password"
 msgstr ""
 
 #: register/templates/registration/logout.html:5
 msgid "Logout Here"
 msgstr ""
 
-#: register/views.py:43
+#: register/views.py:36
+msgid "[blucab] Activate your blucab Account"
+msgstr ""
+
+#: register/views.py:47
+msgid ""
+"You should have received an email to confirm your email address and complete "
+"the registration."
+msgstr ""
+
+#: register/views.py:74
+msgid "Thank you for the confirmation. You can now log in."
+msgstr ""
+
+#: register/views.py:77
+msgid "The activation link is invalid or has expired!"
+msgstr ""
+
+#: register/views.py:87
 msgid "Your password was successfully updated!"
 msgstr ""
 
-#: register/views.py:46
+#: register/views.py:90
 msgid "Please correct the error below."
 msgstr ""

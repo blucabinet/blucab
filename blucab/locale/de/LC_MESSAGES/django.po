@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-26 19:53+0000\n"
+"POT-Creation-Date: 2026-04-01 05:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/admin.py:10
+msgid "blucab site admin"
+msgstr "blucab Seiten Administration"
+
+#: main/admin.py:11
+msgid "blucab administration"
+msgstr "blucab Administration"
 
 #: main/models.py:11
 msgid "EAN"
@@ -227,7 +235,6 @@ msgid "User Settings"
 msgstr "Benutzereinstellungen"
 
 #: main/templates/error/400.html:5
-#, fuzzy
 msgid "blucab - 400"
 msgstr "blucab - 400"
 
@@ -243,7 +250,6 @@ msgstr "Fehlerhafte Anfrage."
 
 #: main/templates/error/403.html:5
 #: main/templates/error/403_user_not_public.html:5
-#, fuzzy
 msgid "blucab - 403"
 msgstr "blucab - 403"
 
@@ -252,15 +258,15 @@ msgid "The requested page is forbidden."
 msgstr "Der Zugriff auf die angeforderte Seite ist nicht gestattet."
 
 #: main/templates/error/403.html:12
-msgid "Möglicherweise musst du dich"
-msgstr ""
+msgid "You might need to"
+msgstr "Möglicherweise musst du dich"
 
 #: main/templates/error/403.html:12 main/templates/main/add_movie.html:18
 #: main/templates/main/base.html:96 main/templates/main/csv_import.html:66
 #: main/templates/main/home.html:15 main/templates/main/settings_movie.html:35
 #: main/templates/main/settings_user.html:61
 #: main/templates/main/settings_user_movie.html:28
-#: register/templates/registration/login.html:15
+#: register/templates/registration/login.html:18
 msgid "Login"
 msgstr "Login"
 
@@ -269,7 +275,6 @@ msgid "The user is not public or not available."
 msgstr "Der Nutzer ist nicht öffentlich oder nicht verfügbar."
 
 #: main/templates/error/404.html:5
-#, fuzzy
 msgid "blucab - 404"
 msgstr "blucab - 404"
 
@@ -278,7 +283,6 @@ msgid "The requested page was not found."
 msgstr "Die angeforderte Seite wurde nicht gefunden."
 
 #: main/templates/error/500.html:5
-#, fuzzy
 msgid "blucab - 500"
 msgstr "blucab - 500"
 
@@ -287,7 +291,6 @@ msgid "Internal server error."
 msgstr "Interner Server Fehler."
 
 #: main/templates/legal/legal.html:5
-#, fuzzy
 msgid "blucab - Imprint"
 msgstr "blucab - Impressum"
 
@@ -300,8 +303,6 @@ msgid "Non commercial. Just for family and friends."
 msgstr "Nicht geschäftlich. Nur für Familie und Freunde."
 
 #: main/templates/legal/privacy.html:5
-#, fuzzy
-#| msgid "Privacy Policy"
 msgid "blucab - Privacy Policy"
 msgstr "blucab - Datenschutzerklärung"
 
@@ -324,7 +325,6 @@ msgid ""
 msgstr "Auf dieser Seite werden keine Daten gespeichert, außer denen, die der Nutzer bei der Erstellung seines Profils eingibt."
 
 #: main/templates/main/add_movie.html:5
-#, fuzzy
 msgid "blucab - Add Movie"
 msgstr "blucab - Film hinzufügen"
 
@@ -366,12 +366,11 @@ msgstr "Admin"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: main/templates/main/base.html:169
+#: main/templates/main/base.html:177
 msgid "Visit"
 msgstr "Besuche"
 
 #: main/templates/main/csv_import.html:5
-#, fuzzy
 msgid "blucab - Import"
 msgstr "blucab - Importieren"
 
@@ -392,7 +391,7 @@ msgstr "Importieren"
 
 #: main/templates/main/csv_import.html:40
 #: register/templates/register/change_password.html:23
-#: register/templates/register/change_password_done.html:14
+#: register/templates/register/change_password_done.html:13
 #: register/templates/register/delete_user_confirm.html:23
 msgid "Back to Settings"
 msgstr "Zurück zu den Einstellungen"
@@ -417,7 +416,6 @@ msgid "Welcome!"
 msgstr "Willkommen!"
 
 #: main/templates/main/home.html:5
-#, fuzzy
 msgid "blucab - Home"
 msgstr "blucab - Home"
 
@@ -431,7 +429,6 @@ msgstr "Willkommen zurück"
 
 #: main/templates/main/settings_movie.html:5
 #: main/templates/main/settings_user_movie.html:5
-#, fuzzy
 msgid "blucab - Movie Settings"
 msgstr "blucab - Film Einstellungen"
 
@@ -648,9 +645,82 @@ msgstr "Fehler. Unbekanntes CSV Format."
 msgid "DEBUG mode is activated! Not for production usage!"
 msgstr "DEBUG Modus ist aktiviert! Nicht für den produktiven Einsatz!"
 
+#: register/forms.py:9
+msgid "Email"
+msgstr "E-Mail"
+
+#: register/forms.py:10
+msgid "Email confirmation"
+msgstr "E-Mail Bestätigung"
+
+#: register/forms.py:12 register/forms.py:43
+msgid "Are you a human?"
+msgstr "Bist du ein Mensch?"
+
+#: register/forms.py:27
+msgid "The Email confirmation does not match the Email."
+msgstr "Die E-Mail Bestätigung entspricht nicht der eingegebenen E-Mail-Adresse."
+
+#: register/forms.py:38
+msgid "This email address is already used by another account."
+msgstr "Diese E-Mail-Adresse wird schon von einem anderen Benutzerkonto genutzt."
+
+#: register/templates/email/account_activation.html:3
+#, python-format
+msgid "Hello %(username)s,"
+msgstr "Hallo %(username)s,"
+
+#: register/templates/email/account_activation.html:7
+msgid "Please click on the following link to activate your blucab account:"
+msgstr "Bitte klicke auf den folgenden Link um dein blucab Benutzerkonto zu aktivieren:"
+
+#: register/templates/email/account_activation.html:11
+msgid ""
+"This link is only valid for a limited time. If you did not register, you can "
+"ignore this email."
+msgstr ""
+"Dieser Link ist nur für begrenzte Zeit gültig. Wenn du dich nicht registriert hast kannst du diese E-Mail ignorieren."
+
+#: register/templates/email/password_reset_email.html:2
+msgid "Hello"
+msgstr "Hallo"
+
+#: register/templates/email/password_reset_email.html:4
+msgid ""
+"\n"
+"Someone (hopefully you) requested a new password for your blucab account.\n"
+msgstr ""
+"\n"
+"Jemand (hoffentlich du) hat das Zurücksetzen des Passwortes deines blucab Benutzerkontos angefordert.\n"
+
+#: register/templates/email/password_reset_email.html:8
+msgid "To reset your password, please click the link below:"
+msgstr "Um dein Passwort zurückzusetzen klicke bitte den folgenden Link:"
+
+#: register/templates/email/password_reset_email.html:12
+msgid ""
+"\n"
+"If you didn't request this, you can safely ignore this email. Your password "
+"will stay as it is, and we'll just pretend this never happened.\n"
+msgstr ""
+"\n"
+"Falls du die Anfrage nicht gestellt hast kannst du diese E-Mail ignorieren."
+"Dein Passwort wird nicht geändert und wir nehmen an, dass das hier niemals passiert ist.\n"
+
+#: register/templates/email/password_reset_email.html:16
+msgid "Best regards,"
+msgstr "Viele Grüße,"
+
+#: register/templates/email/password_reset_email.html:17
+msgid "Your blucab Team"
+msgstr "Dein blucab Team"
+
+#: register/templates/email/password_reset_subject.txt:2
+#, python-format
+msgid "[blucab] Password reset for your blucab account (%(username)s)"
+msgstr "[blucab] Passwort reset für dein blucab Benutzerkonto (%(username)s)"
+
 #: register/templates/register/change_password.html:5
-#, fuzzy
-#| msgid "Change Password"
 msgid "blucab - Change your password"
 msgstr "blucab - Passwort ändern"
 
@@ -660,22 +730,14 @@ msgid "Password Change"
 msgstr "Passwort ändern"
 
 #: register/templates/register/change_password_done.html:5
-#, fuzzy
-#| msgid "Change Password"
 msgid "blucab - Changed your password"
 msgstr "blucab - Passwort geändert"
 
 #: register/templates/register/change_password_done.html:12
-msgid "Password Change Successful"
-msgstr "Passwort erfolgreich geändert"
-
-#: register/templates/register/change_password_done.html:13
 msgid "Your password has been changed successfully!"
 msgstr "Dein Passwort wurde erfolgreich geändert!"
 
 #: register/templates/register/delete_user_confirm.html:5
-#, fuzzy
-#| msgid "blucab - User Settings"
 msgid "blucab - User deletion"
 msgstr "blucab - Benutzereinstellungen"
 
@@ -699,8 +761,6 @@ msgid "Yes, Delete"
 msgstr "Ja, löschen"
 
 #: register/templates/register/delete_user_done.html:5
-#, fuzzy
-#| msgid "blucab - User Settings"
 msgid "blucab - User deleted"
 msgstr "blucab - Benutzer gelöscht"
 
@@ -716,46 +776,98 @@ msgstr "Schade, dass du gegangen bist 😢"
 msgid "The user has been deleted successfully!"
 msgstr "Das Benutzerkonto wurde erfolgreich gelöscht!"
 
+#: register/templates/register/password_reset.html:5
+msgid "blucab - Password Reset"
+msgstr "blucab - Passwort zurücksetzen"
+
+#: register/templates/register/password_reset.html:14
+msgid "Send Password Reset Email"
+msgstr ""
+
+#: register/templates/register/password_reset_complete.html:5
+msgid "blucab - Password Reset Complete"
+msgstr "blucab - Passwort reset abgeschlossen"
+
+#: register/templates/register/password_reset_complete.html:11
+msgid "Your password has been reset successfully!"
+msgstr "Dein Passwort wurde erfolgreich zurückgesetzt!"
+
+#: register/templates/register/password_reset_complete.html:12
+msgid "You can now <a href=\"/login\">login</a> with your new password."
+msgstr "Du kannst dich jetzt mit deinem neuen Passwort <a href=\"/login\">anmelden</a>."
+
+#: register/templates/register/password_reset_confirm.html:5
+msgid "blucab - Set new Password"
+msgstr "blucab - Passwort ändern"
+
+#: register/templates/register/password_reset_confirm.html:14
+msgid "Save Password"
+msgstr "Passwort speichern"
+
+#: register/templates/register/password_reset_done.html:5
+msgid "blucab - Password Reset Email Sent"
+msgstr "blucab - Reset E-Mail versendet"
+
+#: register/templates/register/password_reset_done.html:11
+msgid ""
+"If the email address you entered is valid for an active account, you should "
+"receive an email with instructions to reset your password."
+msgstr ""
+"Wenn die eingegebene E-Mail-Adresse einem aktiven Benutzerkonto zugeordnet ist,"
+"solltest du eine E-Mail mit Informationen zum zurücksetzen erhalten haben."
+
 #: register/templates/register/register.html:5
-#, fuzzy
-#| msgid "Delete Account"
 msgid "blucab - Create an Account"
 msgstr "blucab - Benutzerkonto erstellen"
 
 #: register/templates/register/register.html:14
-#, fuzzy
-#| msgid "Regisseur"
+#: register/templates/registration/login.html:15
 msgid "Register"
 msgstr "Registrieren"
 
 #: register/templates/registration/login.html:5
-#, fuzzy
-#| msgid "Login"
 msgid "Login Here"
 msgstr "Hier anmelden"
 
-#: register/templates/registration/login.html:14
+#: register/templates/registration/login.html:15
 msgid "Don't have an account?"
-msgstr "Du hast kein Benutzerkonto?"
+msgstr "Du hast noch kein Benutzerkonto?"
 
-#: register/templates/registration/login.html:14
-msgid "Create one"
-msgstr "Erstelle eins"
+#: register/templates/registration/login.html:16
+msgid "Forgot your password?"
+msgstr "Du hast dein Passwort vergessen?"
 
-#: register/templates/registration/login.html:14
-msgid "here"
-msgstr "hier"
+#: register/templates/registration/login.html:16
+msgid "Reset password"
+msgstr "Passwort zurücksetzen"
 
 #: register/templates/registration/logout.html:5
-#, fuzzy
-#| msgid "Logout"
 msgid "Logout Here"
 msgstr "Hier abmelden"
 
-#: register/views.py:43
+#: register/views.py:36
+msgid "[blucab] Activate your blucab Account"
+msgstr "[blucab] Aktiviere dein blucab Benutzerkonto"
+
+#: register/views.py:47
+msgid ""
+"You should have received an email to confirm your email address and complete "
+"the registration."
+msgstr ""
+"Du solltest eine E-Mail erhalten haben, um an deine E-Mail-Adresse zu bestätigen und die Registrierung abzuschließen."
+
+#: register/views.py:74
+msgid "Thank you for the confirmation. You can now log in."
+msgstr "Danke für die Bestätigung. Du kannst dich jetzt einloggen."
+
+#: register/views.py:77
+msgid "The activation link is invalid or has expired!"
+msgstr "Der Aktivierungslink ist ungültig oder abgelaufen!"
+
+#: register/views.py:87
 msgid "Your password was successfully updated!"
 msgstr "Dein Passwort wurde erfolgreich aktualisiert!"
 
-#: register/views.py:46
+#: register/views.py:90
 msgid "Please correct the error below."
 msgstr "Bitte den Fehler unten korrigieren."
