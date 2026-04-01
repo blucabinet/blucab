@@ -721,7 +721,7 @@ msgstr "Dein blucab Team"
 #: register/templates/email/password_reset_subject.txt:2
 #, python-format
 msgid "[blucab] Password reset for your blucab account (%(username)s)"
-msgstr "[blucab] Passwort reset für dein blucab Benutzerkonto (%(username)s)"
+msgstr "[blucab] Passwort zurücksetzen für dein blucab Benutzerkonto (%(username)s)"
 
 #: register/templates/register/change_password.html:5
 msgid "blucab - Change your password"
@@ -785,11 +785,11 @@ msgstr "blucab - Passwort zurücksetzen"
 
 #: register/templates/register/password_reset.html:14
 msgid "Send Password Reset Email"
-msgstr "Sende E-Mail für Passwort Reset"
+msgstr "E-Mail zum Zurücksetzen senden"
 
 #: register/templates/register/password_reset_complete.html:5
 msgid "blucab - Password Reset Complete"
-msgstr "blucab - Passwort Reset abgeschlossen"
+msgstr "blucab - Passwort zurücksetzen abgeschlossen"
 
 #: register/templates/register/password_reset_complete.html:11
 msgid "Your password has been reset successfully!"
@@ -809,7 +809,7 @@ msgstr "Passwort speichern"
 
 #: register/templates/register/password_reset_done.html:5
 msgid "blucab - Password Reset Email Sent"
-msgstr "blucab - Reset E-Mail versendet"
+msgstr "blucab - E-Mail zum Zurücksetzen des Passworts gesendet"
 
 #: register/templates/register/password_reset_done.html:11
 msgid ""
