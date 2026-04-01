@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from captcha.fields import CaptchaField
 
 
