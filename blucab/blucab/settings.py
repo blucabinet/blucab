@@ -119,6 +119,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CAPTCHA_TEST_MODE = False
+CAPTCHA_IMAGE_SIZE = (160, 60)
+CAPTCHA_LETTER_ROTATION = (-35, 35)
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_arcs', 'captcha.helpers.noise_dots')
+CAPTCHA_LENGTH = 6
+CAPTCHA_FONT_SIZE = 25
+CAPTCHA_TIMEOUT = 5  # minutes
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",),
 }
