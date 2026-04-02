@@ -201,7 +201,6 @@ def user_settings(request):
 
         if form.is_valid():
             for field, value in form.cleaned_data.items():
-                print(field)
                 user_settings_model.__dict__[field] = value
             user_settings_model.save()
     else:
@@ -233,7 +232,6 @@ def movie_settings(request, movie_id):
 
         if form.is_valid():
             for field, value in form.cleaned_data.items():
-                print(field)
                 movie_model.__dict__[field] = value
             movie_model.save()
             return redirect("view")
@@ -261,7 +259,6 @@ def user_movie_settings(request, movie_id):
 
         if form.is_valid():
             for field, value in form.cleaned_data.items():
-                print(field)
                 user_movie_model.__dict__[field] = value
             user_movie_model.save()
             return redirect("view")
