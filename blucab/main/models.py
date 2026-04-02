@@ -67,7 +67,7 @@ class MovieUserList(models.Model):
     )
     viewed = models.BooleanField(default=False, verbose_name=_("Viewed"))
     rented = models.BooleanField(default=False, verbose_name=_("Rented"))
-    rented_to = models.CharField(max_length=100, blank=True, verbose_name=_("Rented to"))
+    rented_to = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Rented to"))
     date_added = models.DateField(default=timezone.now, verbose_name=_("Date added"))
     price = models.DecimalField(default=0, max_digits=6, decimal_places=2, verbose_name=_("Price"))
     archived = models.BooleanField(default=False, verbose_name=_("Archived"))
