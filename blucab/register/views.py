@@ -37,6 +37,7 @@ def register(request):
                 message = render_to_string('email/account_activation.html', {
                     'user': user,
                     'domain': current_site.domain,
+                    'protocol': 'https:' if request.is_secure() else 'http:',
                     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                     'token': default_token_generator.make_token(user),
                 })
@@ -107,9 +108,26 @@ def delete_user(request):
     if request.method == "GET":
         return render(request, "register/delete_user_confirm.html", {})
     elif request.method == "POST":
+        if EMAIL_ENABLED:
+            mail_subject = _("[blucab] blucab Account deleted")
+            message = render_to_string(
+                "email/account_deletion.html",
+                {
+                    "user": user,
+                },
+            )
+            to_email = user.email
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+
+            messages.success(
+                request, _("A confirmation email has been sent to your email address.")
+            )
+
         user_object = User.objects.get(username=user)
         user_object.delete()
         update_session_auth_hash(request, user)
+
         return redirect("delete_user_done")
 
 

@@ -1,0 +1,13 @@
+{% load i18n %}
+{% trans "Hello" %} {{ user.username }},
+
+{% blocktrans %}
+Sad to see you go!
+Your blucab account has been deleted. All your data has been removed and cannot be recovered.
+
+This email was sent right before the account deletion was completed.
+We do not know your email address anymore.
+{% endblocktrans %}
+
+{% trans "Best regards," %}
+{% trans "Your blucab Team" %}
