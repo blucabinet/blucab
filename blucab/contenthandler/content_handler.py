@@ -25,23 +25,31 @@ class handler:
     def __init__(self):
         pass
 
-    def _check_int_string(self, input: str) -> int:
-        if input == "":
-            return None
-        else:
-            return int(input)
+    def _check_int_string(self, input: str, default=None) -> int:
+        if not input or str(input).strip() == "":
+            return default
 
-    def _check_bool_string(self, input: str) -> bool:
-        if input == "":
-            return None
-        else:
-            return bool(input)
+        try:
+            return int(float(input))
+        except (ValueError, TypeError):
+            return default
 
-    def _check_string(self, input: str) -> str:
-        if input == "":
-            return None
-        else:
-            return str(input)
+    def _check_bool_string(self, input: str, default=False) -> bool:
+        if not input or str(input).strip() == "":
+            return default
+
+        value = str(input).strip().lower()
+        if value in ["true", "1", "t", "y", "yes"]:
+            return True
+        if value in ["false", "0", "f", "n", "no"]:
+            return False
+        return default
+
+    def _check_string(self, input: str, default=None) -> str:
+        if not input or str(input).strip() == "":
+            return default
+
+        return str(input).strip()
 
     def csv_importer(self, filename: str, user) -> bool:
         with open(
