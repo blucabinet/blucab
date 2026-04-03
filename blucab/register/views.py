@@ -62,6 +62,7 @@ def register(request):
 
     return render(request, "register/register.html", {"form": form})
 
+
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -80,22 +81,32 @@ def activate(request, uidb64, token):
 
 
 def change_password(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return render(request, "error/403.html", {})
+    
     if request.method == "POST":
-        form = ChangePasswordForm(request.user, request.POST)
+        form = ChangePasswordForm(user, request.POST)
         if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
+            user_form = form.save()
+            update_session_auth_hash(request, user_form)
             messages.success(request, _("Your password was successfully updated!"))
             return redirect("change_password_done")
         else:
             messages.error(request, _("Please correct the error below."))
     else:
-        form = ChangePasswordForm(request.user)
+        form = ChangePasswordForm(user)
 
     return render(request, "register/change_password.html", {"form": form})
 
 
 def change_password_done(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return render(request, "error/403.html", {})
+    
     return render(request, "register/change_password_done.html", {})
 
 
