@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import UserSettings, MovieUserList, User, Movie
 from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
 from django.core.files.storage import FileSystemStorage
