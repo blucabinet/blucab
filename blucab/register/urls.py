@@ -4,7 +4,7 @@ from . import views
 from .forms import ResetPasswordForm
 
 urlpatterns = [
-    path('captcha/', include('captcha.urls')),
+    path("captcha/", include("captcha.urls")),
     path("user/register/", views.register, name="register"),
     path("user/activate/<uidb64>/<token>/", views.activate, name="activate"),
     path("user/password_change/", views.change_password, name="change_password"),
@@ -20,8 +20,8 @@ urlpatterns = [
         auth_views.PasswordResetView.as_view(
             form_class=ResetPasswordForm,
             template_name="register/password_reset.html",
-            email_template_name='email/password_reset_email.html',
-            subject_template_name='email/password_reset_subject.txt'
+            email_template_name="email/password_reset_email.html",
+            subject_template_name="email/password_reset_subject.txt",
         ),
         name="password_reset",
     ),
@@ -45,5 +45,11 @@ urlpatterns = [
             template_name="register/password_reset_complete.html"
         ),
         name="password_reset_complete",
+    ),
+    path("user/email_change/", views.change_email_request, name="change_email"),
+    path(
+        "user/email_change/confirm/<uidb64>/<token>/<new_email_b64>/",
+        views.change_email_confirm,
+        name="change_email_confirm",
     ),
 ]

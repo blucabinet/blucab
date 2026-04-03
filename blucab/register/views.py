@@ -11,7 +11,8 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
 from django.utils.encoding import force_bytes, force_str
-from .forms import RegisterForm, ChangePasswordForm
+from .forms import RegisterForm, ChangePasswordForm, EmailChangeForm
+from .tokens import email_change_token_generator
 
 from environs import Env
 env = Env()
@@ -137,3 +138,57 @@ def delete_user(request):
 
 def delete_user_done(request):
     return render(request, "register/delete_user_done.html", {})
+
+
+@login_required
+def change_email_request(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = EmailChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            if EMAIL_ENABLED:
+                new_email = form.cleaned_data.get('email')
+                
+                current_site = get_current_site(request)
+                mail_subject = _("[blucab] Verify your new email address")
+                message = render_to_string('email/email_change.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'protocol': 'https:' if request.is_secure() else 'http:',
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': email_change_token_generator.make_token(user),
+                    'new_email': urlsafe_base64_encode(force_bytes(new_email)),
+                })
+                email = EmailMessage(mail_subject, message, to=[new_email])
+                email.send()
+
+                messages.info(request, _("A confirmation email has been sent to your new email address. Please confirm the change by clicking the link in the email."))
+                return redirect('settings')
+            else:
+                form.save()
+                messages.success(request, _("Your email address has been updated successfully."))
+                return redirect('settings')
+    else:
+        form = EmailChangeForm(instance=request.user)
+
+    return render(request, 'register/change_email.html', {'form': form})
+
+
+def change_email_confirm(request, uidb64, token, new_email_b64):
+    print("EMAIL CONFIRM CALLED")
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+        new_email = force_str(urlsafe_base64_decode(new_email_b64))
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and email_change_token_generator.check_token(user, token):
+        user.email = new_email
+        user.save()
+        messages.success(request, _("Your email address has been updated successfully."))
+        return redirect('settings')
+    else:
+        messages.error(request, _("The activation link is invalid or has expired!"))
+        return redirect('settings')

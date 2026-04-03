@@ -47,3 +47,20 @@ class ChangePasswordForm(PasswordChangeForm):
     class Meta:
         model = User
         fields = ["old_password", "password1", "password2"]
+
+
+class EmailChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email']
+
+    def clean_email(self):
+        """
+        Check if the email is already used by another account.
+        The check is case-insensitive."
+        """
+        email = self.cleaned_data.get('email').lower()
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(_("This email address is already used by another account."))
+        return email
+

@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% blocktrans with username=user.username trimmed %}
+Hello {{ username }},
+{% endblocktrans %}
+
+{% trans "Please click on the following link to confirm this new email address for your blucab account:" %}
+
+{{ protocol }}//{{ domain }}{% url 'change_email_confirm' uidb64=uid token=token new_email_b64=new_email %}
+
+{% trans "This link is only valid for a limited time. If you did not register, you can ignore this email." %}
+
+{% trans "Best regards," %}
+{% trans "Your blucab Team" %}
