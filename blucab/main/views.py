@@ -86,11 +86,9 @@ def cab_uname(request, uname):
     )
 
 
+@login_required
 def view(request):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", status=403)
 
     usersettings = user.user_profile
     movieuserlist = MovieUserList.objects.filter(user=user)
@@ -113,11 +111,9 @@ def view(request):
     )
 
 
+@login_required
 def csv_import(request):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", status=403)
 
     if request.method == "POST":
         file = request.FILES.get("myfile", None)
@@ -157,12 +153,10 @@ def csv_import(request):
     return render(request, "main/csv_import.html", {})
 
 
+@login_required
 def csv_export(request):
     user = request.user
     user_settings_model = UserSettings.objects.get(user=user)
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", status=403)
 
     ch = handler()
     data = ch.csv_exporter(user=user)
@@ -179,21 +173,15 @@ def home(request):
     else:
         return render(request, "main/home.html", {})
 
+
+@login_required
 def add_movie(request):
-    user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", status=403)
-
     return render(request, "main/add_movie.html", {})
 
 
+@login_required
 def user_settings(request):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", status=403)
-
     user_settings_model = UserSettings.objects.get(user=user)
 
     if request.method == "POST":
@@ -243,11 +231,9 @@ def movie_settings(request, movie_id):
     )
 
 
+@login_required
 def user_movie_settings(request, movie_id):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", status=403)
 
     try:
         user_movie_model = MovieUserList.objects.get(user=user, movie=movie_id)
