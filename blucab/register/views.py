@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -80,11 +81,9 @@ def activate(request, uidb64, token):
         return redirect('register')
 
 
+@login_required
 def change_password(request):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", {})
     
     if request.method == "POST":
         form = ChangePasswordForm(user, request.POST)
@@ -101,20 +100,14 @@ def change_password(request):
     return render(request, "register/change_password.html", {"form": form})
 
 
-def change_password_done(request):
-    user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", {})
-    
+@login_required
+def change_password_done(request):    
     return render(request, "register/change_password_done.html", {})
 
 
+@login_required
 def delete_user(request):
     user = request.user
-
-    if not user.is_authenticated:
-        return render(request, "error/403.html", {})
 
     if request.method == "GET":
         return render(request, "register/delete_user_confirm.html", {})
