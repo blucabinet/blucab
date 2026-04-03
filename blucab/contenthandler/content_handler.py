@@ -63,14 +63,13 @@ class handler:
                     os.path.join(settings.BASE_DIR, "import", filename),
                     encoding=CSV_ENCODING_FLICKRACK,
                 ) as csv_file:
-                    reader = csv.reader(csv_file, delimiter=",")
-                    header = next(reader, None)
+                    reader = csv.DictReader(csv_file, delimiter=",")
 
                     for row in reader:
-                        csv_ean = row[1]
-                        csv_rating = self._check_int_string(row[13])
-                        csv_fsk_nbr = row[8]
-                        
+                        csv_ean = row["EAN"]
+                        csv_rating = self._check_int_string(row["Bewertung"])
+                        csv_fsk_nbr = row["FSK"]
+
                         try:
                             fsk_nbr = re.findall(r"\b\d+\b", csv_fsk_nbr)[0]
                         except:
@@ -82,18 +81,18 @@ class handler:
                         if not Movie.objects.filter(ean=csv_ean).exists():
                             m = Movie(
                                 ean=csv_ean,
-                                asin=self._check_string(row[2]),
-                                title=self._check_string(row[3]),
-                                title_clean=self._check_string(row[4]),
-                                format=self._check_string(row[5]),
-                                release_year=self._check_int_string(row[6]),
-                                runtime=self._check_int_string(row[7]),
-                                fsk=self._check_string(row[8]),
+                                asin=self._check_string(row.get("ASIN")),
+                                title=self._check_string(row.get("Titel")),
+                                title_clean=self._check_string(row.get("Titel ohne Zusatz")),
+                                format=self._check_string(row.get("Format")),
+                                release_year=self._check_int_string(row.get("Release")),
+                                runtime=self._check_int_string(row.get("Laufzeit")),
+                                fsk=csv_fsk_nbr,
                                 fsk_nbr=fsk_nbr,
-                                content=self._check_string(row[9]),
-                                actor=self._check_string(row[10]),
-                                regisseur=self._check_string(row[11]),
-                                studio=self._check_string(row[12]),
+                                content=self._check_string(row.get("Inhalt")),
+                                actor=self._check_string(row.get("Schauspieler")),
+                                regisseur=self._check_string(row.get("Regisseur/e")),
+                                studio=self._check_string(row.get("Studio")),
                                 needs_parsing=True,
                             )
 
@@ -117,45 +116,45 @@ class handler:
                     os.path.join(settings.BASE_DIR, "import", filename),
                     encoding=CSV_ENCODING_BLUCAB,
                 ) as csv_file:
-                    reader = csv.reader(csv_file, delimiter=",")
-                    header = next(reader, None)
+                    reader = csv.DictReader(csv_file, delimiter=",")
 
                     for row in reader:
-                        csv_ean = row[8]
-                        csv_activated = self._check_bool_string(row[1])
-                        csv_rating = self._check_int_string(row[2])
-                        csv_viewed = self._check_bool_string(row[3])
-                        csv_rented = self._check_bool_string(row[4])
-                        csv_rented_to = self._check_string(row[5])
-                        csv_date_added = self._check_string(row[6])
-                        csv_price = self._check_string(row[7])
+                        csv_ean = row["ean"]
+                        csv_activated = self._check_bool_string(row.get("activated"))
+                        csv_rating = self._check_int_string(row.get("rating"))
+                        csv_viewed = self._check_bool_string(row.get("viewed"))
+                        csv_rented = self._check_bool_string(row.get("rented"))
+                        csv_rented_to = self._check_string(row.get("rented_to"))
+                        csv_date_added = self._check_string(row.get("date_added"))
+                        csv_price = self._check_string(row.get("price"))
+                        csv_archived = self._check_bool_string(row.get("archived"))
 
                         if not Movie.objects.filter(ean=csv_ean).exists():
                             m = Movie(
                                 ean=csv_ean,
-                                asin=self._check_string(row[9]),
-                                title=self._check_string(row[10]),
-                                title_clean=self._check_string(row[11]),
-                                format=self._check_string(row[12]),
-                                release_year=self._check_int_string(row[13]),
-                                runtime=self._check_int_string(row[14]),
-                                fsk=self._check_string(row[15]),
-                                fsk_nbr=self._check_int_string(row[16]),
-                                content=self._check_string(row[17]),
-                                actor=self._check_string(row[18]),
-                                regisseur=self._check_string(row[19]),
-                                studio=self._check_string(row[20]),
-                                genre=self._check_string(row[21]),
-                                language=self._check_string(row[22]),
-                                disc_count=self._check_int_string(row[23]),
-                                movie_count=self._check_int_string(row[24]),
-                                season_count=self._check_int_string(row[25]),
-                                episode_count=self._check_int_string(row[26]),
-                                is_series=self._check_bool_string(row[27]),
-                                is_bluray_uhd=self._check_bool_string(row[28]),
-                                picture_url_original=self._check_string(row[29]),
-                                picture_url_original_hd=self._check_string(row[30]),
-                                imdb_id=self._check_string(row[31]),
+                                asin=self._check_string(row.get("asin")),
+                                title=self._check_string(row.get("title")),
+                                title_clean=self._check_string(row.get("title_clean")),
+                                format=self._check_string(row.get("format")),
+                                release_year=self._check_int_string(row.get("release_year")),
+                                runtime=self._check_int_string(row.get("runtime")),
+                                fsk=self._check_string(row.get("fsk")),
+                                fsk_nbr=self._check_int_string(row.get("fsk_nbr")),
+                                content=self._check_string(row.get("content")),
+                                actor=self._check_string(row.get("actor")),
+                                regisseur=self._check_string(row.get("regisseur")),
+                                studio=self._check_string(row.get("studio")),
+                                genre=self._check_string(row.get("genre")),
+                                language=self._check_string(row.get("language")),
+                                disc_count=self._check_int_string(row.get("disc_count")),
+                                movie_count=self._check_int_string(row.get("movie_count")),
+                                season_count=self._check_int_string(row.get("season_count")),
+                                episode_count=self._check_int_string(row.get("episode_count")),
+                                is_series=self._check_bool_string(row.get("is_series")),
+                                is_bluray_uhd=self._check_bool_string(row.get("is_bluray_uhd")),
+                                picture_url_original=self._check_string(row.get("picture_url_original")),
+                                picture_url_original_hd=self._check_string(row.get("picture_url_original_hd")),
+                                imdb_id=self._check_string(row.get("imdb_id")),
                                 needs_parsing=False,
                             )
 
