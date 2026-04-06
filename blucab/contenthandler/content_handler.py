@@ -162,21 +162,23 @@ class handler:
 
                         db_movie = Movie.objects.get(ean=csv_ean)
 
-                        if not MovieUserList.objects.filter(
-                            user=user, movie=db_movie
-                        ).exists():
-                            list_item = MovieUserList(
-                                user=user,
-                                movie=db_movie,
-                                activated=csv_activated,
-                                rating=csv_rating,
-                                viewed=csv_viewed,
-                                rented=csv_rented,
-                                rented_to=csv_rented_to,
-                                date_added=csv_date_added,
-                                price=csv_price,
-                            )
-                            list_item.save()
+                        list_item, created = MovieUserList.objects.update_or_create(
+                            user=user, 
+                            movie=db_movie,
+                            
+                            defaults={
+                                'activated': csv_activated,
+                                'rating': csv_rating,
+                                'viewed': csv_viewed,
+                                'rented': csv_rented,
+                                'rented_to': csv_rented_to,
+                                'date_added': csv_date_added,
+                                'price': csv_price,
+                                'archived': csv_archived,
+                            }
+                        )
+
+                        print(f"{'Erstellt' if created else 'Aktualisiert'}: {db_movie.title}")
 
                     return True
             else:
