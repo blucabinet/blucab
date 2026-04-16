@@ -56,6 +56,21 @@ class Movie(models.Model):
         return self.title_clean
 
 
+class UserCabinet(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="usercabinetlist", verbose_name=_("User")
+    )
+    name = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Cabinet Name"))
+
+
+    class Meta:
+        verbose_name = _("Cabinet")
+        verbose_name_plural = _("Cabinets")
+
+    def __str__(self):
+        return self.name or _("Unnamed Cabinet")
+
+
 class MovieUserList(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="movieuserlist", null=True, verbose_name=_("User")
@@ -73,7 +88,7 @@ class MovieUserList(models.Model):
     archived = models.BooleanField(default=False, verbose_name=_("Archived"))
     url_custom = models.CharField(max_length=1024, blank=True, null=True, verbose_name=_("Custom URL"))
     url_name = models.CharField(max_length=256, blank=True, null=True, verbose_name=_("Custom URL Name"))
-    #cabinet = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Cabinet Name"))
+    cabinet = models.ForeignKey(UserCabinet, on_delete=models.SET_NULL, blank=True, null=True,)
     #compartment = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Compartment Name"))
 
 
@@ -86,10 +101,7 @@ class MovieUserList(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        str = (
-            self.user.username + ": (" + self.movie.ean + ") " + self.movie.title_clean
-        )
-        return str
+        return f"{self.user.username}: ({self.movie.ean}) {self.movie.title_clean}"
 
 
 class UserSettings(models.Model):
