@@ -71,6 +71,11 @@ class MovieUserList(models.Model):
     date_added = models.DateField(default=timezone.now, verbose_name=_("Date added"))
     price = models.DecimalField(default=0, max_digits=6, decimal_places=2, verbose_name=_("Price"))
     archived = models.BooleanField(default=False, verbose_name=_("Archived"))
+    url_custom = models.CharField(max_length=1024, blank=True, null=True, verbose_name=_("Custom URL"))
+    url_name = models.CharField(max_length=256, blank=True, null=True, verbose_name=_("Custom URL Name"))
+    #cabinet = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Cabinet Name"))
+    #compartment = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Compartment Name"))
+
 
     class Meta:
         unique_together = (
