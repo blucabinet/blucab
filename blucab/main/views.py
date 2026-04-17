@@ -250,7 +250,7 @@ def user_movie_settings(request, movie_id):
             user_movie_model.save()
             return redirect("view")
     else:
-        form = UpdateMovieUserList(instance=user_movie_model)
+        form = UpdateMovieUserList(instance=user_movie_model, user=user)
 
     return render(
         request,

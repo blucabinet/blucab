@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserSettings, MovieUserList, Movie
+from .models import UserCabinet, UserSettings, MovieUserList, Movie
 
 
 class UpdateUserSettings(forms.ModelForm):
@@ -67,8 +67,18 @@ class UpdateMovieUserList(forms.ModelForm):
             "rented_to",
             "date_added",
             "price",
+            "url_custom",
+            "url_name",
+            "cabinet",
         ]
         exclude = [
             "user",
             "movie",
         ]
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if user:
+            self.fields['cabinet'].queryset = UserCabinet.objects.filter(user=user)

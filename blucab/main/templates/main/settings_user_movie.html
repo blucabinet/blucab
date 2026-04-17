@@ -11,9 +11,15 @@
 <h1>{{movie.title_clean}}</h1>
 
 {% if user.is_authenticated %}
+    {% load static %}
     <div>{% trans "Let's check your movie" %} {{ user.get_username }}!</div>
     <br>
-    
+    {% if movie.picture_available %}
+        <img src="{% get_static_prefix %}main/cover/{{movie.ean}}.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+    {% else %}
+        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+    {% endif %}
+    <br><br>
     <div class="card" style="max-width: 28rem;">
         <div class="card-body">
             <form method="post" class="form-group">
