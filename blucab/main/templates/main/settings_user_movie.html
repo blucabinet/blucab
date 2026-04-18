@@ -24,7 +24,27 @@
         <div class="card-body">
             <form method="post" class="form-group">
                 {% csrf_token %}
-                {{ form|crispy }}
+                {% for field in form %}
+                    {% if field.name == 'cabinet' %}
+                        <div class="d-flex align-items-end mb-3">
+                            <div class="flex-grow-1">
+                                {{ field|as_crispy_field }}
+                            </div>
+                            <div class="ms-2" style="margin-bottom: 1rem;">
+                                <a href="{% url 'cabinet_add' %}" class="btn btn-outline-success" title="{% trans 'Add new cabinet' %}">
+                                    <b>+</b>
+                                </a>
+                            </div>
+                            <div class="ms-2" style="margin-bottom: 1rem;">
+                                <a href="{% url 'cabinet_delete' %}" class="btn btn-outline-danger" title="{% trans 'Delete cabinet' %}">
+                                    <b>-</b>
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ field|as_crispy_field }}
+                    {% endif %}
+                {% endfor %}
                 <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
             </form>
         </div>
