@@ -199,7 +199,7 @@ def user_settings(request):
     user_settings_model = UserSettings.objects.get(user=user)
 
     if request.method == "POST":
-        form = UpdateUserSettings(request.POST)
+        form = UpdateUserSettings(request.POST, instance=user_settings_model)
 
         if form.is_valid():
             for field, value in form.cleaned_data.items():
@@ -230,7 +230,7 @@ def movie_settings(request, movie_id):
         return render(request, "error/404.html", status=404)
 
     if request.method == "POST":
-        form = UpdateMovie(request.POST)
+        form = UpdateMovie(request.POST, instance=movie_model)
 
         if form.is_valid():
             for field, value in form.cleaned_data.items():
@@ -255,7 +255,7 @@ def user_movie_settings(request, movie_id):
         return render(request, "error/404.html", status=404)
 
     if request.method == "POST":
-        form = UpdateMovieUserList(request.POST)
+        form = UpdateMovieUserList(request.POST, instance=user_movie_model, user=user)
 
         if form.is_valid():
             for field, value in form.cleaned_data.items():
