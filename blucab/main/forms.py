@@ -1,5 +1,6 @@
 from django import forms
 from .models import UserCabinet, UserSettings, MovieUserList, Movie
+from django.utils.translation import gettext as _
 
 
 class UpdateUserSettings(forms.ModelForm):
@@ -75,10 +76,53 @@ class UpdateMovieUserList(forms.ModelForm):
             "user",
             "movie",
         ]
-    
+
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
+        if user:
+            self.fields["cabinet"].queryset = UserCabinet.objects.filter(user=user)
+
+
+class CabinetAddForm(forms.ModelForm):
+    class Meta:
+        model = UserCabinet
+        fields = ["name"]
+
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": _("e.g. Living Room Cabinet"),
+                }
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+
+        if UserCabinet.objects.filter(user=self.user, name=name).exists():
+            raise forms.ValidationError(_("You already have a cabinet with this name."))
+
+        return name
+
+
+class CabinetDeleteForm(forms.Form):
+    cabinet = forms.ModelChoiceField(
+        queryset=UserCabinet.objects.none(),
+        label=_("Cabinet to delete"),
+        empty_label=_("--- Choose a cabinet ---"),
+        widget=forms.Select(attrs={"class": "form-select"})
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         
-        if user:
-            self.fields['cabinet'].queryset = UserCabinet.objects.filter(user=user)
+        if self.user:
+            self.fields['cabinet'].queryset = UserCabinet.objects.filter(user=self.user)

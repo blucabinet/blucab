@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import UserSettings, MovieUserList, User, Movie
-from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView
+from .models import UserSettings, MovieUserList, User, Movie, UserCabinet
+from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie, CabinetAddForm, CabinetDeleteForm
 
 import os
 from environs import Env
@@ -19,6 +22,7 @@ env = Env()
 env.read_env()
 
 DEBUG = env.bool("DEBUG", False)
+
 
 # Create your views here.
 def handler_400(request, exception):
@@ -61,7 +65,9 @@ def cab_uname(request, uname):
 
     movieuserlist = MovieUserList.objects.filter(user=user_id)
     count_dvd = MovieUserList.objects.filter(user=user_id, movie__format="DVD").count()
-    count_bd = MovieUserList.objects.filter(user=user_id, movie__format="Blu-Ray").count()
+    count_bd = MovieUserList.objects.filter(
+        user=user_id, movie__format="Blu-Ray"
+    ).count()
     count_total = movieuserlist.count()
 
     if request_user.is_authenticated:
@@ -138,13 +144,13 @@ def csv_import(request):
 
         if success:
             pass
-            #Add to a scheduler TBD
-            #ch.content_update()
+            # Add to a scheduler TBD
+            # ch.content_update()
         else:
-            messages.error(request,_("Error. Unknown CSV format."))
+            messages.error(request, _("Error. Unknown CSV format."))
 
         os.remove(os.path.join(settings.BASE_DIR, "import", filename))
-        
+
         return render(
             request,
             "main/csv_import.html",
@@ -170,7 +176,14 @@ def csv_export(request):
 
 def home(request):
     if DEBUG:
-        return render(request, "main/home.html", {"alert_text": _("DEBUG mode is activated! Not for production usage!"), "alert_type": "alert-danger"})
+        return render(
+            request,
+            "main/home.html",
+            {
+                "alert_text": _("DEBUG mode is activated! Not for production usage!"),
+                "alert_type": "alert-danger",
+            },
+        )
     else:
         return render(request, "main/home.html", {})
 
@@ -257,3 +270,48 @@ def user_movie_settings(request, movie_id):
         "main/settings_user_movie.html",
         {"form": form, "movie": user_movie_model.movie},
     )
+
+
+class CabinetCreateView(LoginRequiredMixin, CreateView):
+    model = UserCabinet
+    form_class = CabinetAddForm
+    template_name = "main/settings_user_cabinet_add.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def get_success_url(self):
+        next_url = self.request.POST.get("next")
+        if next_url:
+            return next_url
+        return reverse_lazy("view")
+
+
+class CabinetDeleteView(LoginRequiredMixin, FormView):
+    form_class = CabinetDeleteForm
+    template_name = "main/settings_user_cabinet_delete.html"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        cabinet_to_delete = form.cleaned_data['cabinet']
+        
+        if cabinet_to_delete.user == self.request.user:
+            cabinet_to_delete.delete()
+            
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        next_url = self.request.POST.get("next")
+        if next_url:
+            return next_url
+        return reverse_lazy("view")
