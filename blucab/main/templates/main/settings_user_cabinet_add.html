@@ -20,7 +20,7 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
-                <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
+                <button type="submit" class="btn btn-success">{% trans "Add" %}</button>
             </form>
         </div>
     </div>
