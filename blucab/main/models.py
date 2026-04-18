@@ -60,7 +60,7 @@ class UserCabinet(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="usercabinetlist", verbose_name=_("User")
     )
-    name = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Cabinet Name"))
+    name = models.CharField(max_length=100, blank=False, null=True, verbose_name=_("Cabinet Name"))
 
 
     class Meta:
@@ -68,7 +68,7 @@ class UserCabinet(models.Model):
         verbose_name_plural = _("Cabinets")
 
     def __str__(self):
-        return self.name or _("Unnamed Cabinet")
+        return self.name
 
 
 class MovieUserList(models.Model):
