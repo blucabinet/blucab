@@ -64,6 +64,10 @@ class UserCabinet(models.Model):
 
 
     class Meta:
+        unique_together = (
+            "user",
+            "name",
+        )
         verbose_name = _("Cabinet")
         verbose_name_plural = _("Cabinets")
 
