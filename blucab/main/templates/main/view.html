@@ -252,9 +252,63 @@
 
 
 {% block footer %}
-    <div>
-        {% blocktrans trimmed %}
-            Blu-Rays: {{count_bd}} / DVDs: {{count_dvd}} / Total: {{count_total}}
-        {% endblocktrans %}
+    <div class="container-fluid py-2">
+        <form id="filterForm" method="GET" action="." class="d-flex flex-wrap justify-content-center align-items-center gap-2 m-0">
+            
+            <div class="d-flex flex-wrap gap-1 me-2 align-items-center">
+                <input type="checkbox" class="btn-check" name="filter_bd" id="btn-check-bd" value="1" onchange="this.form.submit()" {% if filter_bd %}checked{% endif %}>
+                <label class="btn btn-outline-info btn-sm" for="btn-check-bd">{% trans "Blu-Rays:" %} {{count_bd}}</label>
+
+                <input type="checkbox" class="btn-check" name="filter_bd_uhd" id="btn-check-bd-uhd" value="1" onchange="this.form.submit()" {% if filter_bd_uhd %}checked{% endif %}>
+                <label class="btn btn-outline-info btn-sm" for="btn-check-bd-uhd">{% trans "UHD:" %} {{count_bd_uhd}}</label>
+
+                <input type="checkbox" class="btn-check" name="filter_dvd" id="btn-check-dvd" value="1" onchange="this.form.submit()" {% if filter_dvd %}checked{% endif %}>
+                <label class="btn btn-outline-warning btn-sm" for="btn-check-dvd">{% trans "DVDs:" %} {{count_dvd}}</label>
+                
+                <input type="checkbox" class="btn-check" name="filter_rented" id="btn-check-rented" value="1" onchange="this.form.submit()" {% if filter_rented %}checked{% endif %}>
+                <label class="btn btn-outline-danger btn-sm" for="btn-check-rented">{% trans "Rented:" %} {{count_rented}}</label>
+                
+                <span class="btn border-secondary text-light btn-sm pe-none ms-1">{% trans "Total:" %} {{count_total}}</span>
+            </div>
+
+            <div class="input-group input-group-sm" style="max-width: 180px;">
+                <span class="input-group-text bg-dark text-light border-secondary"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control bg-dark text-light border-secondary" name="search" placeholder="{% trans 'Suchen...' %}" value="{{ search_query }}" oninput="debounceSubmit()">
+            </div>
+            
+            <div>
+                <select class="form-select form-select-sm bg-dark text-light border-secondary" name="sort" onchange="this.form.submit()" style="width: auto;">
+                    <option value="" {% if not sort_by %}selected{% endif %}>{% trans 'Default sorting' %}</option>
+                    <option value="title_asc" {% if sort_by == 'title_asc' %}selected{% endif %}>{% trans 'Title (A-Z)' %}</option>
+                    <option value="title_desc" {% if sort_by == 'title_desc' %}selected{% endif %}>{% trans 'Title (Z-A)' %}</option>
+                    <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>{% trans 'Rating (Highest)' %}</option>
+                    <option value="rating_asc" {% if sort_by == 'rating_asc' %}selected{% endif %}>{% trans 'Rating (Lowest)' %}</option>
+                    <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>{% trans 'Date (Newest)' %}</option>
+                    <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>{% trans 'Date (Oldest)' %}</option>
+                    <option value="runtime_asc" {% if sort_by == 'runtime_asc' %}selected{% endif %}>{% trans 'Runtime (Shortest)' %}</option>
+                    <option value="runtime_desc" {% if sort_by == 'runtime_desc' %}selected{% endif %}>{% trans 'Runtime (Longest)' %}</option>
+
+                </select>
+            </div>
+            
+            <div>
+                {% if is_user_view %}
+                    <a href="{% url 'view' %}" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="{% trans 'Reset filter' %}"><i class="bi bi-x-lg"></i></a>
+                {% else %}
+                    <a href="{% url 'cab_uname' uname %}" class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="{% trans 'Reset filter' %}"><i class="bi bi-x-lg"></i></a>
+                {% endif %}
+            </div>
+
+        </form>
     </div>
+
+    <script>
+        let timeout = null;
+        function debounceSubmit() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                document.getElementById('filterForm').submit();
+            }, 800);
+        }
+    </script>
 {% endblock %}

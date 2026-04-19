@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
@@ -56,21 +57,63 @@ def cab_uname(request, uname):
     if len(user_id_query) != 1:
         return render(request, "error/403_user_not_public.html", status=403)
 
-    user_id = user_id_query[0].id
-    usersettings = UserSettings.objects.filter(user=user_id)[0]
+    user = user_id_query[0].id
+    usersettings = UserSettings.objects.filter(user=user)[0]
     view_is_public = usersettings.view_is_public
 
     if not view_is_public:
         return render(request, "error/403_user_not_public.html", status=403)
 
-    movieuserlist = MovieUserList.objects.filter(user=user_id)
-    count_dvd = MovieUserList.objects.filter(user=user_id, movie__format="DVD").count()
-    count_bd = MovieUserList.objects.filter(
-        user=user_id, movie__format="Blu-Ray"
-    ).count()
+    movieuserlist = MovieUserList.objects.filter(user=user)
     count_total = movieuserlist.count()
 
+    # Apply filters
+    filter_dvd = request.GET.get('filter_dvd') == '1'
+    filter_bd = request.GET.get('filter_bd') == '1'
+    filter_bd_uhd = request.GET.get('filter_bd_uhd') == '1'
+    filter_rented = request.GET.get('filter_rented') == '1'
+    
+    if filter_dvd or filter_bd:
+        formats = []
+        if filter_dvd: formats.append("DVD")
+        if filter_bd: formats.append("Blu-Ray")
+        movieuserlist = movieuserlist.filter(movie__format__in=formats)
+
+    if filter_bd_uhd:
+        movieuserlist = movieuserlist.filter(movie__is_bluray_uhd=True)
+            
+    if filter_rented:
+        movieuserlist = movieuserlist.filter(rented=True)
+
+    search_query = request.GET.get('search', '')
+    if search_query:
+        movieuserlist = movieuserlist.filter(
+            Q(movie__title_clean__icontains=search_query)
+        )
+    
+    sort_by = request.GET.get('sort', '')
+    sort_mapping = {
+        'title_asc': 'movie__title_clean',
+        'title_desc': '-movie__title_clean',
+        'rating_desc': '-rating',
+        'rating_asc': 'rating',
+        'date_desc': '-date_added',
+        'date_asc': 'date_added',
+        'runtime_asc': 'movie__runtime',
+        'runtime_desc': '-movie__runtime',
+    }
+    
+    if sort_by in sort_mapping:
+        movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
+
+    # Update counts after filtering
+    count_dvd = movieuserlist.filter(movie__format="DVD").count()
+    count_bd = movieuserlist.filter(movie__format="Blu-Ray").count()
+    count_bd_uhd = movieuserlist.filter(movie__format="Blu-Ray").filter(movie__is_bluray_uhd=True).count()
+    count_rented = movieuserlist.filter(rented=True).count()
+
     if request_user.is_authenticated:
+        # Use the authenticated user's settings
         show_view_title = request_user.user_profile.show_view_title
         show_card_body = show_view_title
     else:
@@ -84,11 +127,20 @@ def cab_uname(request, uname):
             "movieuserlist": movieuserlist,
             "usersettings": usersettings,
             "is_user_view": False,
+            "uname": uname,
             "show_view_title": show_view_title,
             "show_card_body": show_card_body,
             "count_dvd": count_dvd,
             "count_bd": count_bd,
+            "count_bd_uhd": count_bd_uhd,
+            "count_rented": count_rented,
             "count_total": count_total,
+            "search_query": search_query,
+            "sort_by": sort_by,
+            "filter_dvd": filter_dvd,
+            "filter_bd": filter_bd,
+            "filter_bd_uhd": filter_bd_uhd,
+            "filter_rented": filter_rented,
         },
     )
 
@@ -96,12 +148,55 @@ def cab_uname(request, uname):
 @login_required
 def view(request):
     user = request.user
-
     usersettings = user.user_profile
+    
     movieuserlist = MovieUserList.objects.filter(user=user)
-    count_dvd = MovieUserList.objects.filter(user=user, movie__format="DVD").count()
-    count_bd = MovieUserList.objects.filter(user=user, movie__format="Blu-Ray").count()
     count_total = movieuserlist.count()
+
+    # Apply filters
+    filter_dvd = request.GET.get('filter_dvd') == '1'
+    filter_bd = request.GET.get('filter_bd') == '1'
+    filter_bd_uhd = request.GET.get('filter_bd_uhd') == '1'
+    filter_rented = request.GET.get('filter_rented') == '1'
+    
+    if filter_dvd or filter_bd:
+        formats = []
+        if filter_dvd: formats.append("DVD")
+        if filter_bd: formats.append("Blu-Ray")
+        movieuserlist = movieuserlist.filter(movie__format__in=formats)
+
+    if filter_bd_uhd:
+        movieuserlist = movieuserlist.filter(movie__is_bluray_uhd=True)
+            
+    if filter_rented:
+        movieuserlist = movieuserlist.filter(rented=True)
+
+    search_query = request.GET.get('search', '')
+    if search_query:
+        movieuserlist = movieuserlist.filter(
+            Q(movie__title_clean__icontains=search_query)
+        )
+    
+    sort_by = request.GET.get('sort', '')
+    sort_mapping = {
+        'title_asc': 'movie__title_clean',
+        'title_desc': '-movie__title_clean',
+        'rating_desc': '-rating',
+        'rating_asc': 'rating',
+        'date_desc': '-date_added',
+        'date_asc': 'date_added',
+        'runtime_asc': 'movie__runtime',
+        'runtime_desc': '-movie__runtime',
+    }
+    
+    if sort_by in sort_mapping:
+        movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
+
+    # Update counts after filtering
+    count_dvd = movieuserlist.filter(movie__format="DVD").count()
+    count_bd = movieuserlist.filter(movie__format="Blu-Ray").count()
+    count_bd_uhd = movieuserlist.filter(movie__format="Blu-Ray", movie__is_bluray_uhd=True).count()
+    count_rented = movieuserlist.filter(rented=True).count()
 
     return render(
         request,
@@ -113,7 +208,15 @@ def view(request):
             "show_card_body": True,
             "count_dvd": count_dvd,
             "count_bd": count_bd,
+            "count_bd_uhd": count_bd_uhd,
+            "count_rented": count_rented,
             "count_total": count_total,
+            "search_query": search_query,
+            "sort_by": sort_by,
+            "filter_dvd": filter_dvd,
+            "filter_bd": filter_bd,
+            "filter_bd_uhd": filter_bd_uhd,
+            "filter_rented": filter_rented,
         },
     )
 
