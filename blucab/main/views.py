@@ -164,7 +164,9 @@ def view(request):
 
     movieuserlist = MovieUserList.objects.filter(user=user)
     count_total = movieuserlist.count()
-    cabinets = UserCabinet.objects.filter(user=user)
+
+    active_cabinet_ids = movieuserlist.exclude(cabinet__isnull=True).values_list('cabinet_id', flat=True).distinct()
+    cabinets = UserCabinet.objects.filter(id__in=active_cabinet_ids)
 
     # Apply filters
     filter_dvd = request.GET.get("filter_dvd") == "1"
