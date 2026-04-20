@@ -11,7 +11,13 @@ from django.utils.translation import gettext as _
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView
 from .models import UserSettings, MovieUserList, User, Movie, UserCabinet
-from .forms import UpdateUserSettings, UpdateMovieUserList, UpdateMovie, CabinetAddForm, CabinetDeleteForm
+from .forms import (
+    UpdateUserSettings,
+    UpdateMovieUserList,
+    UpdateMovie,
+    CabinetAddForm,
+    CabinetDeleteForm,
+)
 
 import os
 from environs import Env
@@ -68,48 +74,54 @@ def cab_uname(request, uname):
     count_total = movieuserlist.count()
 
     # Apply filters
-    filter_dvd = request.GET.get('filter_dvd') == '1'
-    filter_bd = request.GET.get('filter_bd') == '1'
-    filter_bd_uhd = request.GET.get('filter_bd_uhd') == '1'
-    filter_rented = request.GET.get('filter_rented') == '1'
-    
+    filter_dvd = request.GET.get("filter_dvd") == "1"
+    filter_bd = request.GET.get("filter_bd") == "1"
+    filter_bd_uhd = request.GET.get("filter_bd_uhd") == "1"
+    filter_rented = request.GET.get("filter_rented") == "1"
+
     if filter_dvd or filter_bd:
         formats = []
-        if filter_dvd: formats.append("DVD")
-        if filter_bd: formats.append("Blu-Ray")
+        if filter_dvd:
+            formats.append("DVD")
+        if filter_bd:
+            formats.append("Blu-Ray")
         movieuserlist = movieuserlist.filter(movie__format__in=formats)
 
     if filter_bd_uhd:
         movieuserlist = movieuserlist.filter(movie__is_bluray_uhd=True)
-            
+
     if filter_rented:
         movieuserlist = movieuserlist.filter(rented=True)
 
-    search_query = request.GET.get('search', '')
+    search_query = request.GET.get("search", "")
     if search_query:
         movieuserlist = movieuserlist.filter(
             Q(movie__title_clean__icontains=search_query)
         )
-    
-    sort_by = request.GET.get('sort', '')
+
+    sort_by = request.GET.get("sort", "")
     sort_mapping = {
-        'title_asc': 'movie__title_clean',
-        'title_desc': '-movie__title_clean',
-        'rating_desc': '-rating',
-        'rating_asc': 'rating',
-        'date_desc': '-date_added',
-        'date_asc': 'date_added',
-        'runtime_asc': 'movie__runtime',
-        'runtime_desc': '-movie__runtime',
+        "title_asc": "movie__title_clean",
+        "title_desc": "-movie__title_clean",
+        "rating_desc": "-rating",
+        "rating_asc": "rating",
+        "date_desc": "-date_added",
+        "date_asc": "date_added",
+        "runtime_asc": "movie__runtime",
+        "runtime_desc": "-movie__runtime",
     }
-    
+
     if sort_by in sort_mapping:
         movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
 
     # Update counts after filtering
     count_dvd = movieuserlist.filter(movie__format="DVD").count()
     count_bd = movieuserlist.filter(movie__format="Blu-Ray").count()
-    count_bd_uhd = movieuserlist.filter(movie__format="Blu-Ray").filter(movie__is_bluray_uhd=True).count()
+    count_bd_uhd = (
+        movieuserlist.filter(movie__format="Blu-Ray")
+        .filter(movie__is_bluray_uhd=True)
+        .count()
+    )
     count_rented = movieuserlist.filter(rented=True).count()
 
     if request_user.is_authenticated:
@@ -149,58 +161,62 @@ def cab_uname(request, uname):
 def view(request):
     user = request.user
     usersettings = user.user_profile
-    
+
     movieuserlist = MovieUserList.objects.filter(user=user)
     count_total = movieuserlist.count()
     cabinets = UserCabinet.objects.filter(user=user)
 
     # Apply filters
-    filter_dvd = request.GET.get('filter_dvd') == '1'
-    filter_bd = request.GET.get('filter_bd') == '1'
-    filter_bd_uhd = request.GET.get('filter_bd_uhd') == '1'
-    filter_rented = request.GET.get('filter_rented') == '1'
-    
+    filter_dvd = request.GET.get("filter_dvd") == "1"
+    filter_bd = request.GET.get("filter_bd") == "1"
+    filter_bd_uhd = request.GET.get("filter_bd_uhd") == "1"
+    filter_rented = request.GET.get("filter_rented") == "1"
+
     if filter_dvd or filter_bd:
         formats = []
-        if filter_dvd: formats.append("DVD")
-        if filter_bd: formats.append("Blu-Ray")
+        if filter_dvd:
+            formats.append("DVD")
+        if filter_bd:
+            formats.append("Blu-Ray")
         movieuserlist = movieuserlist.filter(movie__format__in=formats)
 
     if filter_bd_uhd:
         movieuserlist = movieuserlist.filter(movie__is_bluray_uhd=True)
-            
+
     if filter_rented:
         movieuserlist = movieuserlist.filter(rented=True)
 
-    selected_cabinet = request.GET.get('cabinet', '')
+    selected_cabinet = request.GET.get("cabinet", "")
     if selected_cabinet:
         movieuserlist = movieuserlist.filter(cabinet_id=selected_cabinet)
 
-    search_query = request.GET.get('search', '')
+    search_query = request.GET.get("search", "")
     if search_query:
         movieuserlist = movieuserlist.filter(
             Q(movie__title_clean__icontains=search_query)
         )
-    
-    sort_by = request.GET.get('sort', '')
+
+    sort_by = request.GET.get("sort", "")
     sort_mapping = {
-        'title_asc': 'movie__title_clean',
-        'title_desc': '-movie__title_clean',
-        'rating_desc': '-rating',
-        'rating_asc': 'rating',
-        'date_desc': '-date_added',
-        'date_asc': 'date_added',
-        'runtime_asc': 'movie__runtime',
-        'runtime_desc': '-movie__runtime',
+        "title_asc": "movie__title_clean",
+        "title_desc": "-movie__title_clean",
+        "rating_desc": "-rating",
+        "rating_asc": "rating",
+        "date_desc": "-date_added",
+        "date_asc": "date_added",
+        "runtime_asc": "movie__runtime",
+        "runtime_desc": "-movie__runtime",
     }
-    
+
     if sort_by in sort_mapping:
         movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
 
     # Update counts after filtering
     count_dvd = movieuserlist.filter(movie__format="DVD").count()
     count_bd = movieuserlist.filter(movie__format="Blu-Ray").count()
-    count_bd_uhd = movieuserlist.filter(movie__format="Blu-Ray", movie__is_bluray_uhd=True).count()
+    count_bd_uhd = movieuserlist.filter(
+        movie__format="Blu-Ray", movie__is_bluray_uhd=True
+    ).count()
     count_rented = movieuserlist.filter(rented=True).count()
 
     return render(
@@ -346,7 +362,7 @@ def movie_settings(request, movie_id):
             for field, value in form.cleaned_data.items():
                 movie_model.__dict__[field] = value
             movie_model.save()
-            
+
         next_url = request.POST.get("next")
         if next_url:
             return redirect(next_url)
@@ -357,7 +373,9 @@ def movie_settings(request, movie_id):
     next_url = request.GET.get("next", "")
 
     return render(
-        request, "main/settings_movie.html", {"form": form, "movie": movie_model, "next_url": next_url}
+        request,
+        "main/settings_movie.html",
+        {"form": form, "movie": movie_model, "next_url": next_url},
     )
 
 
@@ -377,7 +395,7 @@ def user_movie_settings(request, movie_id):
             for field, value in form.cleaned_data.items():
                 user_movie_model.__dict__[field] = value
             user_movie_model.save()
-            
+
             next_url = request.POST.get("next")
             if next_url:
                 return redirect(next_url)
@@ -425,11 +443,11 @@ class CabinetDeleteView(LoginRequiredMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        cabinet_to_delete = form.cleaned_data['cabinet']
-        
+        cabinet_to_delete = form.cleaned_data["cabinet"]
+
         if cabinet_to_delete.user == self.request.user:
             cabinet_to_delete.delete()
-            
+
         return super().form_valid(form)
 
     def get_success_url(self):
