@@ -26,6 +26,10 @@
             <form method="post" class="form-group">
                 {% csrf_token %}
                 {{ form|crispy }}
+                
+                {% if next_url %}
+                    <input type="hidden" name="next" value="{{ next_url }}">
+                {% endif %}
                 <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
             </form>
         </div>

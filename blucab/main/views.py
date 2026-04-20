@@ -346,12 +346,18 @@ def movie_settings(request, movie_id):
             for field, value in form.cleaned_data.items():
                 movie_model.__dict__[field] = value
             movie_model.save()
-            return redirect("view")
+            
+        next_url = request.POST.get("next")
+        if next_url:
+            return redirect(next_url)
+        return redirect("view")
     else:
         form = UpdateMovie(instance=movie_model)
 
+    next_url = request.GET.get("next", "")
+
     return render(
-        request, "main/settings_movie.html", {"form": form, "movie": movie_model}
+        request, "main/settings_movie.html", {"form": form, "movie": movie_model, "next_url": next_url}
     )
 
 
@@ -371,14 +377,20 @@ def user_movie_settings(request, movie_id):
             for field, value in form.cleaned_data.items():
                 user_movie_model.__dict__[field] = value
             user_movie_model.save()
+            
+            next_url = request.POST.get("next")
+            if next_url:
+                return redirect(next_url)
             return redirect("view")
     else:
         form = UpdateMovieUserList(instance=user_movie_model, user=user)
 
+    next_url = request.GET.get("next", "")
+
     return render(
         request,
         "main/settings_user_movie.html",
-        {"form": form, "movie": user_movie_model.movie},
+        {"form": form, "movie": user_movie_model.movie, "next_url": next_url},
     )
 
 

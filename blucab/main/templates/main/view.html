@@ -238,12 +238,12 @@
                                 </div>
                                 <div class="modal-footer d-flex {% if user.is_superuser or is_user_view %}justify-content-between{% else %}justify-content-end{% endif %}">
                                     {% if user.is_superuser %}
-                                        <a href="{% url 'movie_settings' mu.movie.id %}" class="btn btn-outline-warning" role="button">
+                                        <a href="{% url 'movie_settings' mu.movie.id %}?next={{ request.path }}" class="btn btn-outline-warning" role="button">
                                             {% trans "Movie" %}
                                         </a>
                                     {% endif %}
                                     {% if is_user_view %}
-                                        <a href="{% url 'user_movie_settings' mu.movie.id%}" class="btn btn-outline-success" role="button">
+                                        <a href="{% url 'user_movie_settings' mu.movie.id%}?next={{ request.path }}" class="btn btn-outline-success" role="button">
                                             {% trans "Edit" %}
                                         </a>
                                     {% endif %}
