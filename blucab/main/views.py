@@ -152,6 +152,7 @@ def view(request):
     
     movieuserlist = MovieUserList.objects.filter(user=user)
     count_total = movieuserlist.count()
+    cabinets = UserCabinet.objects.filter(user=user)
 
     # Apply filters
     filter_dvd = request.GET.get('filter_dvd') == '1'
@@ -170,6 +171,10 @@ def view(request):
             
     if filter_rented:
         movieuserlist = movieuserlist.filter(rented=True)
+
+    selected_cabinet = request.GET.get('cabinet', '')
+    if selected_cabinet:
+        movieuserlist = movieuserlist.filter(cabinet_id=selected_cabinet)
 
     search_query = request.GET.get('search', '')
     if search_query:
@@ -217,6 +222,8 @@ def view(request):
             "filter_bd": filter_bd,
             "filter_bd_uhd": filter_bd_uhd,
             "filter_rented": filter_rented,
+            "cabinets": cabinets,
+            "selected_cabinet": selected_cabinet,
         },
     )
 

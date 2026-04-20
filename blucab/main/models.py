@@ -93,7 +93,6 @@ class MovieUserList(models.Model):
     url_custom = models.CharField(max_length=1024, blank=True, null=True, verbose_name=_("Custom URL"))
     url_name = models.CharField(max_length=256, blank=True, null=True, verbose_name=_("Custom URL Name"))
     cabinet = models.ForeignKey(UserCabinet, on_delete=models.SET_NULL, blank=True, null=True,)
-    #compartment = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Compartment Name"))
 
 
     class Meta:

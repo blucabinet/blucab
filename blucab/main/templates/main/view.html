@@ -178,12 +178,6 @@
                                                 {% endif %}
                                                 <br>
                                                 {% if is_user_view %}
-                                                    {% if mu.price != 0.00 %}
-                                                        {% blocktrans with price=mu.price price_unit=usersettings.price_unit trimmed %}
-                                                            Price: {{price}} {{price_unit}}
-                                                        {% endblocktrans %}
-                                                        <br>
-                                                    {% endif %}
                                                     {% blocktrans with date_added=mu.date_added trimmed %}
                                                         Added: {{date_added}}
                                                     {% endblocktrans %}
@@ -194,7 +188,18 @@
                                                         {% endblocktrans %}
                                                         <br>
                                                     {% endif %}
-                                                    <br>
+                                                    {% if mu.price != 0.00 %}
+                                                        {% blocktrans with price=mu.price price_unit=usersettings.price_unit trimmed %}
+                                                            Price: {{price}} {{price_unit}}
+                                                        {% endblocktrans %}
+                                                        <br>
+                                                    {% endif %}
+                                                    {% if mu.cabinet != None %}
+                                                        {% blocktrans with cabinet=mu.cabinet trimmed %}
+                                                            Cabinet: {{cabinet}}
+                                                        {% endblocktrans %}
+                                                        <br>
+                                                    {% endif %}
                                                     {% if mu.viewed %}
                                                         {% trans "Already viewed" %}
                                                         <br>
@@ -213,13 +218,18 @@
                                                             {% trans "Rented" %}
                                                             <br>
                                                         {% endif %}
+                                                        <br>
                                                     {% endif %}
-                                                    <br>
                                                 {% endif %}
                                                 EAN: {{mu.movie.ean}}<br>
                                                 ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
-                                                {% if not mu.movie.imdb_id is none %}
-                                                    IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a>
+                                                {% if mu.movie.imdb_id != None %}
+                                                IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a><br>
+                                                {% endif %}
+                                                {% if is_user_view %}
+                                                    {% if mu.url_custom != None %}
+                                                        {% trans "Custom URL" %}: <a href="{{mu.url_custom}}" target="_blank">{{mu.url_name}}</a>
+                                                    {% endif %}
                                                 {% endif %}
                                             </p>
                                         </div>
@@ -275,6 +285,19 @@
                 <span class="input-group-text bg-dark text-light border-secondary"><i class="bi bi-search"></i></span>
                 <input type="text" class="form-control bg-dark text-light border-secondary" name="search" placeholder="{% trans 'Suchen...' %}" value="{{ search_query }}" oninput="debounceSubmit()">
             </div>
+
+            {% if is_user_view %}
+                <div>
+                    <select class="form-select form-select-sm bg-dark text-light border-secondary" name="cabinet" onchange="this.form.submit()" style="width: auto;">
+                        <option value="">{% trans 'All Cabinets' %}</option>
+                        {% for cabinet in cabinets %}
+                            <option value="{{ cabinet.id }}" {% if selected_cabinet == cabinet.id|stringformat:"i" %}selected{% endif %}>
+                                {{ cabinet.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
             
             <div>
                 <select class="form-select form-select-sm bg-dark text-light border-secondary" name="sort" onchange="this.form.submit()" style="width: auto;">
@@ -287,7 +310,6 @@
                     <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>{% trans 'Date (Oldest)' %}</option>
                     <option value="runtime_asc" {% if sort_by == 'runtime_asc' %}selected{% endif %}>{% trans 'Runtime (Shortest)' %}</option>
                     <option value="runtime_desc" {% if sort_by == 'runtime_desc' %}selected{% endif %}>{% trans 'Runtime (Longest)' %}</option>
-
                 </select>
             </div>
             
