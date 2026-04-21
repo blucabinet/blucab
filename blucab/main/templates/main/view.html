@@ -88,6 +88,12 @@
                                                 {% endif %}
                                             {% endif %}
                                         {% endif %}
+                                        {% if is_user_view and filter_rented and mu.rented_to%}
+                                            {% blocktrans with rented_to=mu.rented_to trimmed %}
+                                                Rented to {{rented_to}}
+                                            {% endblocktrans %}
+                                            <br>
+                                        {% endif %}
                                         {% if usersettings.show_view_button_details %}
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                                 {% trans "Details" %}
@@ -221,11 +227,13 @@
                                                         <br>
                                                     {% endif %}
                                                 {% endif %}
+
                                                 EAN: {{mu.movie.ean}}<br>
                                                 ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
                                                 {% if mu.movie.imdb_id != None %}
                                                 IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a><br>
                                                 {% endif %}
+
                                                 {% if is_user_view %}
                                                     {% if mu.url_custom != None %}
                                                         {% trans "Custom URL" %}: <a href="{{mu.url_custom}}" target="_blank">{{mu.url_name}}</a>
