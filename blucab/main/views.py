@@ -327,7 +327,14 @@ def csv_export(request):
     user_settings_model.last_export = timezone.now()
     user_settings_model.save()
 
-    return HttpResponse(data, content_type="text/csv")
+    response = HttpResponse(data, content_type="text/csv")
+
+    date_str = timezone.now().strftime("%Y-%m-%d")
+    filename = f"{date_str}_{user.username}_blucab-movies.csv"
+
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    return response
 
 
 def home(request):
