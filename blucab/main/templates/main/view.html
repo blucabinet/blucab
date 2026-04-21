@@ -275,29 +275,29 @@
             
             <div class="d-flex flex-wrap gap-1 me-2 align-items-center">
                 <input type="checkbox" class="btn-check" name="filter_bd" id="btn-check-bd" value="1" onchange="this.form.submit()" {% if filter_bd %}checked{% endif %}>
-                <label class="btn btn-outline-info btn-sm" for="btn-check-bd">{% trans "Blu-Rays:" %} {{count_bd}}</label>
+                <label class="btn btn-outline-info btn-sm" for="btn-check-bd">{% trans "Blu-Rays" %}: {{count_bd}}</label>
 
                 <input type="checkbox" class="btn-check" name="filter_bd_uhd" id="btn-check-bd-uhd" value="1" onchange="this.form.submit()" {% if filter_bd_uhd %}checked{% endif %}>
-                <label class="btn btn-outline-info btn-sm" for="btn-check-bd-uhd">{% trans "UHD:" %} {{count_bd_uhd}}</label>
+                <label class="btn btn-outline-info btn-sm" for="btn-check-bd-uhd">{% trans "UHD" %}: {{count_bd_uhd}}</label>
 
                 <input type="checkbox" class="btn-check" name="filter_dvd" id="btn-check-dvd" value="1" onchange="this.form.submit()" {% if filter_dvd %}checked{% endif %}>
-                <label class="btn btn-outline-warning btn-sm" for="btn-check-dvd">{% trans "DVDs:" %} {{count_dvd}}</label>
+                <label class="btn btn-outline-warning btn-sm" for="btn-check-dvd">{% trans "DVDs" %}: {{count_dvd}}</label>
                 
                 <input type="checkbox" class="btn-check" name="filter_rented" id="btn-check-rented" value="1" onchange="this.form.submit()" {% if filter_rented %}checked{% endif %}>
-                <label class="btn btn-outline-danger btn-sm" for="btn-check-rented">{% trans "Rented:" %} {{count_rented}}</label>
+                <label class="btn btn-outline-danger btn-sm" for="btn-check-rented">{% trans "Rented" %}: {{count_rented}}</label>
                 
-                <span class="btn border-secondary text-light btn-sm pe-none ms-1">{% trans "Total:" %} {{count_total}}</span>
+                <span class="btn border-secondary text-light btn-sm pe-none ms-1">{% trans "Total" %}: {{count_total}}</span>
             </div>
 
             <div class="input-group input-group-sm" style="max-width: 180px;">
                 <span class="input-group-text bg-dark text-light border-secondary"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control bg-dark text-light border-secondary" name="search" placeholder="{% trans 'Suchen...' %}" value="{{ search_query }}" oninput="debounceSubmit()">
+                <input type="text" class="form-control bg-dark text-light border-secondary" name="search" placeholder="{% trans 'Search' %}..." value="{{ search_query }}" oninput="debounceSubmit()">
             </div>
 
             {% if is_user_view %}
                 <div>
                     <select class="form-select form-select-sm bg-dark text-light border-secondary" name="cabinet" onchange="this.form.submit()" style="width: auto;">
-                        <option value="">{% trans 'All Cabinets' %}</option>
+                        <option value="">{% trans "All Cabinets" %}</option>
                         {% for cabinet in cabinets %}
                             <option value="{{ cabinet.id }}" {% if selected_cabinet == cabinet.id|stringformat:"i" %}selected{% endif %}>
                                 {{ cabinet.name }}
@@ -309,15 +309,15 @@
             
             <div>
                 <select class="form-select form-select-sm bg-dark text-light border-secondary" name="sort" onchange="this.form.submit()" style="width: auto;">
-                    <option value="" {% if not sort_by %}selected{% endif %}>{% trans 'Default sorting' %}</option>
-                    <option value="title_asc" {% if sort_by == 'title_asc' %}selected{% endif %}>{% trans 'Title (A-Z)' %}</option>
-                    <option value="title_desc" {% if sort_by == 'title_desc' %}selected{% endif %}>{% trans 'Title (Z-A)' %}</option>
-                    <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>{% trans 'Rating (Highest)' %}</option>
-                    <option value="rating_asc" {% if sort_by == 'rating_asc' %}selected{% endif %}>{% trans 'Rating (Lowest)' %}</option>
-                    <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>{% trans 'Date (Newest)' %}</option>
-                    <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>{% trans 'Date (Oldest)' %}</option>
-                    <option value="runtime_asc" {% if sort_by == 'runtime_asc' %}selected{% endif %}>{% trans 'Runtime (Shortest)' %}</option>
-                    <option value="runtime_desc" {% if sort_by == 'runtime_desc' %}selected{% endif %}>{% trans 'Runtime (Longest)' %}</option>
+                    <option value="" {% if not sort_by %}selected{% endif %}>{% trans "Default sorting" %}</option>
+                    <option value="title_asc" {% if sort_by == 'title_asc' %}selected{% endif %}>{% trans "Title (A-Z)" %}</option>
+                    <option value="title_desc" {% if sort_by == 'title_desc' %}selected{% endif %}>{% trans "Title (Z-A)" %}</option>
+                    <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>{% trans "Rating (Highest)" %}</option>
+                    <option value="rating_asc" {% if sort_by == 'rating_asc' %}selected{% endif %}>{% trans "Rating (Lowest)" %}</option>
+                    <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>{% trans "Date (Newest)" %}</option>
+                    <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>{% trans "Date (Oldest)" %}</option>
+                    <option value="runtime_asc" {% if sort_by == 'runtime_asc' %}selected{% endif %}>{% trans "Runtime (Shortest)" %}</option>
+                    <option value="runtime_desc" {% if sort_by == 'runtime_desc' %}selected{% endif %}>{% trans "Runtime (Longest)" %}</option>
                 </select>
             </div>
             
