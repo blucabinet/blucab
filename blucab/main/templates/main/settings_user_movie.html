@@ -53,6 +53,15 @@
             </form>
         </div>
     </div>
+    {% if next_url %}
+        <br>
+        <a href="{{ next_url }}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+        <br>
+    {% else %}
+        <br>
+        <a href="{% url 'view' %}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+        <br>
+    {% endif %}
 {% else %}
     <div>{% trans "Welcome!" %}</div>
     <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
