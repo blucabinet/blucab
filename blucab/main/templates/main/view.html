@@ -305,6 +305,63 @@
                         {% endfor %}
                     </select>
                 </div>
+
+                <div class="dropdown">
+                    <button class="btn bg-dark text-light border-secondary btn-sm dropdown-toggle" type="button" id="moreFiltersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-funnel"></i> {% trans "More" %}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark shadow" aria-labelledby="moreFiltersDropdown">
+                        <li>
+                            <div class="px-3 py-2 d-flex justify-content-between align-items-center">
+                                <span class="text-light me-3">{% trans "Viewed" %}:</span>
+                                
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" name="filter_viewed" id="viewed_arch_all" value="" onchange="this.form.submit()" {% if filter_viewed == '' %}checked{% endif %}>
+                                    <label class="btn btn-outline-secondary" for="viewed_arch_all">{% trans "All" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_viewed" id="viewed_arch_yes" value="1" onchange="this.form.submit()" {% if filter_viewed == '1' %}checked{% endif %}>
+                                    <label class="btn btn-outline-success" for="viewed_arch_yes">{% trans "Yes" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_viewed" id="viewed_arch_no" value="0" onchange="this.form.submit()" {% if filter_viewed == '0' %}checked{% endif %}>
+                                    <label class="btn btn-outline-danger" for="viewed_arch_no">{% trans "No" %}</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="px-3 py-2 d-flex justify-content-between align-items-center">
+                                <span class="text-light me-3">{% trans "Archived" %}:</span>
+                                
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" name="filter_archived" id="archived_arch_all" value="" onchange="this.form.submit()" {% if filter_archived == '' %}checked{% endif %}>
+                                    <label class="btn btn-outline-secondary" for="archived_arch_all">{% trans "All" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_archived" id="archived_arch_yes" value="1" onchange="this.form.submit()" {% if filter_archived == '1' %}checked{% endif %}>
+                                    <label class="btn btn-outline-success" for="archived_arch_yes">{% trans "Yes" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_archived" id="archived_arch_no" value="0" onchange="this.form.submit()" {% if filter_archived == '0' %}checked{% endif %}>
+                                    <label class="btn btn-outline-danger" for="archived_arch_no">{% trans "No" %}</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="px-3 py-2 d-flex justify-content-between align-items-center">
+                                <span class="text-light me-3">{% trans "Is Series" %}:</span>
+
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" name="filter_is_series" id="is_series_all" value="" onchange="this.form.submit()" {% if filter_is_series == '' %}checked{% endif %}>
+                                    <label class="btn btn-outline-secondary" for="is_series_all">{% trans "All" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_is_series" id="is_series_yes" value="1" onchange="this.form.submit()" {% if filter_is_series == '1' %}checked{% endif %}>
+                                    <label class="btn btn-outline-success" for="is_series_yes">{% trans "Yes" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_is_series" id="is_series_no" value="0" onchange="this.form.submit()" {% if filter_is_series == '0' %}checked{% endif %}>
+                                    <label class="btn btn-outline-danger" for="is_series_no">{% trans "No" %}</label>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
             {% endif %}
             
             <div>

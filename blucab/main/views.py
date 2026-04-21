@@ -165,7 +165,11 @@ def view(request):
     movieuserlist = MovieUserList.objects.filter(user=user)
     count_total = movieuserlist.count()
 
-    active_cabinet_ids = movieuserlist.exclude(cabinet__isnull=True).values_list('cabinet_id', flat=True).distinct()
+    active_cabinet_ids = (
+        movieuserlist.exclude(cabinet__isnull=True)
+        .values_list("cabinet_id", flat=True)
+        .distinct()
+    )
     cabinets = UserCabinet.objects.filter(id__in=active_cabinet_ids)
 
     # Apply filters
@@ -173,6 +177,11 @@ def view(request):
     filter_bd = request.GET.get("filter_bd") == "1"
     filter_bd_uhd = request.GET.get("filter_bd_uhd") == "1"
     filter_rented = request.GET.get("filter_rented") == "1"
+    filter_viewed = request.GET.get("filter_viewed", "")
+    filter_archived = request.GET.get("filter_archived", "")
+    filter_is_series = request.GET.get("filter_is_series", "")
+    selected_cabinet = request.GET.get("cabinet", "")
+    search_query = request.GET.get("search", "")
 
     if filter_dvd or filter_bd:
         formats = []
@@ -188,11 +197,27 @@ def view(request):
     if filter_rented:
         movieuserlist = movieuserlist.filter(rented=True)
 
-    selected_cabinet = request.GET.get("cabinet", "")
-    if selected_cabinet:
-        movieuserlist = movieuserlist.filter(cabinet_id=selected_cabinet)
+    if filter_viewed == "1":
+        movieuserlist = movieuserlist.filter(viewed=True)
+    elif filter_viewed == "0":
+        movieuserlist = movieuserlist.filter(viewed=False)
 
-    search_query = request.GET.get("search", "")
+    if filter_archived == "1":
+        movieuserlist = movieuserlist.filter(archived=True)
+    elif filter_archived == "0":
+        movieuserlist = movieuserlist.filter(archived=False)
+
+    if filter_is_series == "1":
+        movieuserlist = movieuserlist.filter(movie__is_series=True)
+    elif filter_is_series == "0":
+        movieuserlist = movieuserlist.filter(movie__is_series=False)
+
+    if selected_cabinet:
+        if selected_cabinet == "none":
+            movieuserlist = movieuserlist.filter(cabinet__isnull=True)
+        elif selected_cabinet:
+            movieuserlist = movieuserlist.filter(cabinet_id=selected_cabinet)
+
     if search_query:
         movieuserlist = movieuserlist.filter(
             Q(movie__title_clean__icontains=search_query)
@@ -240,6 +265,9 @@ def view(request):
             "filter_bd": filter_bd,
             "filter_bd_uhd": filter_bd_uhd,
             "filter_rented": filter_rented,
+            "filter_viewed": filter_viewed,
+            "filter_archived": filter_archived,
+            "filter_is_series": filter_is_series,
             "cabinets": cabinets,
             "selected_cabinet": selected_cabinet,
         },
