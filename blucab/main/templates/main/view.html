@@ -2,7 +2,11 @@
 {% load i18n %}
 
 {% block title %}
-{% trans "blucab - View" %}
+    {% if is_user_view %}
+        {% trans "blucab - View" %}
+    {% else %}
+        {% trans "blucab - Public View" %}
+    {% endif %}
 {% endblock %}
 
 {% block contentTitle %}
