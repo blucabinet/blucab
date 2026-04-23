@@ -117,12 +117,12 @@ class CabinetDeleteForm(forms.Form):
         queryset=UserCabinet.objects.none(),
         label=_("Cabinet to delete"),
         empty_label=_("--- Choose a cabinet ---"),
-        widget=forms.Select(attrs={"class": "form-select"})
+        widget=forms.Select(attrs={"class": "form-select"}),
     )
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
+        self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
-        
+
         if self.user:
-            self.fields['cabinet'].queryset = UserCabinet.objects.filter(user=self.user)
+            self.fields["cabinet"].queryset = UserCabinet.objects.filter(user=self.user)

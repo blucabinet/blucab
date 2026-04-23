@@ -29,24 +29,46 @@ class Movie(models.Model):
         default=None,
         verbose_name=_("FSK NBR"),
     )
-    content = models.CharField(max_length=10000, blank=True, null=True, verbose_name=_("Content"))
-    actor = models.CharField(max_length=500, blank=True, null=True, verbose_name=_("Actor"))
-    regisseur = models.CharField(max_length=500, blank=True, null=True, verbose_name=_("Regisseur"))
-    studio = models.CharField(max_length=500, blank=True, null=True, verbose_name=_("Studio"))
-    genre = models.CharField(max_length=500, blank=True, null=True, verbose_name=_("Genre"))
-    language = models.CharField(max_length=500, blank=True, null=True, verbose_name=_("Language"))
+    content = models.CharField(
+        max_length=10000, blank=True, null=True, verbose_name=_("Content")
+    )
+    actor = models.CharField(
+        max_length=500, blank=True, null=True, verbose_name=_("Actor")
+    )
+    regisseur = models.CharField(
+        max_length=500, blank=True, null=True, verbose_name=_("Regisseur")
+    )
+    studio = models.CharField(
+        max_length=500, blank=True, null=True, verbose_name=_("Studio")
+    )
+    genre = models.CharField(
+        max_length=500, blank=True, null=True, verbose_name=_("Genre")
+    )
+    language = models.CharField(
+        max_length=500, blank=True, null=True, verbose_name=_("Language")
+    )
     disc_count = models.IntegerField(default=1, verbose_name=_("Disc Count"))
     movie_count = models.IntegerField(default=1, verbose_name=_("Movie Count"))
     season_count = models.IntegerField(default=0, verbose_name=_("Season Count"))
     episode_count = models.IntegerField(default=0, verbose_name=_("Episode Count"))
     is_series = models.BooleanField(default=False, verbose_name=_("Is Series"))
     is_bluray_uhd = models.BooleanField(default=False, verbose_name=_("Is Blu-ray UHD"))
-    picture_available = models.BooleanField(default=False, verbose_name=_("Picture Available"))
-    picture_url_original = models.CharField(max_length=256, blank=True, null=True, verbose_name=_("Picture URL Original"))
-    picture_url_original_hd = models.CharField(max_length=256, blank=True, null=True, verbose_name=_("Picture URL Original HD"))
-    picture_processed = models.BooleanField(default=False, verbose_name=_("Picture Processed"))
+    picture_available = models.BooleanField(
+        default=False, verbose_name=_("Picture Available")
+    )
+    picture_url_original = models.CharField(
+        max_length=256, blank=True, null=True, verbose_name=_("Picture URL Original")
+    )
+    picture_url_original_hd = models.CharField(
+        max_length=256, blank=True, null=True, verbose_name=_("Picture URL Original HD")
+    )
+    picture_processed = models.BooleanField(
+        default=False, verbose_name=_("Picture Processed")
+    )
     needs_parsing = models.BooleanField(default=True, verbose_name=_("Needs Parsing"))
-    imdb_id = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("IMDb ID"))
+    imdb_id = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name=_("IMDb ID")
+    )
 
     class Meta:
         verbose_name = _("Movies")
@@ -58,10 +80,14 @@ class Movie(models.Model):
 
 class UserCabinet(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="usercabinetlist", verbose_name=_("User")
+        User,
+        on_delete=models.CASCADE,
+        related_name="usercabinetlist",
+        verbose_name=_("User"),
     )
-    name = models.CharField(max_length=100, blank=False, null=True, verbose_name=_("Cabinet Name"))
-
+    name = models.CharField(
+        max_length=100, blank=False, null=True, verbose_name=_("Cabinet Name")
+    )
 
     class Meta:
         unique_together = (
@@ -77,23 +103,43 @@ class UserCabinet(models.Model):
 
 class MovieUserList(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="movieuserlist", null=True, verbose_name=_("User")
+        User,
+        on_delete=models.CASCADE,
+        related_name="movieuserlist",
+        null=True,
+        verbose_name=_("User"),
     )
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, null=True, verbose_name=_("Movie"))
+    movie = models.ForeignKey(
+        Movie, on_delete=models.CASCADE, null=True, verbose_name=_("Movie")
+    )
     activated = models.BooleanField(default=True, verbose_name=_("Activated"))
     rating = models.IntegerField(
-        default=0, validators=[MinValueValidator(0), MaxValueValidator(6)], verbose_name=_("Rating"),
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(6)],
+        verbose_name=_("Rating"),
     )
     viewed = models.BooleanField(default=False, verbose_name=_("Viewed"))
     rented = models.BooleanField(default=False, verbose_name=_("Rented"))
-    rented_to = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Rented to"))
+    rented_to = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name=_("Rented to")
+    )
     date_added = models.DateField(default=timezone.now, verbose_name=_("Date added"))
-    price = models.DecimalField(default=0, max_digits=6, decimal_places=2, verbose_name=_("Price"))
+    price = models.DecimalField(
+        default=0, max_digits=6, decimal_places=2, verbose_name=_("Price")
+    )
     archived = models.BooleanField(default=False, verbose_name=_("Archived"))
-    url_custom = models.CharField(max_length=1024, blank=True, null=True, verbose_name=_("Custom URL"))
-    url_name = models.CharField(max_length=256, blank=True, null=True, verbose_name=_("Custom URL Name"))
-    cabinet = models.ForeignKey(UserCabinet, on_delete=models.SET_NULL, blank=True, null=True,)
-
+    url_custom = models.CharField(
+        max_length=1024, blank=True, null=True, verbose_name=_("Custom URL")
+    )
+    url_name = models.CharField(
+        max_length=256, blank=True, null=True, verbose_name=_("Custom URL Name")
+    )
+    cabinet = models.ForeignKey(
+        UserCabinet,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         unique_together = (
@@ -109,7 +155,10 @@ class MovieUserList(models.Model):
 
 class UserSettings(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="user_profile", verbose_name=_("User")
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_profile",
+        verbose_name=_("User"),
     )
     price_unit = models.CharField(
         default="€", max_length=3, blank=True, verbose_name=_("Price Unit")
