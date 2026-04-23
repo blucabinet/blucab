@@ -2,7 +2,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from main.models import Movie, MovieUserList
 from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS, AMAZON_STR_FSK_NO
-from .picture_helper import pictureHelper
+from .picture_helper import pictureHelper, PICTURE_NAME_PROCESSED_SD
 
 import csv
 import os
@@ -274,10 +274,13 @@ class handler:
         return False
 
     def check_all_picture_available(self) -> None:
-        movies = Movie.objects.filter(picture_available=True)
+        # Only check for SD pictures right now.
+        movies = Movie.objects.filter()
 
         for movie in movies:
-            exists = ph._picture_exists(movie.ean)
+            exists = ph._picture_exists(
+                folder=movie.ean, picture=PICTURE_NAME_PROCESSED_SD
+            )
             movie.picture_available = exists
             if not exists:
                 movie.picture_processed = False
@@ -285,13 +288,16 @@ class handler:
         return
 
     def picture_update(self) -> None:
+        # Only update SD pictures right now.
         movies_img_unavailable = Movie.objects.filter(
             picture_available=False, picture_processed=False
         )
 
         for movie in movies_img_unavailable:
             if movie.picture_url_original != None:
-                ph.picture_download_processing(movie.picture_url_original, movie.ean)
+                ph.picture_download_processing(
+                    url=movie.picture_url_original, ean=movie.ean, is_hd=False
+                )
                 movie.picture_available = True
                 movie.picture_processed = True
                 movie.save()
@@ -301,7 +307,7 @@ class handler:
         )
 
         for movie in movies_img_available:
-            ph.picture_postprocessing(movie.ean)
+            ph.picture_postprocessing(folder=movie.ean)
             movie.picture_processed = True
             movie.save()
         return

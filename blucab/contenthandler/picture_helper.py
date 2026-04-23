@@ -6,6 +6,11 @@ import requests
 from PIL import Image, ImageChops
 
 PICTURE_EXTENSION = ".jpg"
+PICTURE_NAME_PROCESSED_SD = "cover"
+PICTURE_NAME_PROCESSED_HD = "cover_hd"
+PICTURE_NAME_RAW_SD = "cover_sd_raw"
+PICTURE_NAME_RAW_HD = "cover_hd_raw"
+
 MINIMUM_IMAGE_HEIGHT = 50
 
 
@@ -14,17 +19,34 @@ class pictureHelper:
     def __init__(self):
         pass
 
-    def __picture_file_path(self, name: str) -> str:
-        picture_name = name + PICTURE_EXTENSION
+    def __picture_file_path(
+        self,
+        folder: str,
+        picture: str = PICTURE_NAME_PROCESSED_SD,
+        extension: str = PICTURE_EXTENSION,
+    ) -> str:
+        folder_name = folder
+        picture_name = picture + extension
         return os.path.join(
-            settings.BASE_DIR, "main", "static", "main", "cover", picture_name
+            settings.BASE_DIR,
+            "main",
+            "static",
+            "main",
+            "cover",
+            folder_name,
+            picture_name,
         )
 
-    def _picture_exists(self, name) -> bool:
-        file_path = self.__picture_file_path(name)
+    def _picture_exists(
+        self,
+        folder: str,
+        picture: str = PICTURE_NAME_PROCESSED_SD,
+        extension: str = PICTURE_EXTENSION,
+    ) -> bool:
+        file_path = self.__picture_file_path(folder, picture, extension)
         return os.path.exists(file_path)
 
-    def picture_postprocessing(self, name: str) -> None:
+    def picture_postprocessing(self, folder: str) -> None:
         def trim(im):
             bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
             diff = ImageChops.difference(im, bg)
@@ -32,31 +54,47 @@ class pictureHelper:
             bbox = diff.getbbox()
             if bbox:
                 return im.crop(bbox)
-            else:
-                # Failed to find the borders, convert to "RGB"
+
+            if im.mode != "RGB":
+                # Failed to find the borders, convert to "RGB" and try again.
                 return trim(im.convert("RGB"))
 
-        if self._picture_exists(name):
-            im = Image.open(self.__picture_file_path(name))
+            return im
 
+        if not self._picture_exists(folder=folder, picture=PICTURE_NAME_RAW_SD):
+            return
+
+        raw_path = self.__picture_file_path(folder=folder, picture=PICTURE_NAME_RAW_SD)
+        processed_path = self.__picture_file_path(
+            folder=folder, picture=PICTURE_NAME_PROCESSED_SD
+        )
+
+        with Image.open(raw_path) as im:
             if im.height > MINIMUM_IMAGE_HEIGHT:
-                im.save(
-                    self.__picture_file_path(f"orig_{name}")
-                )  # ToDo: Maybe remove in future
-                im = trim(im)
-                im.save(self.__picture_file_path(name))
+                trim_im = trim(im)
+                trim_im.save(processed_path)
+
         return
 
-    def picture_download(self, url: str, name: str) -> None:
-        file_path = self.__picture_file_path(name)
+    def picture_download(self, url: str, ean: str, is_hd: bool = False) -> None:
+        # Only check for SD pictures right now.
+        file_path = self.__picture_file_path(folder=ean, picture=PICTURE_NAME_RAW_SD)
 
-        if not self._picture_exists(file_path):
+        if not self._picture_exists(folder=ean, picture=PICTURE_NAME_RAW_SD):
             picture = requests.get(url)
-            open(file_path, "wb").write(picture.content)
-            print(f"File {file_path} downloaded")
+
+            directory = os.path.dirname(file_path)
+            os.makedirs(directory, exist_ok=True)
+
+            with open(file_path, "wb") as f:
+                f.write(picture.content)
+
         return
 
-    def picture_download_processing(self, url: str, name: str) -> None:
-        self.picture_download(url, name)
-        self.picture_postprocessing(name)
+    def picture_download_processing(
+        self, url: str, ean: str, is_hd: bool = False
+    ) -> None:
+        self.picture_download(url=url, ean=ean, is_hd=is_hd)
+        self.picture_postprocessing(folder=ean)
+
         return
