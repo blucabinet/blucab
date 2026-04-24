@@ -26,7 +26,7 @@ urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
     path("admin/", admin.site.urls),
     path("api/", include(api_urls)),
-    path('i18n/', include('django.conf.urls.i18n')),
+    path("i18n/", include("django.conf.urls.i18n")),
     path("", include("django.contrib.auth.urls")),
     path("", include(main_urls)),
     path("", include(regview_urls)),
