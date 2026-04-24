@@ -122,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CAPTCHA_TEST_MODE = False
 CAPTCHA_IMAGE_SIZE = (160, 60)
 CAPTCHA_LETTER_ROTATION = (-35, 35)
-CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_arcs', 'captcha.helpers.noise_dots')
+CAPTCHA_NOISE_FUNCTIONS = ("captcha.helpers.noise_arcs", "captcha.helpers.noise_dots")
 CAPTCHA_LENGTH = 6
 CAPTCHA_FONT_SIZE = 25
 CAPTCHA_TIMEOUT = 5  # minutes
@@ -135,16 +135,20 @@ REST_FRAMEWORK = {
 # Email settings
 if env.bool("DJANGO_EMAIL_ENABLE", False):
     if DEBUG:
-        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     else:
-        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
         EMAIL_HOST = env.str("DJANGO_EMAIL_HOST", "localhost")
         EMAIL_PORT = env.int("DJANGO_EMAIL_PORT", 25)
         EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", True)
         EMAIL_USE_SSL = env.bool("DJANGO_EMAIL_USE_SSL", False)
         EMAIL_HOST_USER = env.str("DJANGO_EMAIL_HOST_USER", "example@localhost")
-        EMAIL_HOST_PASSWORD = env.str("DJANGO_EMAIL_HOST_PASSWORD", "password").strip('"')
-        EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[blucab] ").strip('"')
+        EMAIL_HOST_PASSWORD = env.str("DJANGO_EMAIL_HOST_PASSWORD", "password").strip(
+            '"'
+        )
+        EMAIL_SUBJECT_PREFIX = env.str(
+            "DJANGO_EMAIL_SUBJECT_PREFIX", "[blucab] "
+        ).strip('"')
         EMAIL_USE_LOCALTIME = env.bool("DJANGO_EMAIL_USE_LOCALTIME", True)
         EMAIL_TIMEOUT = 30
 
@@ -161,7 +165,7 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = [
-    BASE_DIR / 'locale/',
+    BASE_DIR / "locale/",
 ]
 
 TIME_ZONE = "UTC"
@@ -182,11 +186,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-LOGIN_URL = 'login'
+LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "view"
 LOGOUT_REDIRECT_URL = "/"
 
 
 MESSAGE_TAGS = {
-    messages.ERROR: 'danger',
+    messages.ERROR: "danger",
 }
