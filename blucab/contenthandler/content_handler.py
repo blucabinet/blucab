@@ -9,6 +9,10 @@ import os
 import time
 import random
 import re
+from environs import Env
+
+env = Env()
+env.read_env()
 
 CSV_ENCODING_UTF8 = "utf-8"
 CSV_ENCODING_FLICKRACK = "ISO-8859-1"
@@ -18,6 +22,8 @@ IDENTIFIER_FLICKRACK = b'Position,EAN,ASIN,Titel,Titel ohne Zusatz,Format,Releas
 IDENTIFIER_BLUCAB = b'movie,activated,rating,viewed,rented,rented_to,date_added,price,ean,asin,title,title_clean,format,release_year,runtime,fsk,fsk_nbr,content,actor,regisseur,studio,genre,language,disc_count,movie_count,season_count,episode_count,is_series,is_bluray_uhd,picture_url_original,picture_url_original_hd,imdb_id\r\n' #['movie', 'activated', 'rating', 'viewed', 'rented', 'rented_to', 'date_added', 'price', 'ean', 'asin', 'title', 'title_clean', 'format', 'release_year', 'runtime', 'fsk', 'fsk_nbr', 'content', 'actor', 'regisseur', 'studio', 'genre', 'language', 'disc_count', 'movie_count', 'season_count', 'episode_count', 'is_series', 'is_bluray_uhd', 'picture_url_original', 'picture_url_original_hd', 'imdb_id']
 
 ph = pictureHelper()
+
+ALLOW_CSV_MOVIE_IMPORT = env.bool("BLUCAB_ALLOW_CSV_MOVIE_IMPORT", False)
 
 
 class handler:
