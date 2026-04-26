@@ -18,8 +18,9 @@ CSV_ENCODING_UTF8 = "utf-8"
 CSV_ENCODING_FLICKRACK = "ISO-8859-1"
 CSV_ENCODING_BLUCAB = CSV_ENCODING_UTF8
 
-IDENTIFIER_FLICKRACK = b'Position,EAN,ASIN,Titel,Titel ohne Zusatz,Format,Release,Laufzeit,FSK,Inhalt,Schauspieler,Regisseur/e,Studio,Bewertung\n' #['Position', 'EAN', 'ASIN', 'Titel', 'Titel ohne Zusatz', 'Format', 'Release', 'Laufzeit', 'FSK', 'Inhalt', 'Schauspieler', 'Regisseur/e', 'Studio', 'Bewertung']
-IDENTIFIER_BLUCAB = b'movie,activated,rating,viewed,rented,rented_to,date_added,price,ean,asin,title,title_clean,format,release_year,runtime,fsk,fsk_nbr,content,actor,regisseur,studio,genre,language,disc_count,movie_count,season_count,episode_count,is_series,is_bluray_uhd,picture_url_original,picture_url_original_hd,imdb_id\r\n' #['movie', 'activated', 'rating', 'viewed', 'rented', 'rented_to', 'date_added', 'price', 'ean', 'asin', 'title', 'title_clean', 'format', 'release_year', 'runtime', 'fsk', 'fsk_nbr', 'content', 'actor', 'regisseur', 'studio', 'genre', 'language', 'disc_count', 'movie_count', 'season_count', 'episode_count', 'is_series', 'is_bluray_uhd', 'picture_url_original', 'picture_url_original_hd', 'imdb_id']
+IDENTIFIER_FLICKRACK = b"Position,EAN,ASIN,Titel,Titel ohne Zusatz,Format,Release,Laufzeit,FSK,Inhalt,Schauspieler,Regisseur/e,Studio,Bewertung\n"
+IDENTIFIER_BLUCAB_1 = b"movie,activated,rating,viewed,rented,rented_to,date_added,price,ean,asin,title,title_clean,format,release_year,runtime,fsk,fsk_nbr,content,actor,regisseur,studio,genre,language,disc_count,movie_count,season_count,episode_count,is_series,is_bluray_uhd,picture_url_original,picture_url_original_hd,imdb_id\r\n"
+IDENTIFIER_BLUCAB_2 = b"movie,activated,rating,viewed,rented,rented_to,date_added,price,archived,ean,asin,title,title_clean,format,release_year,runtime,fsk,fsk_nbr,content,actor,regisseur,studio,genre,language,disc_count,movie_count,season_count,episode_count,is_series,is_bluray_uhd,picture_url_original,picture_url_original_hd,imdb_id\r\n"
 
 ph = pictureHelper()
 
@@ -57,139 +58,144 @@ class handler:
 
         return str(input).strip()
 
+    def _import_flickrack(self, file_path: str, user) -> bool:
+        with open(file_path, encoding=CSV_ENCODING_FLICKRACK) as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=",")
+
+            for row in reader:
+                csv_ean = row["EAN"]
+                csv_rating = self._check_int_string(row["Bewertung"])
+                csv_fsk_nbr = row["FSK"]
+
+                try:
+                    fsk_nbr = re.findall(r"\b\d+\b", csv_fsk_nbr)[0]
+                except IndexError:
+                    if csv_fsk_nbr == AMAZON_STR_FSK_NO:
+                        fsk_nbr = 0
+                    else:
+                        fsk_nbr = None
+
+                if ALLOW_CSV_MOVIE_IMPORT:
+                    db_movie, movie_created = Movie.objects.get_or_create(
+                        ean=csv_ean,
+                        defaults={
+                            "asin": self._check_string(row.get("ASIN")),
+                            "title": self._check_string(row.get("Titel")),
+                            "title_clean": self._check_string(
+                                row.get("Titel ohne Zusatz")
+                            ),
+                            "format": self._check_string(row.get("Format")),
+                            "release_year": self._check_int_string(row.get("Release")),
+                            "runtime": self._check_int_string(row.get("Laufzeit")),
+                            "fsk": csv_fsk_nbr,
+                            "fsk_nbr": fsk_nbr,
+                            "content": self._check_string(row.get("Inhalt")),
+                            "actor": self._check_string(row.get("Schauspieler")),
+                            "regisseur": self._check_string(row.get("Regisseur/e")),
+                            "studio": self._check_string(row.get("Studio")),
+                            "needs_parsing": True,
+                        },
+                    )
+                try:
+                    db_movie = Movie.objects.get(ean=row["ean"])
+                except Movie.DoesNotExist:
+                    return False
+
+                MovieUserList.objects.get_or_create(
+                    user=user, movie=db_movie, defaults={"rating": csv_rating}
+                )
+
+        return True
+
+    def _import_blucab(self, file_path: str, user) -> bool:
+        with open(file_path, encoding=CSV_ENCODING_BLUCAB) as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=",")
+
+            for row in reader:
+                if ALLOW_CSV_MOVIE_IMPORT:
+                    db_movie, movie_created = Movie.objects.get_or_create(
+                        ean=row["ean"],
+                        defaults={
+                            "asin": self._check_string(row.get("asin")),
+                            "title": self._check_string(row.get("title")),
+                            "title_clean": self._check_string(row.get("title_clean")),
+                            "format": self._check_string(row.get("format")),
+                            "release_year": self._check_int_string(
+                                row.get("release_year")
+                            ),
+                            "runtime": self._check_int_string(row.get("runtime")),
+                            "fsk": self._check_string(row.get("fsk")),
+                            "fsk_nbr": self._check_int_string(row.get("fsk_nbr")),
+                            "content": self._check_string(row.get("content")),
+                            "actor": self._check_string(row.get("actor")),
+                            "regisseur": self._check_string(row.get("regisseur")),
+                            "studio": self._check_string(row.get("studio")),
+                            "genre": self._check_string(row.get("genre")),
+                            "language": self._check_string(row.get("language")),
+                            "disc_count": self._check_int_string(row.get("disc_count")),
+                            "movie_count": self._check_int_string(
+                                row.get("movie_count")
+                            ),
+                            "season_count": self._check_int_string(
+                                row.get("season_count")
+                            ),
+                            "episode_count": self._check_int_string(
+                                row.get("episode_count")
+                            ),
+                            "is_series": self._check_bool_string(row.get("is_series")),
+                            "is_bluray_uhd": self._check_bool_string(
+                                row.get("is_bluray_uhd")
+                            ),
+                            "picture_url_original": self._check_string(
+                                row.get("picture_url_original")
+                            ),
+                            "picture_url_original_hd": self._check_string(
+                                row.get("picture_url_original_hd")
+                            ),
+                            "imdb_id": self._check_string(row.get("imdb_id")),
+                            "needs_parsing": False,
+                        },
+                    )
+                else:
+                    try:
+                        db_movie = Movie.objects.get(ean=row["ean"])
+                    except Movie.DoesNotExist:
+                        return False
+
+                list_item, list_created = MovieUserList.objects.update_or_create(
+                    user=user,
+                    movie=db_movie,
+                    defaults={
+                        "activated": self._check_bool_string(row.get("activated")),
+                        "rating": self._check_int_string(row.get("rating")),
+                        "viewed": self._check_bool_string(row.get("viewed")),
+                        "rented": self._check_bool_string(row.get("rented")),
+                        "rented_to": self._check_string(row.get("rented_to")),
+                        "date_added": self._check_string(row.get("date_added")),
+                        "price": self._check_string(row.get("price")),
+                        "archived": self._check_bool_string(row.get("archived")),
+                    },
+                )
+
+                print(
+                    f"{'Erstellt' if list_created else 'Aktualisiert'}: {db_movie.title}"
+                )
+
+        return True
+
     def csv_importer(self, filename: str, user) -> bool:
-        with open(
-            os.path.join(settings.BASE_DIR, "import", filename), mode="rb"
-        ) as file:
+        file_path = os.path.join(settings.BASE_DIR, "import", filename)
+
+        # Probe for csv header, as flickrack and blucab use different encodings
+        with open(file_path, "rb") as file:
             header = file.readline()
-            file.close()
 
-            if header == IDENTIFIER_FLICKRACK:
-                with open(
-                    os.path.join(settings.BASE_DIR, "import", filename),
-                    encoding=CSV_ENCODING_FLICKRACK,
-                ) as csv_file:
-                    reader = csv.DictReader(csv_file, delimiter=",")
+        if header == IDENTIFIER_FLICKRACK:
+            return self._import_flickrack(file_path, user)
 
-                    for row in reader:
-                        csv_ean = row["EAN"]
-                        csv_rating = self._check_int_string(row["Bewertung"])
-                        csv_fsk_nbr = row["FSK"]
+        if header in (IDENTIFIER_BLUCAB_1, IDENTIFIER_BLUCAB_2):
+            return self._import_blucab(file_path, user)
 
-                        try:
-                            fsk_nbr = re.findall(r"\b\d+\b", csv_fsk_nbr)[0]
-                        except:
-                            if csv_fsk_nbr == AMAZON_STR_FSK_NO:
-                                fsk_nbr = 0
-                            else:
-                                fsk_nbr = None
-
-                        if not Movie.objects.filter(ean=csv_ean).exists():
-                            m = Movie(
-                                ean=csv_ean,
-                                asin=self._check_string(row.get("ASIN")),
-                                title=self._check_string(row.get("Titel")),
-                                title_clean=self._check_string(row.get("Titel ohne Zusatz")),
-                                format=self._check_string(row.get("Format")),
-                                release_year=self._check_int_string(row.get("Release")),
-                                runtime=self._check_int_string(row.get("Laufzeit")),
-                                fsk=csv_fsk_nbr,
-                                fsk_nbr=fsk_nbr,
-                                content=self._check_string(row.get("Inhalt")),
-                                actor=self._check_string(row.get("Schauspieler")),
-                                regisseur=self._check_string(row.get("Regisseur/e")),
-                                studio=self._check_string(row.get("Studio")),
-                                needs_parsing=True,
-                            )
-
-                            m.save()
-
-                        db_movie = Movie.objects.get(ean=csv_ean)
-
-                        if not MovieUserList.objects.filter(
-                            user=user, movie=db_movie
-                        ).exists():
-                            list_item = MovieUserList(
-                                user=user,
-                                movie=db_movie,
-                                rating=csv_rating,
-                            )
-                            list_item.save()
-
-                    return True
-            if header == IDENTIFIER_BLUCAB:
-                with open(
-                    os.path.join(settings.BASE_DIR, "import", filename),
-                    encoding=CSV_ENCODING_BLUCAB,
-                ) as csv_file:
-                    reader = csv.DictReader(csv_file, delimiter=",")
-
-                    for row in reader:
-                        csv_ean = row["ean"]
-                        csv_activated = self._check_bool_string(row.get("activated"))
-                        csv_rating = self._check_int_string(row.get("rating"))
-                        csv_viewed = self._check_bool_string(row.get("viewed"))
-                        csv_rented = self._check_bool_string(row.get("rented"))
-                        csv_rented_to = self._check_string(row.get("rented_to"))
-                        csv_date_added = self._check_string(row.get("date_added"))
-                        csv_price = self._check_string(row.get("price"))
-                        csv_archived = self._check_bool_string(row.get("archived"))
-
-                        if not Movie.objects.filter(ean=csv_ean).exists():
-                            m = Movie(
-                                ean=csv_ean,
-                                asin=self._check_string(row.get("asin")),
-                                title=self._check_string(row.get("title")),
-                                title_clean=self._check_string(row.get("title_clean")),
-                                format=self._check_string(row.get("format")),
-                                release_year=self._check_int_string(row.get("release_year")),
-                                runtime=self._check_int_string(row.get("runtime")),
-                                fsk=self._check_string(row.get("fsk")),
-                                fsk_nbr=self._check_int_string(row.get("fsk_nbr")),
-                                content=self._check_string(row.get("content")),
-                                actor=self._check_string(row.get("actor")),
-                                regisseur=self._check_string(row.get("regisseur")),
-                                studio=self._check_string(row.get("studio")),
-                                genre=self._check_string(row.get("genre")),
-                                language=self._check_string(row.get("language")),
-                                disc_count=self._check_int_string(row.get("disc_count")),
-                                movie_count=self._check_int_string(row.get("movie_count")),
-                                season_count=self._check_int_string(row.get("season_count")),
-                                episode_count=self._check_int_string(row.get("episode_count")),
-                                is_series=self._check_bool_string(row.get("is_series")),
-                                is_bluray_uhd=self._check_bool_string(row.get("is_bluray_uhd")),
-                                picture_url_original=self._check_string(row.get("picture_url_original")),
-                                picture_url_original_hd=self._check_string(row.get("picture_url_original_hd")),
-                                imdb_id=self._check_string(row.get("imdb_id")),
-                                needs_parsing=False,
-                            )
-
-                            m.save()
-
-                        db_movie = Movie.objects.get(ean=csv_ean)
-
-                        list_item, created = MovieUserList.objects.update_or_create(
-                            user=user, 
-                            movie=db_movie,
-                            
-                            defaults={
-                                'activated': csv_activated,
-                                'rating': csv_rating,
-                                'viewed': csv_viewed,
-                                'rented': csv_rented,
-                                'rented_to': csv_rented_to,
-                                'date_added': csv_date_added,
-                                'price': csv_price,
-                                'archived': csv_archived,
-                            }
-                        )
-
-                        print(f"{'Erstellt' if created else 'Aktualisiert'}: {db_movie.title}")
-
-                    return True
-            else:
-                # CSV Format not known
-                return False
         return False
 
     def csv_exporter(self, user) -> HttpResponse:
