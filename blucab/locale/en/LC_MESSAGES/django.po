@@ -923,7 +923,7 @@ msgstr ""
 
 #: register/templates/email/password_reset_subject.txt:2
 #, python-format
-msgid "[blucab] Password reset for your blucab account (%(username)s)"
+msgid "Password reset for your blucab account (%(username)s)"
 msgstr ""
 
 #: register/templates/register/change_email.html:5
@@ -1061,7 +1061,7 @@ msgid "Logout Here"
 msgstr ""
 
 #: register/views.py:39
-msgid "[blucab] Activate your blucab Account"
+msgid "Activate your blucab Account"
 msgstr ""
 
 #: register/views.py:57
@@ -1087,7 +1087,7 @@ msgid "Please correct the error below."
 msgstr ""
 
 #: register/views.py:128
-msgid "[blucab] blucab Account deleted"
+msgid "blucab Account deleted"
 msgstr ""
 
 #: register/views.py:140
@@ -1095,7 +1095,7 @@ msgid "A confirmation email has been sent to your email address."
 msgstr ""
 
 #: register/views.py:165
-msgid "[blucab] Verify your new email address"
+msgid "Verify your new email address"
 msgstr ""
 
 #: register/views.py:183

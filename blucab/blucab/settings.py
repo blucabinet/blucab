@@ -134,7 +134,7 @@ REST_FRAMEWORK = {
 
 # Email settings
 if env.bool("DJANGO_EMAIL_ENABLE", False):
-    if DEBUG:
+    if DEBUG and not env.bool("DJANGO_EMAIL_ENABLE_WHILE_DEBUG", False):
         EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     else:
         EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -151,6 +151,7 @@ if env.bool("DJANGO_EMAIL_ENABLE", False):
         ).strip('"')
         EMAIL_USE_LOCALTIME = env.bool("DJANGO_EMAIL_USE_LOCALTIME", True)
         EMAIL_TIMEOUT = 30
+        SERVER_EMAIL = env.str("DJANGO_EMAIL_ADMIN", "admin@localhost")
 
 
 # Internationalization

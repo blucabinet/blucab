@@ -9,7 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.utils.encoding import force_bytes, force_str
 from .forms import RegisterForm, ChangePasswordForm, EmailChangeForm
 from .tokens import email_change_token_generator
@@ -21,6 +21,8 @@ env.read_env()
 
 ALLOW_REGISTRATION = env.bool("BLUCAB_ALLOW_REGISTER", False)
 EMAIL_ENABLED = env.bool("DJANGO_EMAIL_ENABLE", False)
+EMAIL_FROM_NOREPLY = env.str("DJANGO_EMAIL_FROM_NOREPLY", "no-reply@localhost")
+EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[blucab] ")
 
 
 def register(request):
@@ -36,7 +38,7 @@ def register(request):
                 user.save()
 
                 current_site = get_current_site(request)
-                mail_subject = _("[blucab] Activate your blucab Account")
+                mail_subject = EMAIL_SUBJECT_PREFIX + _("Activate your blucab Account")
                 message = render_to_string(
                     "email/account_activation.html",
                     {
@@ -48,7 +50,12 @@ def register(request):
                     },
                 )
                 to_email = form.cleaned_data.get("email")
-                email = EmailMessage(mail_subject, message, to=[to_email])
+                email = EmailMessage(
+                    subject=mail_subject,
+                    body=message,
+                    to=[to_email],
+                    from_email=EMAIL_FROM_NOREPLY,
+                )
                 email.send()
 
                 messages.info(
@@ -125,7 +132,7 @@ def delete_user(request):
         return render(request, "register/delete_user_confirm.html", {})
     elif request.method == "POST":
         if EMAIL_ENABLED:
-            mail_subject = _("[blucab] blucab Account deleted")
+            mail_subject = EMAIL_SUBJECT_PREFIX + _("blucab Account deleted")
             message = render_to_string(
                 "email/account_deletion.html",
                 {
@@ -133,7 +140,12 @@ def delete_user(request):
                 },
             )
             to_email = user.email
-            email = EmailMessage(mail_subject, message, to=[to_email])
+            email = EmailMessage(
+                subject=mail_subject,
+                body=message,
+                to=[to_email],
+                from_email=EMAIL_FROM_NOREPLY,
+            )
             email.send()
 
             messages.success(
@@ -162,7 +174,7 @@ def change_email_request(request):
                 new_email = form.cleaned_data.get("email")
 
                 current_site = get_current_site(request)
-                mail_subject = _("[blucab] Verify your new email address")
+                mail_subject = EMAIL_SUBJECT_PREFIX + _("Verify your new email address")
                 message = render_to_string(
                     "email/email_change.html",
                     {
@@ -174,7 +186,12 @@ def change_email_request(request):
                         "new_email": urlsafe_base64_encode(force_bytes(new_email)),
                     },
                 )
-                email = EmailMessage(mail_subject, message, to=[new_email])
+                email = EmailMessage(
+                    subject=mail_subject,
+                    body=message,
+                    to=[new_email],
+                    from_email=EMAIL_FROM_NOREPLY,
+                )
                 email.send()
 
                 messages.info(
