@@ -9,7 +9,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 from django.utils.encoding import force_bytes, force_str
 from .forms import RegisterForm, ChangePasswordForm, EmailChangeForm
 from .tokens import email_change_token_generator
