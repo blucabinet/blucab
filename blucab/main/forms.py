@@ -1,6 +1,6 @@
 from django import forms
 from .models import UserCabinet, UserSettings, MovieUserList, Movie
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 
 class UpdateUserSettings(forms.ModelForm):

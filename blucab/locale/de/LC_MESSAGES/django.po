@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-27 04:45+0000\n"
+"POT-Creation-Date: 2026-04-27 18:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -566,7 +566,7 @@ msgstr "Passwort ändern"
 
 #: main/templates/main/settings_user.html:67
 msgid "Change Email"
-msgstr "Email ändern"
+msgstr "E-Mail ändern"
 
 #: main/templates/main/settings_user.html:69
 msgid "Delete Account"
@@ -593,8 +593,8 @@ msgid ""
 "The selected cabinet will be permanently deleted and removed from your "
 "movies (movies itself will not be removed)."
 msgstr ""
-"Der ausgewählte Schrank wird unwiederruflich gelöscht und von deinen Filmen entfernt "
-"(Filme werden nicht gelöscht)."
+"Der ausgewählte Schrank wird unwiederruflich gelöscht und von deinen Filmen "
+"entfernt (Filme werden dabei nicht gelöscht)."
 
 #: main/templates/main/settings_user_movie.html:15
 msgid "Let's check your movie"
@@ -729,6 +729,7 @@ msgid "Price: %(price)s %(price_unit)s"
 msgstr "Preis: %(price)s %(price_unit)s"
 
 #: main/templates/main/view.html:208
+#, python-format
 msgid "Cabinet: %(cabinet)s"
 msgstr "Schrank: %(cabinet)s"
 
@@ -817,7 +818,7 @@ msgstr "Datum (Älteste)"
 
 #: main/templates/main/view.html:380
 msgid "Runtime (Shortest)"
-msgstr "Laufzeit: %(runtime)s min"
+msgstr "Laufzeit: (Kürzeste)"
 
 #: main/templates/main/view.html:381
 msgid "Runtime (Longest)"
@@ -913,8 +914,8 @@ msgid ""
 msgstr ""
 "\n"
 "Schade, dass du gehst!\n"
-"Dein blucab Benutzerkonto wurde gelöscht. Alle deine Daten wurden entfernt und "
-"können nicht wiederhergestellt werden.\n"
+"Dein blucab Benutzerkonto wurde gelöscht. Alle deine Daten wurden entfernt "
+"und können nicht wiederhergestellt werden.\n"
 "\n"
 "Diese E-Mail wurde kurz vor Vollendung der Löschung versendet.\n"
 "Wir kennen deine E-Mail Adresse jetzt nicht mehr.\n"
@@ -924,8 +925,8 @@ msgid ""
 "Please click on the following link to confirm this new email address for "
 "your blucab account:"
 msgstr ""
-"Bitte klicke auf den folgenden Link um die neue E-Mail Adresse deines "
-"blucab Benutzerkontos zu aktivieren:"
+"Bitte klicke auf den folgenden Link um die neue E-Mail Adresse deines blucab "
+"Benutzerkontos zu aktivieren:"
 
 #: register/templates/email/password_reset_email.html:4
 msgid ""
@@ -1143,8 +1144,8 @@ msgid ""
 "A confirmation email has been sent to your new email address. Please confirm "
 "the change by clicking the link in the email."
 msgstr ""
-"Eine Bestätigungs E-Mail wurde an deine neue E-Mail Adresse versendet. "
-"Bitte bestätige die Änderung durch Klicken des Links in der E-Mail."
+"Eine Bestätigungs E-Mail wurde an deine neue E-Mail Adresse versendet. Bitte "
+"bestätige die Änderung durch Klicken des Links in der E-Mail."
 
 #: register/views.py:190 register/views.py:211
 msgid "Your email address has been updated successfully."
