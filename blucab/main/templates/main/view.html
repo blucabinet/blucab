@@ -12,7 +12,7 @@
 {% block contentTitle %}
     {% if is_user_view %}
         {% if user.is_authenticated %}
-            {% trans "View of your cabinet" %}
+            {% trans "View of your collection" %}
             {% if usersettings.show_view_button_share %}
                 {% if usersettings.view_is_public %}
                     <a href="{% url 'cab_uname' user.username %}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Open public view" %}">🔗 {% trans "Share" %}</a>
@@ -23,7 +23,7 @@
         {% endif %}
     {% else %}
         {% blocktrans with username=usersettings.user.get_username trimmed %}
-            Public view of {{ username }}'s cabinet
+            Public view of {{ username }}'s collection
         {% endblocktrans %}
     {% endif %}
 {% endblock %}

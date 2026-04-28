@@ -617,8 +617,8 @@ msgid "blucab - Public View"
 msgstr "blucab - Öffentliche Ansicht"
 
 #: main/templates/main/view.html:15
-msgid "View of your cabinet"
-msgstr "Ansicht deines Schranks"
+msgid "View of your collection"
+msgstr "Ansicht deiner Sammlung"
 
 #: main/templates/main/view.html:18
 msgid "Open public view"
@@ -634,8 +634,8 @@ msgstr "Die öffentliche Ansicht ist deaktiviert. Öffnet die Einstellungen."
 
 #: main/templates/main/view.html:25
 #, python-format
-msgid "Public view of %(username)s's cabinet"
-msgstr "Öffentliche Ansicht von %(username)ss Schrank"
+msgid "Public view of %(username)s's collection"
+msgstr "Öffentliche Ansicht von %(username)ss Sammlung"
 
 #: main/templates/main/view.html:42 main/templates/main/view.html:123
 #: main/templates/main/view.html:125

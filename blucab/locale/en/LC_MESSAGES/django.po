@@ -608,7 +608,7 @@ msgid "blucab - Public View"
 msgstr ""
 
 #: main/templates/main/view.html:15
-msgid "View of your cabinet"
+msgid "View of your collection"
 msgstr ""
 
 #: main/templates/main/view.html:18
@@ -625,7 +625,7 @@ msgstr ""
 
 #: main/templates/main/view.html:25
 #, python-format
-msgid "Public view of %(username)s's cabinet"
+msgid "Public view of %(username)s's collection"
 msgstr ""
 
 #: main/templates/main/view.html:42 main/templates/main/view.html:123
