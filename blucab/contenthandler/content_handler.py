@@ -97,7 +97,7 @@ class handler:
                         },
                     )
                 try:
-                    db_movie = Movie.objects.get(ean=row["ean"])
+                    db_movie = Movie.objects.get(ean=csv_ean)
                 except Movie.DoesNotExist:
                     return False
 
