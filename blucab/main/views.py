@@ -299,6 +299,7 @@ def csv_import(request):
         success = ch.csv_importer(filename=filename, user=user)
 
         if success:
+            messages.success(request, _("CSV import successfully completed."))
             pass
             # Add to a scheduler TBD
             # ch.content_update()
@@ -310,7 +311,6 @@ def csv_import(request):
         return render(
             request,
             "main/csv_import.html",
-            {"uploaded_file_url": uploaded_file_url},
         )
 
     return render(request, "main/csv_import.html", {})

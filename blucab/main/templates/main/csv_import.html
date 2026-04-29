@@ -39,15 +39,6 @@
     <br>
     <a href="{% url 'settings' %}" class="btn btn-light" role="button">{% trans "Back to Settings" %}</a>
 
-    {% if uploaded_file_url %}
-        <br><br>
-        <p>
-            {% blocktrans with file_url=uploaded_file_url %}
-                Processed the file: {{ file_url }}
-            {% endblocktrans %}
-        </p>
-    {% endif %}
-
     <script>
         const form = document.getElementById("importForm");
         const submitBtn = document.getElementById("submitBtn");
