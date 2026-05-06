@@ -20,3 +20,29 @@ services:
       #- DJANGO_SUPERUSER_USERNAME=admin
       #- DJANGO_SUPERUSER_PASSWORD=hululu
       #- DJANGO_SUPERUSER_EMAIL=example@example.com
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: blucab-redis
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: blucab
+    container_name: blucab-celery
+    command: celery -A blucab worker -l info
+    volumes:
+      - ./app_db:/app/db
+      - ./app_covers:/app/main/static/main/cover
+      - ./app_import:/app/import
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - ./.env.dev
+    environment:
+      - DEBUG=True
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - app
