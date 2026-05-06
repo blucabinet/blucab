@@ -24,7 +24,6 @@ from environs import Env
 
 from contenthandler.content_handler import handler
 
-
 env = Env()
 env.read_env()
 
@@ -58,13 +57,13 @@ def privacy(request):
 
 def cab_uname(request, uname):
     request_user = request.user
-    user_id_query = User.objects.filter(username=uname)
+    user_id_query = User.objects.filter(username=uname).first()
 
-    if len(user_id_query) != 1:
+    if user_id_query is None:
         return render(request, "error/403_user_not_public.html", status=403)
 
-    user = user_id_query[0].id
-    usersettings = UserSettings.objects.filter(user=user)[0]
+    user = user_id_query.id
+    usersettings = UserSettings.objects.filter(user=user).first()
     view_is_public = usersettings.view_is_public
 
     if not view_is_public:
