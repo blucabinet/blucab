@@ -513,6 +513,13 @@ def user_movie_settings(request, movie_id):
     except MovieUserList.DoesNotExist:
         return render(request, "error/404.html", status=404)
 
+    if request.method == "POST" and "delete" in request.POST:
+        user_movie_model.delete()
+        next_url = request.POST.get("next")
+        if next_url:
+            return redirect(next_url)
+        return redirect("view")
+
     if request.method == "POST":
         form = UpdateMovieUserList(request.POST, instance=user_movie_model, user=user)
 
