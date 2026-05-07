@@ -5,16 +5,41 @@
 {% trans "blucab - Add Movie" %}
 {% endblock %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 <h1>{% trans "Add a Movie" %}</h1>
 
 {% if user.is_authenticated %}
-    <div>
-        {% blocktrans with username=user.get_username trimmed %}
-            Seems you got something new {{ username }}!
-        {% endblocktrans %}
-    </div>
+    {% with next_val=request.POST.next|default:request.META.HTTP_REFERER %}
+        <div>
+            {% blocktrans with username=user.get_username trimmed %}
+                Seems you got something new {{ username }}!
+            {% endblocktrans %}
+        </div>
+        <br>
+        <div class="card" style="max-width: 28rem;">
+            <div class="card-body">
+                <form method="post" class="form-group">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="hidden" name="next" value="{{ next_val }}">
+                    <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
+                </form>
+            </div>
+        </div>
+        {% if next_val %}
+            <br>
+            <a href="{{ next_val }}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+            <br>
+        {% else %}
+            <br>
+            <a href="{% url 'view' %}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+            <br>
+        {% endif %}
+    {% endwith %}
 {% else %}
+    <div>{% trans "Welcome!" %}</div>
     <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
 {% endif %}
 

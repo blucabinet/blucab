@@ -126,3 +126,17 @@ class CabinetDeleteForm(forms.Form):
 
         if self.user:
             self.fields["cabinet"].queryset = UserCabinet.objects.filter(user=self.user)
+
+
+class AddMovieForm(forms.Form):
+    query = forms.CharField(
+        max_length=128,
+        label=_("EAN or Title"),
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": _("Enter EAN or search term"),
+            }
+        ),
+    )

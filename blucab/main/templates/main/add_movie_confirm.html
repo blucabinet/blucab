@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% load i18n %}
+
+{% block title %}
+{% trans "blucab - Confirm Movie" %}
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Confirm Movie" %}</h1>
+
+{% if user.is_authenticated %}
+    {% load static %}
+    <div>{% trans "We found the following movie in our database." %}</div>
+    <br>
+    <div class="card" style="max-width: 15rem;">
+        {% if movie.picture_available %}
+            <img src="{% get_static_prefix %}main/cover/{{movie.ean}}/cover.jpg" 
+                class="card-img-top img-fluid" 
+                style="height: 300px; object-fit: contain; padding: 10px;" 
+                alt="{% trans 'Picture of the cover' %}">
+        {% else %}
+            <img src="{% get_static_prefix %}main/dummy.jpg" 
+                class="card-img-top img-fluid" 
+                style="height: 300px; object-fit: contain; padding: 10px;" 
+                alt="{% trans 'Cover dummy' %}">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ movie.title_clean }}</h5>
+            <p class="card-text">
+                <strong>{% trans "EAN" %}:</strong> {{ movie.ean }}<br>
+                <strong>{% trans "Format" %}:</strong> {{ movie.format }}<br>
+                {% if movie.release_year %}
+                    <strong>{% trans "Release Year" %}:</strong> {{ movie.release_year }}<br>
+                {% endif %}
+            </p>
+            <form method="post" class="form-group mb-0">
+                {% csrf_token %}
+                <input type="hidden" name="ean" value="{{ ean }}">
+                <button type="submit" name="confirm_add" class="btn btn-success">{% trans "Add to my collection" %}</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <a href="{% url 'add_movie' %}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+    <br>
+{% else %}
+    <div>{% trans "Welcome!" %}</div>
+    <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
+{% endif %}
+
+{% endblock %}

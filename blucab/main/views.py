@@ -8,7 +8,8 @@ from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from django.urls import reverse_lazy
+from django.utils.safestring import mark_safe
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, FormView
 from .models import UserSettings, MovieUserList, User, Movie, UserCabinet
 from .forms import (
@@ -17,7 +18,9 @@ from .forms import (
     UpdateMovie,
     CabinetAddForm,
     CabinetDeleteForm,
+    AddMovieForm,
 )
+from .tasks import fetch_movie_data_task
 
 import os
 from environs import Env
@@ -352,7 +355,93 @@ def home(request):
 
 @login_required
 def add_movie(request):
-    return render(request, "main/add_movie.html", {})
+    if request.method == "POST" and "confirm_add" in request.POST:
+        ean = request.POST.get("ean")
+        try:
+            movie = Movie.objects.get(ean=ean)
+            obj, created = MovieUserList.objects.get_or_create(
+                user=request.user, movie=movie
+            )
+
+            if created:
+                messages.success(
+                    request, _("Movie successfully added to your collection.")
+                )
+            else:
+                messages.info(request, _("This movie is already in your collection."))
+                return redirect("add_movie")
+
+        except Movie.DoesNotExist:
+            messages.error(request, _("Error: Movie not found."))
+        return redirect("add_movie")
+
+    # Process the initial EAN input
+    if request.method == "POST":
+        form = AddMovieForm(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data["query"].strip()
+
+            # Check if it's an exact EAN match first
+            movie_by_ean = Movie.objects.filter(ean=query).first()
+            if movie_by_ean:
+                if MovieUserList.objects.filter(
+                    user=request.user, movie=movie_by_ean
+                ).exists():
+                    edit_url = str(
+                        reverse_lazy("user_movie_settings", args=[movie_by_ean.id])
+                    )
+
+                    msg = _(
+                        "The movie '%(title)s' is already in your collection. <a href='%(url)s' class='alert-link'>Edit</a>"
+                    ) % {
+                        "title": movie_by_ean.title_clean,
+                        "url": f"{edit_url}?next={request.path}",
+                    }
+
+                    messages.warning(request, mark_safe(msg))
+                    return redirect("add_movie")
+                return render(
+                    request,
+                    "main/add_movie_confirm.html",
+                    {"movie": movie_by_ean, "ean": query},
+                )
+
+            # Verify if it's an EAN
+            if query.isdigit() and len(query) >= 8 and len(query) <= 13:
+                fetch_movie_data_task.delay(query)
+                messages.info(
+                    request,
+                    _(
+                        "EAN not found. The movie is being fetched in the background. Please check back later."
+                    ),
+                )
+                return redirect("add_movie")
+
+            movies = Movie.objects.filter(
+                Q(title__icontains=query) | Q(title_clean__icontains=query)
+            ).distinct()
+
+            if movies.exists():
+                user_movie_eans = MovieUserList.objects.filter(
+                    user=request.user, movie__in=movies
+                ).values_list("movie__ean", flat=True)
+
+                return render(
+                    request,
+                    "main/add_movie_results.html",
+                    {
+                        "movies": movies,
+                        "query": query,
+                        "user_movie_eans": user_movie_eans,
+                    },
+                )
+            else:
+                messages.warning(request, _("No movies found matching your search."))
+                return redirect("add_movie")
+    else:
+        form = AddMovieForm()
+
+    return render(request, "main/add_movie.html", {"form": form})
 
 
 @login_required
