@@ -324,18 +324,14 @@ class handler:
             movie.save()
         return
 
-    def get_missing_information(self) -> None:
+    def get_missing_information(self, random_delay: bool = True) -> None:
         movies = Movie.objects.filter(needs_parsing=True)
-        counter = 0
 
         for movie in movies:
-            if counter == 10:
-                return
-            counter = counter + 1
-
-            # Slow down speed for parsing
-            t = random.randint(2, 10)
-            time.sleep(t)
+            if random_delay:
+                # Create some random delay for parsing
+                t = random.randint(1, 9)
+                time.sleep(t)
 
             movie_ean = movie.ean
             pars = contentParser(movie_ean, item_limit=1)
