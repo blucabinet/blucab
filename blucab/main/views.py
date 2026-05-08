@@ -20,7 +20,7 @@ from .forms import (
     CabinetDeleteForm,
     AddMovieForm,
 )
-from .tasks import fetch_movie_data_task
+from .tasks import task_add_new_movie
 
 import os
 from environs import Env
@@ -408,7 +408,7 @@ def add_movie(request):
 
             # Verify if it's an EAN
             if query.isdigit() and len(query) >= 8 and len(query) <= 13:
-                fetch_movie_data_task.delay(query)
+                task_add_new_movie.delay(query)
                 messages.info(
                     request,
                     _(
