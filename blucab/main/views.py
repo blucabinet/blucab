@@ -415,7 +415,8 @@ def add_movie(request):
                         "EAN not found. The movie is being fetched in the background. Please check back later."
                     ),
                 )
-                return redirect("add_movie")
+                url = reverse("add_movie")
+                return redirect(f"{url}?query={query}")
 
             movies = Movie.objects.filter(
                 Q(title__icontains=query) | Q(title_clean__icontains=query)
@@ -439,7 +440,8 @@ def add_movie(request):
                 messages.warning(request, _("No movies found matching your search."))
                 return redirect("add_movie")
     else:
-        form = AddMovieForm()
+        initial_query = request.GET.get("query", "")
+        form = AddMovieForm(initial={"query": initial_query})
 
     return render(request, "main/add_movie.html", {"form": form})
 
