@@ -29,12 +29,13 @@ UHD_STR = "4K"
 
 REMOVE_ITEMS = {
     "[Blu-ray]",
-    "Blu ray",
-    "Blu-ray",
-    "Blu-Ray",
+    "(Blu-ray)",
     "[Blu-ray 2D]",
     "[4K Ultra HD]",
     "(4K Ultra-HD)",
+    "Blu ray",
+    "Blu-ray",
+    "Blu-Ray",
     "4K-UHD",
     "4K UHD",
     "UHD",
@@ -50,12 +51,13 @@ REMOVE_ITEMS = {
 
 BLURAY_ITEMS = {
     "[Blu-ray]",
-    "Blu ray",
-    "Blu-ray",
-    "Blu-Ray",
+    "(Blu-ray)",
     "[Blu-ray 2D]",
     "[4K Ultra HD]",
     "(4K Ultra-HD)",
+    "Blu ray",
+    "Blu-ray",
+    "Blu-Ray",
     "4K-UHD",
     "4K UHD",
 }
