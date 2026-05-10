@@ -256,6 +256,18 @@ class contentParser:
             if item in input:
                 return FORMAT_DVD
 
+        # Title did not include the format, try to get it from the mediaformat field
+        mediaformat = self.get_mediaformat(soup)
+
+        if mediaformat is not None:
+            for item in BLURAY_ITEMS:
+                if item in mediaformat:
+                    return FORMAT_BLURAY
+
+            for item in DVD_ITEMS:
+                if item in mediaformat:
+                    return FORMAT_DVD
+
         return None
 
     def is_bluray_uhd(self, soup) -> bool:
