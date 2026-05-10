@@ -62,11 +62,11 @@
                                 <div class="card-body" id="e{{mu.id}}Card">
                                     {% if is_user_view %}
                                         {% if usersettings.show_view_title %}
-                                            <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                            <h5 class="card-title title-clamp" title="{{mu.movie.title_clean}}">{{mu.movie.title_clean}}</h5>
                                         {% endif %}
                                     {% else %}
                                         {% if show_view_title %}
-                                            <h5 class="card-title">{{mu.movie.title_clean}}</h5>
+                                            <h5 class="card-title title-clamp" title="{{mu.movie.title_clean}}">{{mu.movie.title_clean}}</h5>
                                         {% endif %}
                                     {% endif %}
 
