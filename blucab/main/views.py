@@ -3,21 +3,17 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import FileSystemStorage
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, FormView
 from .models import UserSettings, MovieUserList, User, Movie, UserCabinet
 from .forms import (
     UpdateUserSettings,
     UpdateMovieUserList,
     UpdateMovie,
-    CabinetAddForm,
-    CabinetDeleteForm,
     AddMovieForm,
 )
 from contenthandler.tasks import task_add_new_movie
@@ -526,48 +522,3 @@ def user_movie_settings(request, movie_id):
         "main/settings_user_movie.html",
         {"form": form, "movie": user_movie_model.movie, "next_url": next_url},
     )
-
-
-class CabinetCreateView(LoginRequiredMixin, CreateView):
-    model = UserCabinet
-    form_class = CabinetAddForm
-    template_name = "main/settings_user_cabinet_add.html"
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
-    def get_success_url(self):
-        next_url = self.request.POST.get("next")
-        if next_url:
-            return next_url
-        return reverse_lazy("view")
-
-
-class CabinetDeleteView(LoginRequiredMixin, FormView):
-    form_class = CabinetDeleteForm
-    template_name = "main/settings_user_cabinet_delete.html"
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
-    def form_valid(self, form):
-        cabinet_to_delete = form.cleaned_data["cabinet"]
-
-        if cabinet_to_delete.user == self.request.user:
-            cabinet_to_delete.delete()
-
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        next_url = self.request.POST.get("next")
-        if next_url:
-            return next_url
-        return reverse_lazy("view")
