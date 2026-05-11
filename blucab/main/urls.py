@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from . import cabinet
+from . import views_settings
 
 urlpatterns = [
     path("cab/", views.home, name="home"),
@@ -12,10 +13,10 @@ urlpatterns = [
     path("legal/privacy/", views.privacy, name="privacy"),
     path("user/import/", views.csv_import, name="import"),
     path("user/export/", views.csv_export, name="export"),
-    path("user/settings/", views.user_settings, name="settings"),
+    path("user/settings/", views_settings.user_settings, name="settings"),
     path(
         "user/movie_settings/<int:movie_id>",
-        views.user_movie_settings,
+        views_settings.user_movie_settings,
         name="user_movie_settings",
     ),
     path("user/cabinet/add/", cabinet.CabinetCreateView.as_view(), name="cabinet_add"),
@@ -24,5 +25,9 @@ urlpatterns = [
         cabinet.CabinetDeleteView.as_view(),
         name="cabinet_delete",
     ),
-    path("movie_settings/<int:movie_id>", views.movie_settings, name="movie_settings"),
+    path(
+        "movie_settings/<int:movie_id>",
+        views_settings.movie_settings,
+        name="movie_settings",
+    ),
 ]
