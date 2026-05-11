@@ -32,7 +32,7 @@ urlpatterns = [
     path("", include(regview_urls)),
 ]
 
-handler400 = "main.views.handler_400"
-handler403 = "main.views.handler_403"
-handler404 = "main.views.handler_404"
-handler500 = "main.views.handler_500"
+handler400 = "main.handler.handler_400"
+handler403 = "main.handler.handler_403"
+handler404 = "main.handler.handler_404"
+handler500 = "main.handler.handler_500"
