@@ -269,14 +269,16 @@ def add_movie(request):
 
             if created:
                 url = str(reverse_lazy("view"))
+                title = movie.title_clean
 
                 msg = _(
-                    "Movie successfully added to your <a href='%(url)s' class='alert-link'>collection</a>"
+                    "Movie '%(title)s' successfully added to your <a href='%(url)s' class='alert-link'>collection</a>"
                 ) % {
                     "url": f"{url}",
+                    "title": title,
                 }
 
-                messages.warning(request, mark_safe(msg))
+                messages.success(request, mark_safe(msg))
                 return redirect("add_movie")
             else:
                 messages.info(request, _("This movie is already in your collection."))
