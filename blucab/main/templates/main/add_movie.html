@@ -20,12 +20,23 @@
         <br>
         <div class="card" style="max-width: 28rem;">
             <div class="card-body">
-                <form method="post" class="form-group">
+                <form method="post" class="form-group" id="add-movie-form">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <input type="hidden" name="next" value="{{ next_val }}">
-                    <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">{% trans "Search" %}</button>
+
+                    <button type="button" id="btn-start-scanner" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-camera"></i> {% trans "Scan Barcode with Camera" %}
+                    </button>
                 </form>
+
+                <div id="scanner-container" style="display: none; margin-top: 15px;">
+                    <div id="interactive" class="viewport" style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
+                    <button type="button" id="btn-stop-scanner" class="btn btn-danger w-100 mt-2">
+                        {% trans "Cancel Scan" %}
+                    </button>
+                </div>
             </div>
         </div>
         {% if next_val %}
@@ -38,6 +49,128 @@
             <br>
         {% endif %}
     {% endwith %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('btn-start-scanner');
+            const stopBtn = document.getElementById('btn-stop-scanner');
+            const scannerContainer = document.getElementById('scanner-container');
+            const queryInput = document.getElementById('id_query'); 
+            const form = document.getElementById('add-movie-form');
+            
+            let isSubmitting = false;
+
+            startBtn.addEventListener('click', function() {
+                sessionStorage.setItem('blucab_scanner_active', 'true');
+                
+                scannerContainer.style.display = 'block';
+                startBtn.style.display = 'none';
+
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.querySelector('#interactive'),
+                        constraints: {
+                            facingMode: "environment", 
+                            width: { ideal: 1920, min: 1280 }, 
+                            height: { ideal: 1080, min: 720 },
+                        },
+                        area: { top: "10%", right: "10%", left: "10%", bottom: "10%" }
+                    },
+                    numOfWorkers: navigator.hardwareConcurrency || 4, 
+                    decoder: { 
+                        readers: ["ean_reader"],
+                        multiple: false
+                    },
+                    locate: true,
+                    locator: {
+                        patchSize: "large",
+                        halfSample: false
+                    }
+                }, function(err) {
+                    if (err) {
+                        console.error(err);
+                        alert("{% trans 'Camera could not be started. Check permissions.' %}");
+                        scannerContainer.style.display = 'none';
+                        startBtn.style.display = 'block';
+                        sessionStorage.removeItem('blucab_scanner_active');
+                        return;
+                    }
+                    Quagga.start();
+                });
+
+                Quagga.onProcessed(function(result) {
+                    var drawingCtx = Quagga.canvas.ctx.overlay,
+                        drawingCanvas = Quagga.canvas.dom.overlay;
+                    if (result) {
+                        if (result.boxes) {
+                            drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                            result.boxes.filter(function (box) { return box !== result.box; }).forEach(function (box) {
+                                Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {color: "green", lineWidth: 2});
+                            });
+                        }
+                        if (result.box) {
+                            Quagga.ImageDebug.drawPath(result.box, {x: 0, y: 1}, drawingCtx, {color: "#00F", lineWidth: 2});
+                        }
+                        if (result.codeResult && result.codeResult.code) {
+                            Quagga.ImageDebug.drawPath(result.line, {x: 'x', y: 'y'}, drawingCtx, {color: 'red', lineWidth: 3});
+                        }
+                    }
+                });
+
+                Quagga.onDetected(function(result) {
+                    const code = result.codeResult.code;
+                    
+                    if(code.length >= 8 && !isSubmitting) {
+                        isSubmitting = true;
+                        Quagga.stop();
+                        
+                        queryInput.value = code;
+                        const searchBtn = document.querySelector('#add-movie-form button[type="submit"]');
+                        searchBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> {% trans "Searching" %}...';
+                        searchBtn.click();
+                    }
+                });
+            });
+
+            stopBtn.addEventListener('click', function() {
+                sessionStorage.removeItem('blucab_scanner_active');
+                Quagga.stop();
+                scannerContainer.style.display = 'none';
+                startBtn.style.display = 'block';
+            });
+
+
+            if (sessionStorage.getItem('blucab_scanner_active') === 'true') {
+                startBtn.click();
+            }
+        });
+    </script>
+
+    <style>
+        #interactive {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #interactive video, 
+        #interactive canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 {% else %}
     <div>{% trans "Welcome!" %}</div>
     <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
