@@ -238,19 +238,23 @@ class handler:
 
         return response
 
-    def add_new_movie(self, ean: str) -> bool:
-        pars = contentParser(ean, item_limit=1)
+    def add_new_movie(self, ean: str) -> tuple[bool, bool]:
 
-        if len(pars.soups) > 0:
-            soup = pars.soups[0]
-            pars_picture_url = pars.get_image_url(soup)
-            pars_picture_url_hd = pars.get_image_url(soup, use_hd=True)
-            pars_picture_available = False
+        if Movie.objects.filter(ean=ean).exists():
+            return False, True  # success, exists
 
-            if pars_picture_url != None:
-                pars_picture_available = True
+        try:
+            pars = contentParser(ean, item_limit=1)
 
-            if not Movie.objects.filter(ean=ean).exists():
+            if len(pars.soups) > 0:
+                soup = pars.soups[0]
+                pars_picture_url = pars.get_image_url(soup)
+                pars_picture_url_hd = pars.get_image_url(soup, use_hd=True)
+                pars_picture_available = False
+
+                if pars_picture_url != None:
+                    pars_picture_available = True
+
                 m = Movie(
                     ean=ean,
                     asin=pars.get_asin(soup),
@@ -281,9 +285,13 @@ class handler:
                 if pars_picture_available:
                     ph.picture_download_processing(pars_picture_url, ean)
 
-                return True
+                return True, False
 
-        return False
+            return False, False
+
+        except Exception as e:
+            print(f"Failed to create and save movie for EAN {ean}. Error: {e}")
+            return False, False
 
     def check_all_picture_available(self) -> None:
         # Only check for SD pictures right now.
