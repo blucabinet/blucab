@@ -20,12 +20,11 @@ from .forms import (
     CabinetDeleteForm,
     AddMovieForm,
 )
-from .tasks import task_add_new_movie
+from contenthandler.tasks import task_add_new_movie
+from contenthandler.content_handler import handler
 
 import os
 from environs import Env
-
-from contenthandler.content_handler import handler
 
 env = Env()
 env.read_env()
