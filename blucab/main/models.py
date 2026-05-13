@@ -190,7 +190,7 @@ class UserSettings(models.Model):
         default=True, verbose_name=_("Show the number of movies")
     )
     show_view_button_details = models.BooleanField(
-        default=True, verbose_name=_("Show the details button")
+        default=False, verbose_name=_("Show the details button")
     )
     show_view_button_share = models.BooleanField(
         default=True, verbose_name=_("Show the share button")
