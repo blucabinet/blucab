@@ -243,6 +243,82 @@ def view(request):
     )
 
 
+@login_required
+def view_simple(request):
+    user = request.user
+
+    movieuserlist = MovieUserList.objects.filter(user=user)
+    cabinets = UserCabinet.objects.filter(user=user)
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        selected_ids = request.POST.getlist("selected_movies")
+
+        if action and selected_ids:
+            selected_movies = movieuserlist.filter(id__in=selected_ids)
+
+            if action == "set_activated":
+                selected_movies.update(activated=True)
+
+            elif action == "set_rented":
+                selected_movies.update(rented=True)
+
+            elif action == "set_archived":
+                selected_movies.update(archived=True)
+
+            elif action == "set_viewed":
+                selected_movies.update(viewed=True)
+
+            elif action == "set_cabinet":
+                cabinet_id = request.POST.get("cabinet_id")
+                if cabinet_id:
+                    if cabinets.filter(id=cabinet_id).exists():
+                        selected_movies.update(cabinet_id=cabinet_id)
+                    else:
+                        messages.error(request, "Invalid cabinet selection.")
+                        return redirect("view_simple")
+
+            elif action == "unset_activated":
+                selected_movies.update(activated=False)
+
+            elif action == "unset_rented":
+                selected_movies.update(rented=False)
+
+            elif action == "unset_archived":
+                selected_movies.update(archived=False)
+
+            elif action == "unset_viewed":
+                selected_movies.update(viewed=False)
+
+            elif action == "unset_cabinet":
+                selected_movies.update(cabinet=None)
+
+            elif action == "delete":
+                deleted_count, _ = selected_movies.delete()
+                messages.warning(
+                    request,
+                    f"Successfully deleted {deleted_count} movies from your collection.",
+                )
+                return redirect("view_simple")
+
+            messages.success(
+                request, f"Action successfully executed for {len(selected_ids)} movies."
+            )
+
+        return redirect("view_simple")
+
+    movieuserlist = movieuserlist.order_by("movie__title_clean")
+
+    return render(
+        request,
+        "main/view_simple.html",
+        {
+            "movieuserlist": movieuserlist,
+            "cabinets": cabinets,
+        },
+    )
+
+
 def home(request):
     if DEBUG:
         return render(

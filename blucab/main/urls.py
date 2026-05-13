@@ -10,6 +10,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("add/", views.add_movie, name="add_movie"),
     path("view/", views.view, name="view"),
+    path("view/simple/", views.view_simple, name="view_simple"),
     path("legal/legal/", views.legal, name="legal"),
     path("legal/privacy/", views.privacy, name="privacy"),
     path("user/import/", csv.csv_import, name="import"),
