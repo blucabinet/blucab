@@ -252,7 +252,7 @@
                                     </div>
                                     <div>{{mu.movie.content}}</div>
                                 </div>
-                                <div class="modal-footer d-flex {% if user.is_superuser or is_user_view %}justify-content-between{% else %}justify-content-end{% endif %}">
+                                <div class="modal-footer d-flex {% if user.is_superuser or is_user_view or user|has_group:'Moderator-Movie' %}justify-content-between{% else %}justify-content-end{% endif %}">
                                     {% if user.is_superuser or user|has_group:'Moderator-Movie' %}
                                         <a href="{% url 'movie_settings' mu.movie.id %}?next={{ request.path }}" class="btn btn-outline-warning" role="button">
                                             {% trans "Movie" %}

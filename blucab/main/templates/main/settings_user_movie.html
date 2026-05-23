@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load i18n %}
+{% load auth_extras %}
 
 {% block title %}
 {% trans "blucab - Movie Settings" %}
@@ -20,6 +21,12 @@
         <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
     {% endif %}
     <br><br>
+    {% if user.is_superuser or user|has_group:'Moderator-Movie' %}
+        <a href="{% url 'movie_settings' movie.id %}?next={{ request.path }}" class="btn btn-outline-warning" role="button">
+            {% trans "Movie" %}
+        </a>
+        <br><br>
+    {% endif %}
     <div class="card" style="max-width: 28rem;">
         <div class="card-body">
             <form method="post" class="form-group">
