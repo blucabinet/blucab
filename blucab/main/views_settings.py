@@ -34,10 +34,13 @@ def user_settings(request):
     )
 
 
+@login_required
 def movie_settings(request, movie_id):
     user = request.user
 
-    if not user.is_superuser:
+    is_moderator = user.groups.filter(name="Moderator-Movie").exists()
+
+    if not (user.is_superuser or is_moderator):
         return render(request, "error/403.html", status=403)
 
     try:
