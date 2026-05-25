@@ -93,12 +93,37 @@ WSGI_APPLICATION = "blucab.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db" / "db.sqlite3",
+ENV_DATABASE = env.str("DJANGO_DB_ENGINE", "sqlite")
+
+if ENV_DATABASE == "sqlite":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db" / "db.sqlite3",
+        }
     }
-}
+elif ENV_DATABASE == "postgresql":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env.str("DJANGO_DB_NAME", "blucab"),
+            "USER": env.str("DJANGO_DB_USER", "blucab"),
+            "PASSWORD": env.str("DJANGO_DB_PASSWORD", "insecure-password").strip('"'),
+            "HOST": env.str("DJANGO_DB_HOST", "localhost"),
+            "PORT": env.int("DJANGO_DB_PORT", 5432),
+        }
+    }
+elif ENV_DATABASE == "mysql":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": env.str("DJANGO_DB_NAME", "blucab"),
+            "USER": env.str("DJANGO_DB_USER", "blucab"),
+            "PASSWORD": env.str("DJANGO_DB_PASSWORD", "insecure-password").strip('"'),
+            "HOST": env.str("DJANGO_DB_HOST", "blucab-db"),
+            "PORT": env.int("DJANGO_DB_PORT", 3306),
+        }
+    }
 
 
 # Password validation
