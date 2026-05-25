@@ -1,66 +1,68 @@
+x-django-base: &django-base
+  build: blucab
+  volumes:
+    - ./app_db:/app/db
+    - ./app_covers:/app/main/static/main/cover
+    - ./app_import:/app/import
+    - /etc/localtime:/etc/localtime:ro
+  env_file:
+    - ./.env.dev
+  environment:
+    - DEBUG=False
+    - DJANGO_EMAIL_ENABLE_WHILE_DEBUG=False
+    - SECRET_KEY="django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
+    - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+    - DJANGO_CELERY_BROKER_URL=redis://blucab-redis:6379/0
+    - DJANGO_DB_ENGINE=sqlite
+
+    # Superuser settings only for the first run and initial database initialization, then delete these entries or comment them out!
+    # Select your own unique password!
+    #- DJANGO_SUPERUSER_USERNAME=admin
+    #- DJANGO_SUPERUSER_PASSWORD=hululu
+    #- DJANGO_SUPERUSER_EMAIL=example@example.com
+
+
 services:
-  app:
-    build: blucab
+  blucab-app:
+    <<: *django-base
     container_name: blucab-app
     ports:
       - '8000:8000'
-    volumes:
-      - ./app_db:/app/db
-      - ./app_covers:/app/main/static/main/cover
-      - ./app_import:/app/import
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - ./.env.dev
-    environment:
-      - DEBUG=False
-      - SECRET_KEY="django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-      # Superuser settings only for the first run and initial database initialization, then delete these entries or comment them out!
-      # Select your own unique password!
-      #- DJANGO_SUPERUSER_USERNAME=admin
-      #- DJANGO_SUPERUSER_PASSWORD=hululu
-      #- DJANGO_SUPERUSER_EMAIL=example@example.com
     depends_on:
-      - redis
+      - blucab-redis
+      #-blucab-db
 
-  redis:
+#  blucab-db:
+#    image: mariadb:latest
+#    container_name: blucab-db
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=blucab_root_password
+#      - MYSQL_DATABASE=blucab_db
+#      - MYSQL_USER=blucab_user
+#      - MYSQL_PASSWORD=blucab_user_password
+#    ports:
+#      - '3306:3306'
+#    volumes:
+#      - ./app_db:/var/lib/mysql
+
+  blucab-redis:
     image: redis:alpine
     container_name: blucab-redis
     ports:
       - '6379:6379'
 
-  celery-worker:
-    build: blucab
+  blucab-celery-worker:
+    <<: *django-base
     container_name: blucab-celery-worker
     command: celery -A blucab worker -l info
-    volumes:
-      - ./app_db:/app/db
-      - ./app_covers:/app/main/static/main/cover
-      - ./app_import:/app/import
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - ./.env.dev
-    environment:
-      - DEBUG=True
-      - CELERY_BROKER_URL=redis://redis:6379/0
     depends_on:
-      - redis
-      - app
+      - blucab-redis
+      - blucab-app
 
-  celery-beat:
-    build: blucab
+  blucab-celery-beat:
+    <<: *django-base
     container_name: blucab-celery-beat
     command: celery -A blucab beat -l info
-    volumes:
-      - ./app_db:/app/db
-      - ./app_covers:/app/main/static/main/cover
-      - ./app_import:/app/import
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - ./.env.dev
-    environment:
-      - DEBUG=True
-      - CELERY_BROKER_URL=redis://redis:6379/0
     depends_on:
-      - redis
-      - app
+      - blucab-redis
+      - blucab-app

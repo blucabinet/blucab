@@ -217,7 +217,7 @@ LOGIN_REDIRECT_URL = "view"
 LOGOUT_REDIRECT_URL = "/"
 
 # Celery Configuration
-CELERY_BROKER_URL = env.str("DJANGO_CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_BROKER_URL = env.str("DJANGO_CELERY_BROKER_URL", "redis://blucab-redis:6379/0")
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
