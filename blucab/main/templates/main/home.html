@@ -1,18 +1,60 @@
 {% extends 'main/base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}
-{% trans "blucab - Home" %}
+    {% trans "blucab - Home" %}
 {% endblock %}
 
 {% block content %}
-<h1>{% trans "Homepage" %}</h1>
+<div class="container-fluid mb-4">
+    
+    <div class="row mb-5 mt-3">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold mb-3">{% trans "Welcome to blucab!" %}</h1>
+            {% if user.is_authenticated %}
+                <p class="lead text-muted">{% trans "Welcome back" %}, <strong>{{ user.get_username }}</strong>!</p>
+                <a href="{% url 'view' %}" class="btn btn-primary mt-2">{% trans "Go to your collection" %}</a>
+            {% else %}
+                <p class="lead text-muted">{% trans "Organize and share your movie collection." %}</p>
+                <a href="{% url 'login' %}" class="btn btn-primary mt-2">{% trans "Login" %}</a>
+            {% endif %}
+        </div>
+    </div>
 
-{% if user.is_authenticated %}
-    <div>{% trans "Welcome back" %} {{ user.get_username }}!</div>
-{% else %}
-    <div>{% trans "Welcome!" %}</div>
-    <a href="{% url 'login' %}">{% trans "Login" %}</a>
-{% endif %}
+    <hr class="my-4">
 
+    <h3 class="mb-4 text-center">{% trans "Top 10 Movies Across All Users" %}</h3>
+    
+    <div class="row gx-3 gy-4 justify-content-center" id="top-movies-gallery">
+        {% for movie in top_movies %}
+            <div class="col-auto">
+                <div class="card h-100 shadow-sm" style="width: 11rem;">
+                    <div class="overlay_div text-center bg-dark">
+                        {% if movie.picture_available %}
+                            <img src="{% get_static_prefix %}main/cover/{{movie.ean}}/cover.jpg" 
+                                class="card-img-top img-fluid" 
+                                alt="{% trans 'Picture of the cover' %}" 
+                                data-bs-toggle="tooltip" 
+                                data-placement="top" 
+                                title="{{movie.title_clean}}">
+                        {% else %}
+                            <img src="{% get_static_prefix %}main/dummy.jpg" 
+                                class="card-img-top img-fluid" 
+                                alt="{% trans 'Cover dummy' %}" 
+                                data-bs-toggle="tooltip" 
+                                data-placement="top" 
+                                title="{{movie.title_clean}}">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>{% trans "No movies have been added by users yet." %}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
 {% endblock %}

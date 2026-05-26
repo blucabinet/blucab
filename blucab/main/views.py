@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -320,17 +320,22 @@ def view_simple(request):
 
 
 def home(request):
+    top_movies = (
+        Movie.objects.annotate(added_count=Count("movieuserlist"))
+        .filter(added_count__gt=0)
+        .order_by("-added_count", "-id")[:10]
+    )
+
+    context = {
+        "top_movies": top_movies,
+    }
+
     if DEBUG:
-        return render(
-            request,
-            "main/home.html",
-            {
-                "alert_text": _("DEBUG mode is activated! Not for production usage!"),
-                "alert_type": "alert-danger",
-            },
-        )
+        context["alert_text"] = _("DEBUG mode is activated! Not for production usage!")
+        context["alert_type"] = "alert-danger"
+        return render(request, "main/home.html", context)
     else:
-        return render(request, "main/home.html", {})
+        return render(request, "main/home.html", context)
 
 
 @login_required
