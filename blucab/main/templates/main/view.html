@@ -251,6 +251,73 @@
                                         </div>
                                     </div>
                                     <div>{{mu.movie.content}}</div>
+                                    {% if is_user_view %}
+                                        <hr class="mt-4">
+                                        <h6 class="text-dark fw-bold">{% trans "Viewing History" %}</h6>
+                                        
+                                        {% if mu.view_logs.all %}
+                                            <ul class="list-group list-group-flush mb-3 border">
+                                            {% for log in mu.view_logs.all %}
+                                                <li class="list-group-item list-group-item-light px-3 py-2">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                                        <span class="fw text-primary"><i class="bi bi-calendar-check"></i> <small>{{ log.view_date|date:"SHORT_DATE_FORMAT" }}</small></span>
+                                                        
+                                                        <button type="button" class="btn btn-sm btn-outline-danger py-0 px-1" data-bs-toggle="collapse" data-bs-target="#inlineDelete{{ log.id }}" title="{% trans 'Delete log' %}">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    {% if log.watched_with %}
+                                                        <div class="small mt-1 text-dark"><strong>{% trans "With" %}:</strong> {{ log.watched_with }}</div>
+                                                    {% endif %}
+                                                    {% if log.comment %}
+                                                        <div class="small text-muted fst-italic mt-1">{{ log.comment }}</div>
+                                                    {% endif %}
+                                                    
+                                                    <div class="collapse mt-2" id="inlineDelete{{ log.id }}">
+                                                        <div class="p-2 bg-white border rounded text-start small shadow-sm">
+                                                            <p class="mb-2 text-danger fw-bold">{% trans "Are you sure you want to delete this entry?" %}</p>
+                                                            <div class="d-flex gap-2">
+                                                                <form action="{% url 'delete_view_log' log.id %}?next={{ request.path }}" method="post" class="m-0 flex-grow-1">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit" class="btn btn-xs btn-danger w-100 py-1 small">{% trans "Yes, delete" %}</button>
+                                                                </form>
+                                                                <button type="button" class="btn btn-xs btn-secondary flex-grow-1 py-1 small" data-bs-toggle="collapse" data-bs-target="#inlineDelete{{ log.id }}">{% trans "Cancel" %}</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <p class="small text-muted mb-3">{% trans "No viewing history yet." %}</p>
+                                        {% endif %}
+
+                                        <div class="collapse" id="addLogCollapse{{mu.id}}">
+                                            <div class="card card-body bg-light border p-3 mt-2 text-start">
+                                                <form action="{% url 'add_view_log' mu.id %}?next={{ request.path }}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="mb-2">
+                                                        <label class="form-label small text-dark mb-0 fw-bold">{% trans "Date" %}</label>
+                                                        <input type="date" name="view_date" class="form-control form-control-sm border-secondary text-dark bg-white" value="{% now 'Y-m-d' %}" required>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label small text-dark mb-0 fw-bold">{% trans "Watched with" %}</label>
+                                                        <input type="text" name="watched_with" class="form-control form-control-sm border-secondary text-dark bg-white" placeholder="{% trans 'e.g. Alice, Bob' %}">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label small text-dark mb-0 fw-bold">{% trans "Comment" %}</label>
+                                                        <textarea name="comment" class="form-control form-control-sm border-secondary text-dark bg-white" rows="2"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-sm btn-success w-100">{% trans "Save" %}</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <button class="btn btn-sm btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#addLogCollapse{{mu.id}}" aria-expanded="false" aria-controls="addLogCollapse{{mu.id}}" 
+                                                onclick="setTimeout(() => { let m = document.querySelector('#e{{mu.id}}ModalLong .modal-body'); m.scrollTo({top: m.scrollHeight, behavior: 'smooth'}); }, 200);">
+                                            <i class="bi bi-plus-circle"></i> {% trans "Add Viewing Date" %}
+                                        </button>
+                                    {% endif %}
                                 </div>
                                 <div class="modal-footer d-flex {% if user.is_superuser or is_user_view or user|has_group:'Moderator-Movie' %}justify-content-between{% else %}justify-content-end{% endif %}">
                                     {% if user.is_superuser or user|has_group:'Moderator-Movie' %}

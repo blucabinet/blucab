@@ -214,3 +214,25 @@ def create_profile(sender, instance, created, **kwargs):
             UserSettings.objects.create(user=instance).save()
     except Exception as err:
         print("Error creating user profile!")
+
+
+class MovieViewLog(models.Model):
+    movie_user_list = models.ForeignKey(
+        MovieUserList,
+        on_delete=models.CASCADE,
+        related_name="view_logs",
+        verbose_name=_("User Movie List"),
+    )
+    view_date = models.DateField(default=timezone.now, verbose_name=_("View Date"))
+    watched_with = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name=_("Watched with")
+    )
+    comment = models.TextField(blank=True, null=True, verbose_name=_("Comment"))
+
+    class Meta:
+        verbose_name = _("Movie View Log")
+        verbose_name_plural = _("Movie View Logs")
+        ordering = ["-view_date"]
+
+    def __str__(self):
+        return f"{self.movie_user_list.movie.title_clean} - {self.view_date}"

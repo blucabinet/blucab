@@ -1,11 +1,11 @@
 from django.db.models import Q, Count
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy, reverse
-from .models import UserSettings, MovieUserList, User, Movie, UserCabinet
+from .models import UserSettings, MovieUserList, User, Movie, UserCabinet, MovieViewLog
 from .forms import AddMovieForm
 from contenthandler.tasks import task_add_new_movie
 
@@ -438,3 +438,50 @@ def add_movie(request):
         form = AddMovieForm(initial={"query": initial_query})
 
     return render(request, "main/add_movie.html", {"form": form})
+
+
+@login_required
+def add_view_log(request, mu_id):
+    movie_user_entry = get_object_or_404(MovieUserList, id=mu_id, user=request.user)
+    next_url = request.GET.get("next", "view")
+
+    if request.method == "POST":
+        view_date = request.POST.get("view_date")
+        watched_with = request.POST.get("watched_with")
+        comment = request.POST.get("comment")
+
+        if view_date:
+            MovieViewLog.objects.create(
+                movie_user_list=movie_user_entry,
+                view_date=view_date,
+                watched_with=watched_with,
+                comment=comment,
+            )
+
+            if not movie_user_entry.viewed:
+                movie_user_entry.viewed = True
+                movie_user_entry.save()
+
+            messages.success(request, _("Viewing history updated."))
+
+    return redirect(next_url)
+
+
+@login_required
+def delete_view_log(request, log_id):
+    next_url = request.GET.get("next", "view")
+
+    if request.method == "POST":
+        log = get_object_or_404(
+            MovieViewLog, id=log_id, movie_user_list__user=request.user
+        )
+        movie_user_entry = log.movie_user_list
+        log.delete()
+
+        if not movie_user_entry.view_logs.exists():
+            movie_user_entry.viewed = False
+            movie_user_entry.save()
+
+        messages.success(request, _("Viewing log entry deleted."))
+
+    return redirect(next_url)
