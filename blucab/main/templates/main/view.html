@@ -45,7 +45,7 @@
                                     {% if mu.movie.picture_available %}
                                         <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top img-fluid" alt="{% trans "Picture of the cover" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                     {% else %}
-                                        <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top img-fluid" alt="{% trans "Cover dummy" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                        <img src="{% static 'main/dummy.jpg' %}" class="card-img-top img-fluid" alt="{% trans "Cover dummy" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                     {% endif %}
 
                                     {% if usersettings.show_view_icon_new %}
@@ -126,7 +126,7 @@
                                         {% if mu.movie.picture_available %}
                                             <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
                                         {% else %}
-                                            <img src="{% get_static_prefix %}main/dummy.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
+                                            <img src="{% static 'main/dummy.jpg' %}" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
                                         {% endif %}
                                         <div class="card-body">
                                             <p class="card-text">

@@ -39,7 +39,7 @@
                                 data-placement="top" 
                                 title="{{movie.title_clean}}">
                         {% else %}
-                            <img src="{% get_static_prefix %}main/dummy.jpg" 
+                            <img src="{% static 'main/dummy.jpg' %}"
                                 class="card-img-top img-fluid" 
                                 alt="{% trans 'Cover dummy' %}" 
                                 data-bs-toggle="tooltip" 
