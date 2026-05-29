@@ -39,7 +39,7 @@ def cab_uname(request, uname):
     if not view_is_public:
         return render(request, "error/403_user_not_public.html", status=403)
 
-    movieuserlist = MovieUserList.objects.filter(user=user)
+    movieuserlist = MovieUserList.objects.filter(user=user, activated=True)
     count_total = movieuserlist.count()
 
     # Apply filters
@@ -131,7 +131,7 @@ def view(request):
     user = request.user
     usersettings = user.user_profile
 
-    movieuserlist = MovieUserList.objects.filter(user=user)
+    movieuserlist = MovieUserList.objects.filter(user=user, activated=True)
     count_total = movieuserlist.count()
 
     active_cabinet_ids = (
