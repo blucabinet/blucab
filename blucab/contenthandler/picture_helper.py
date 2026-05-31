@@ -43,7 +43,7 @@ class pictureHelper:
         file_path = self.__picture_file_path(folder, picture, extension)
         return os.path.exists(file_path)
 
-    def picture_postprocessing(self, folder: str) -> None:
+    def picture_postprocessing(self, folder: str, is_hd: bool = False) -> None:
         def trim(im):
             bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))
             diff = ImageChops.difference(im, bg)
@@ -57,6 +57,9 @@ class pictureHelper:
                 return trim(im.convert("RGB"))
 
             return im
+
+        if is_hd:
+            return
 
         if not self._picture_exists(folder=folder, picture=PICTURE_NAME_RAW_SD):
             return
@@ -75,6 +78,9 @@ class pictureHelper:
 
     def picture_download(self, url: str, ean: str, is_hd: bool = False) -> None:
         # Only check for SD pictures right now.
+        if is_hd:
+            return
+
         file_path = self.__picture_file_path(folder=ean, picture=PICTURE_NAME_RAW_SD)
 
         if not self._picture_exists(folder=ean, picture=PICTURE_NAME_RAW_SD):

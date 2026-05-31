@@ -327,7 +327,7 @@ class handler:
         )
 
         for movie in movies_img_available:
-            ph.picture_postprocessing(folder=movie.ean)
+            ph.picture_postprocessing(folder=movie.ean, is_hd=False)
             movie.picture_processed = True
             movie.save()
         return
