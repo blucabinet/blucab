@@ -28,10 +28,7 @@ class pictureHelper:
         folder_name = folder
         picture_name = picture + extension
         return os.path.join(
-            settings.BASE_DIR,
-            "main",
-            "static",
-            "main",
+            settings.MEDIA_ROOT,
             "cover",
             folder_name,
             picture_name,

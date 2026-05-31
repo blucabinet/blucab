@@ -32,7 +32,7 @@
                 <div class="card h-100 shadow-sm" style="width: 11rem;">
                     <div class="overlay_div text-center bg-dark">
                         {% if movie.picture_available %}
-                            <img src="{% get_static_prefix %}main/cover/{{movie.ean}}/cover.jpg" 
+                            <img src="{% get_media_prefix %}cover/{{movie.ean}}/cover.jpg" 
                                 class="card-img-top img-fluid" 
                                 alt="{% trans 'Picture of the cover' %}" 
                                 data-bs-toggle="tooltip" 

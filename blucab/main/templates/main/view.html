@@ -42,7 +42,7 @@
                         <div class="overlay_div" id="pictureOverlayIcons">
                             <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                 {% if mu.movie.picture_available %}
-                                    <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top img-fluid" alt="{% trans "Picture of the cover" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                    <img src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top img-fluid" alt="{% trans "Picture of the cover" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% else %}
                                     <img src="{% static 'main/dummy.jpg' %}" class="card-img-top img-fluid" alt="{% trans "Cover dummy" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% endif %}
@@ -123,9 +123,9 @@
                             <div class="modal-body">
                                 <div class="card border-light mb-3" style="width: 20rem;">
                                     {% if mu.movie.picture_available %}
-                                        <img src="{% get_static_prefix %}main/cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
+                                        <img src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}" style="width: 10rem;">
                                     {% else %}
-                                        <img src="{% static 'main/dummy.jpg' %}" class="card-img-top" alt="{% trans "Picture of the cover" %}", style="width: 10rem;">
+                                        <img src="{% static 'main/dummy.jpg' %}" class="card-img-top" alt="{% trans "Picture of the cover" %}" style="width: 10rem;">
                                     {% endif %}
                                     <div class="card-body">
                                         <p class="card-text">

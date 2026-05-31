@@ -21,6 +21,8 @@ from django.views.generic import RedirectView
 from register import urls as regview_urls
 from main import urls as main_urls
 from api import urls as api_urls
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
@@ -36,3 +38,7 @@ handler400 = "main.handler.handler_400"
 handler403 = "main.handler.handler_403"
 handler404 = "main.handler.handler_404"
 handler500 = "main.handler.handler_500"
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

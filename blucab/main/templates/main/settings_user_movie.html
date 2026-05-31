@@ -16,7 +16,7 @@
     <div>{% trans "Let's check your movie" %} {{ user.get_username }}!</div>
     <br>
     {% if movie.picture_available %}
-        <img src="{% get_static_prefix %}main/cover/{{movie.ean}}/cover.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+        <img src="{% get_media_prefix %}cover/{{movie.ean}}/cover.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
     {% else %}
         <img src="{% static 'main/dummy.jpg' %}" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
     {% endif %}

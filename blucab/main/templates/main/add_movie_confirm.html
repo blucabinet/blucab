@@ -14,7 +14,7 @@
     <br>
     <div class="card" style="max-width: 15rem;">
         {% if movie.picture_available %}
-            <img src="{% get_static_prefix %}main/cover/{{movie.ean}}/cover.jpg" 
+            <img src="{% get_media_prefix %}cover/{{movie.ean}}/cover.jpg" 
                 class="card-img-top img-fluid" 
                 style="height: 300px; object-fit: contain; padding: 10px;" 
                 alt="{% trans 'Picture of the cover' %}">
