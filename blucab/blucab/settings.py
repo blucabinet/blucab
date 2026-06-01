@@ -230,6 +230,10 @@ LOGOUT_REDIRECT_URL = "/"
 
 # Celery Configuration
 CELERY_BROKER_URL = env.str("DJANGO_CELERY_BROKER_URL", "redis://blucab-redis:6379/0")
+CELERY_RESULT_BACKEND = env.str(
+    "DJANGO_CELERY_BROKER_URL", "redis://blucab-redis:6379/0"
+)
+CELERY_RESULT_EXPIRES = 3600
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 
