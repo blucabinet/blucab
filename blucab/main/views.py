@@ -311,7 +311,7 @@ def view_simple(request):
 
     return render(
         request,
-        "main/view_simple.html",
+        "main/view_list.html",
         {
             "movieuserlist": movieuserlist,
             "cabinets": cabinets,
