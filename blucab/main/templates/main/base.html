@@ -174,8 +174,10 @@
                       {% endfor %}
                     {% endif %}
                     
-                    {% block content %}
-                    {% endblock %}
+                    <div id="zoomable-content">
+                      {% block content %}
+                      {% endblock %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -226,6 +228,47 @@
             footer.classList.remove("hidden");
             showBtn.style.display = "none";
           });
+        </script>
+
+        <script>
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const zoomResetBtn = document.getElementById('zoomResetBtn');
+            const zoomLevelDisplay = document.getElementById('zoomLevelDisplay');
+            
+            const targetElement = document.getElementById('zoomable-content');
+
+            let currentZoom = parseFloat(localStorage.getItem('blucab_page_zoom')) || 1.0;
+
+            function updateZoom(newZoom) {
+                if (newZoom < 0.5) newZoom = 0.5;
+                if (newZoom > 2.0) newZoom = 2.0;
+
+                currentZoom = Math.round(newZoom * 10) / 10; 
+                
+                if (targetElement) {
+                    targetElement.style.zoom = currentZoom;
+                }
+                
+                zoomLevelDisplay.textContent = Math.round(currentZoom * 100) + '%';
+                
+                // Save to localStorage so it persists across page reloads
+                localStorage.setItem('blucab_page_zoom', currentZoom);
+            }
+
+            updateZoom(currentZoom);
+
+            zoomInBtn.addEventListener('click', () => {
+                updateZoom(currentZoom + 0.1);
+            });
+
+            zoomOutBtn.addEventListener('click', () => {
+                updateZoom(currentZoom - 0.1);
+            });
+
+            zoomResetBtn.addEventListener('click', () => {
+                updateZoom(1.0);
+            });
         </script>
     </body>
 </html>

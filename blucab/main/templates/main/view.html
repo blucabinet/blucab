@@ -251,6 +251,13 @@
                 {% endif %}
             </div>
 
+            <div class="d-inline-flex align-items-center ms-4 gap-2">
+                <button id="zoomOutBtn" class="btn btn-sm btn-outline-light py-0 px-2" title="{% trans 'Zoom Out' %}"><i class="bi bi-zoom-out"></i></button>
+                <span id="zoomLevelDisplay" class="small fw-bold" style="min-width: 45px;">100%</span>
+                <button id="zoomInBtn" class="btn btn-sm btn-outline-light py-0 px-2" title="{% trans 'Zoom In' %}"><i class="bi bi-zoom-in"></i></button>
+                <button id="zoomResetBtn" class="btn btn-sm btn-outline-info py-0 px-2 ms-1" title="{% trans 'Reset Zoom' %}"><i class="bi bi-arrow-counterclockwise"></i></button>
+            </div>
+
         </form>
     </div>
 
