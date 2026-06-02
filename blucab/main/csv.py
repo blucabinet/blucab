@@ -4,18 +4,39 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from celery.result import AsyncResult
+
 from .models import UserSettings
 from contenthandler.content_handler import handler
+from contenthandler.tasks import task_import_csv
 
 import os
 
 
 @login_required
+def check_task_status(request, task_id):
+    task = AsyncResult(task_id)
+
+    result = task.result
+
+    if isinstance(result, Exception):
+        result = str(result)
+
+    return JsonResponse(
+        {
+            "state": task.state,
+            "result": result,
+        }
+    )
+
+
+@login_required
 def csv_import(request):
     user = request.user
+    context = {}
 
     if request.method == "POST":
         file = request.FILES.get("myfile", None)
@@ -32,27 +53,17 @@ def csv_import(request):
 
         filestorage = FileSystemStorage(location=str(file_path))
         filename = filestorage.save(myfile.name, myfile)
-        uploaded_file_url = filestorage.url(filename)
 
-        ch = handler()
-        success = ch.csv_importer(filename=filename, user=user)
-
-        if success:
-            messages.success(request, _("CSV import successfully completed."))
-            pass
-            # Add to a scheduler TBD
-            # ch.content_update()
-        else:
-            messages.error(request, _("Error. Unknown CSV format."))
-
-        os.remove(os.path.join(settings.BASE_DIR, "import", filename))
-
-        return render(
-            request,
-            "main/csv_import.html",
+        task = task_import_csv.delay(filename=filename, user_id=user.id)
+        messages.info(
+            request, _("CSV import started in the background. Please wait...")
         )
 
-    return render(request, "main/csv_import.html", {})
+        context["task_id"] = task.id
+
+        return render(request, "main/csv_import.html", context)
+
+    return render(request, "main/csv_import.html", context)
 
 
 @login_required
