@@ -64,6 +64,9 @@ class handler:
 
             for row in reader:
                 csv_ean = row["EAN"]
+                if not csv_ean or str(csv_ean).strip() == "":
+                    continue
+
                 csv_rating = self._check_int_string(row["Bewertung"])
                 csv_fsk_nbr = row["FSK"]
 
