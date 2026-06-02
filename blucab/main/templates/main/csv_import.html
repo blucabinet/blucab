@@ -17,6 +17,7 @@
         {% endblocktrans %}
     </div>
     <br>
+    <div id="dynamic-alert" class="alert d-none" role="alert"></div>
     <div class="card" style="max-width: 28rem;">
         <div class="card-body">
             <form method="post" id="importForm" enctype="multipart/form-data">
@@ -44,12 +45,50 @@
         const submitBtn = document.getElementById("submitBtn");
         const btnText = document.getElementById("btnText");
         const spinner = document.getElementById("spinner");
+        
+        const alertBox = document.getElementById("dynamic-alert");
 
         form.addEventListener("submit", () => {
             submitBtn.disabled = true;
-            btnText.textContent = "{% trans "Importing..." %}";
+            btnText.textContent = "{% trans 'Importing...' %}";
             spinner.classList.remove("d-none");
         });
+
+        {% if task_id %}
+            submitBtn.disabled = true;
+            btnText.textContent = "{% trans 'Processing in background...' %}";
+            spinner.classList.remove("d-none");
+
+            const taskId = "{{ task_id }}";
+            
+            const pollTimer = setInterval(() => {
+                fetch(`/task-status/${taskId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.state === 'SUCCESS' || data.state === 'FAILURE') {
+                            clearInterval(pollTimer);
+
+                            const oldMessages = document.querySelectorAll('.alert:not(#dynamic-alert)');
+                            oldMessages.forEach(msg => msg.remove());
+                            
+                            spinner.classList.add("d-none");
+                            submitBtn.disabled = false;
+                            btnText.textContent = "{% trans 'Import' %}";
+                            
+                            alertBox.classList.remove("d-none");
+
+                            if (data.state === 'SUCCESS' && data.result === true) {
+                                alertBox.classList.add("alert-success");
+                                alertBox.textContent = "{% trans 'CSV import successfully completed.' %}";
+                            } else {
+                                alertBox.classList.add("alert-danger");
+                                alertBox.textContent = "{% trans 'Error. Unknown CSV format or task failed.' %}";
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error fetching task status:', error));
+            }, 1000);
+        {% endif %}
     </script>
 
 {% else %}
