@@ -51,6 +51,7 @@ class UpdateMovie(forms.ModelForm):
             "picture_url_original",
             "picture_url_original_hd",
             "picture_processed",
+            "force_picture_disable",
             "needs_parsing",
             "imdb_id",
         ]

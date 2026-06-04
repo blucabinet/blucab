@@ -69,6 +69,9 @@ class Movie(models.Model):
     imdb_id = models.CharField(
         max_length=100, blank=True, null=True, verbose_name=_("IMDb ID")
     )
+    force_picture_disable = models.BooleanField(
+        default=False, verbose_name=_("Force Deactivate Picture")
+    )
 
     class Meta:
         verbose_name = _("Movies")
