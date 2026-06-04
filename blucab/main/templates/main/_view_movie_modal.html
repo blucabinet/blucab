@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <div class="card border-light mb-3" style="width: 20rem;">
-                    {% if mu.movie.picture_available %}
+                    {% if mu.movie.picture_available and not mu.movie.force_picture_disable %}
                         <img src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top" alt="{% trans "Picture of the cover" %}" style="width: 10rem;">
                     {% else %}
                         <img src="{% static 'main/dummy.jpg' %}" class="card-img-top" alt="{% trans "Picture of the cover" %}" style="width: 10rem;">
