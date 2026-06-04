@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponse
 from main.models import Movie, MovieUserList
+from .models import FailedAddMovie
 from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS, AMAZON_STR_FSK_NO
 from .picture_helper import pictureHelper, PICTURE_NAME_PROCESSED_SD
 
@@ -317,6 +318,7 @@ class handler:
         )
 
         for movie in movies_img_unavailable:
+            # TBD rate limit?
             if movie.picture_url_original != None:
                 ph.picture_download_processing(
                     url=movie.picture_url_original, ean=movie.ean, is_hd=False
@@ -335,81 +337,90 @@ class handler:
             movie.save()
         return
 
-    def get_missing_information(self, random_delay: bool = True) -> None:
+    def update_movie(self, movie: Movie) -> bool:
+        movie_ean = movie.ean
+        pars = contentParser(movie_ean, item_limit=1)
+
+        if len(pars.soups) == 0:
+            FailedAddMovie.objects.create(
+                ean=movie_ean, is_movie_update=True, movie=movie
+            )
+            print(
+                f"ContentParser failed! Movie: {movie.title}, EAN: {movie_ean}, ASIN: {movie.asin}"
+            )
+            return False
+
+        soup = pars.soups[0]
+
+        if movie.release_year == None:
+            movie.release_year = pars.get_release_year(soup)
+
+        if movie.runtime == None:
+            movie.runtime = pars.get_runtime_min(soup)
+
+        if movie.fsk == None:
+            movie.fsk = pars.get_fsk_str(soup)
+
+        if movie.fsk_nbr == None:
+            movie.fsk_nbr = pars.get_fsk(soup)
+
+        if movie.content == None:
+            movie.content = pars.get_content(soup)
+        else:
+            for item in PRODUCT_DESCRIPTION_ITEMS:
+                movie.content = movie.content.replace(item, "").lstrip()
+
+        if movie.actor == None:
+            movie.actor = pars.get_actors(soup)
+
+        if movie.regisseur == None:
+            movie.regisseur = pars.get_regisseur(soup)
+
+        if movie.studio == None:
+            movie.studio = pars.get_studio(soup)
+
+        if movie.genre == None:
+            movie.genre = pars.get_genre(soup)
+
+        if movie.language == None:
+            movie.language = pars.get_language(soup)
+
+        if movie.disc_count == 1:
+            count = pars.get_disc_count(soup)
+            if count != None:
+                movie.disc_count = count
+
+        if movie.is_bluray_uhd == False:
+            movie.is_bluray_uhd = pars.is_bluray_uhd(soup)
+
+        # Picture update
+        pars_picture_url = pars.get_image_url(soup)
+
+        if movie.picture_url_original_hd == None:
+            movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
+
+        if (pars_picture_url != None) and (movie.picture_available == False):
+            ph.picture_download_processing(pars_picture_url, movie_ean)
+            movie.picture_url_original = pars_picture_url
+            movie.picture_available = True
+            movie.picture_processed = True
+
+        movie.needs_parsing = False
+        movie.save()
+
+        return True
+
+    def get_missing_information(self) -> None:
+        from .tasks import task_update_movie
+
         movies = Movie.objects.filter(needs_parsing=True)
 
         for movie in movies:
-            if random_delay:
-                # Create some random delay for parsing
-                t = random.randint(1, 9)
-                time.sleep(t)
+            random_delay = random.randint(1, 10)
+            task_update_movie.apply_async(
+                kwargs={"movie_id": movie.id}, countdown=random_delay
+            )
 
-            movie_ean = movie.ean
-            pars = contentParser(movie_ean, item_limit=1)
-
-            if len(pars.soups) == 0:
-                print(
-                    f"ContentParser failed! Movie: {movie.title}, EAN: {movie_ean}, ASIN: {movie.asin}"
-                )
-                continue
-
-            soup = pars.soups[0]
-
-            if movie.release_year == None:
-                movie.release_year = pars.get_release_year(soup)
-
-            if movie.runtime == None:
-                movie.runtime = pars.get_runtime_min(soup)
-
-            if movie.fsk == None:
-                movie.fsk = pars.get_fsk_str(soup)
-
-            if movie.fsk_nbr == None:
-                movie.fsk_nbr = pars.get_fsk(soup)
-
-            if movie.content == None:
-                movie.content = pars.get_content(soup)
-            else:
-                for item in PRODUCT_DESCRIPTION_ITEMS:
-                    movie.content = movie.content.replace(item, "").lstrip()
-
-            if movie.actor == None:
-                movie.actor = pars.get_actors(soup)
-
-            if movie.regisseur == None:
-                movie.regisseur = pars.get_regisseur(soup)
-
-            if movie.studio == None:
-                movie.studio = pars.get_studio(soup)
-
-            if movie.genre == None:
-                movie.genre = pars.get_genre(soup)
-
-            if movie.language == None:
-                movie.language = pars.get_language(soup)
-
-            if movie.disc_count == 1:
-                count = pars.get_disc_count(soup)
-                if count != None:
-                    movie.disc_count = count
-
-            if movie.is_bluray_uhd == False:
-                movie.is_bluray_uhd = pars.is_bluray_uhd(soup)
-
-            # Picture update
-            pars_picture_url = pars.get_image_url(soup)
-
-            if movie.picture_url_original_hd == None:
-                movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
-
-            if (pars_picture_url != None) and (movie.picture_available == False):
-                ph.picture_download_processing(pars_picture_url, movie_ean)
-                movie.picture_url_original = pars_picture_url
-                movie.picture_available = True
-                movie.picture_processed = True
-
-            movie.needs_parsing = False
-            movie.save()
         return
 
     def content_update(self) -> None:

@@ -2,8 +2,9 @@ import os
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from celery import shared_task
-from contenthandler.content_handler import handler
-from contenthandler.models import FailedAddMovie
+from .content_handler import handler
+from .models import FailedAddMovie
+from main.models import Movie
 
 User = get_user_model()
 
@@ -29,6 +30,19 @@ def task_add_new_movie(ean: str) -> bool:
     return False
 
 
+@shared_task(rate_limit="30/m")
+def task_update_movie(movie_id: int) -> bool:
+    try:
+        movie = Movie.objects.get(id=movie_id)
+    except Movie.DoesNotExist:
+        return False
+
+    ch = handler()
+    success = ch.update_movie(movie)
+
+    return success
+
+
 @shared_task(rate_limit="2/m")
 def task_content_update() -> None:
     ch = handler()
@@ -48,9 +62,8 @@ def task_import_csv(filename: str, user_id: int) -> bool:
     ch = handler()
     success = ch.csv_importer(filename=filename, user=user)
 
-    # TBD Trigger content update
     if success:
-        # Code to trigger content update
+        task_content_update.delay()
         pass
 
     file_path = os.path.join(settings.BASE_DIR, "import", filename)
