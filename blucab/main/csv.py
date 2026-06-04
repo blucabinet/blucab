@@ -4,33 +4,15 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from celery.result import AsyncResult
 
 from .models import UserSettings
 from contenthandler.content_handler import handler
 from contenthandler.tasks import task_import_csv
 
 import os
-
-
-@login_required
-def check_task_status(request, task_id):
-    task = AsyncResult(task_id)
-
-    result = task.result
-
-    if isinstance(result, Exception):
-        result = str(result)
-
-    return JsonResponse(
-        {
-            "state": task.state,
-            "result": result,
-        }
-    )
 
 
 @login_required

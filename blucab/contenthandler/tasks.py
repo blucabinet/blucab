@@ -1,12 +1,34 @@
 import os
 from django.conf import settings
+from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+
 from celery import shared_task
+from celery.result import AsyncResult
+
 from .content_handler import handler
 from .models import FailedAddMovie
 from main.models import Movie
 
 User = get_user_model()
+
+
+@login_required
+def check_task_status(request, task_id):
+    task = AsyncResult(task_id)
+
+    result = task.result
+
+    if isinstance(result, Exception):
+        result = str(result)
+
+    return JsonResponse(
+        {
+            "state": task.state,
+            "result": result,
+        }
+    )
 
 
 @shared_task(rate_limit="10/m")

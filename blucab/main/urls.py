@@ -13,7 +13,6 @@ urlpatterns = [
     path("view/simple/", views.view_simple, name="view_simple"),
     path("legal/legal/", views.legal, name="legal"),
     path("legal/privacy/", views.privacy, name="privacy"),
-    path("task-status/<str:task_id>/", csv.check_task_status, name="check_task_status"),
     path("user/import/", csv.csv_import, name="import"),
     path("user/export/", csv.csv_export, name="export"),
     path("user/settings/", views_settings.user_settings, name="settings"),
