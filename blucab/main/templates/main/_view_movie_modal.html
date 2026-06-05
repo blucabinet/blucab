@@ -62,14 +62,18 @@
                                 <br>
                             {% endif %}
                             
-                            {% blocktrans with runtime=mu.movie.runtime trimmed %}
-                                Runtime: {{runtime}} min
-                            {% endblocktrans %}
-                            <br>
-                            {% blocktrans with release_year=mu.movie.release_year trimmed %}
-                                Release: {{release_year}}
-                            {% endblocktrans %}
-                            <br>
+                            {% if mu.movie.runtime %}
+                                {% blocktrans with runtime=mu.movie.runtime trimmed %}
+                                    Runtime: {{runtime}} min
+                                {% endblocktrans %}
+                                <br>
+                            {% endif %}
+                            {% if mu.movie.release_year %}
+                                {% blocktrans with release_year=mu.movie.release_year trimmed %}
+                                    Release: {{release_year}}
+                                {% endblocktrans %}
+                                <br>
+                            {% endif %}
                             {% blocktrans with fsk=mu.movie.fsk trimmed %}
                                 FSK: {{fsk}}
                             {% endblocktrans %}

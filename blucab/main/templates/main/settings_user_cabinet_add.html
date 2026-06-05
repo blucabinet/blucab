@@ -27,11 +27,11 @@
         </div>
         {% if next_val %}
             <br>
-            <a href="{{ next_val }}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+                <a href="{{ next_val }}" class="btn btn-light" role="button">{% trans "Back" %}</a>
             <br>
         {% else %}
             <br>
-            <a href="{% url 'settings' %}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+                <a href="{% url 'settings' %}" class="btn btn-light" role="button">{% trans "Back" %}</a>
             <br>
         {% endif %}
     {% endwith %}
