@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy, reverse
 from .models import UserSettings, MovieUserList, User, Movie, UserCabinet, MovieViewLog
-from .forms import AddMovieForm
+from .forms import AddMovieForm, MovieErrorReportForm
 from contenthandler.tasks import task_add_new_movie
 
 from environs import Env
@@ -15,6 +15,7 @@ env = Env()
 env.read_env()
 
 DEBUG = env.bool("DEBUG", False)
+ALLOW_MOVIE_ERROR_REPORT = env.bool("BLUCAB_ALLOW_MOVIE_ERROR_REPORT", True)
 
 
 def legal(request):
@@ -108,6 +109,7 @@ def cab_uname(request, uname):
             "movieuserlist": movieuserlist,
             "usersettings": usersettings,
             "is_user_view": False,
+            "allow_movie_error_report": ALLOW_MOVIE_ERROR_REPORT,
             "uname": uname,
             "show_view_title": show_view_title,
             "show_card_body": show_card_body,
@@ -222,6 +224,7 @@ def view(request):
             "movieuserlist": movieuserlist,
             "usersettings": usersettings,
             "is_user_view": True,
+            "allow_movie_error_report": ALLOW_MOVIE_ERROR_REPORT,
             "show_card_body": True,
             "count_dvd": count_dvd,
             "count_bd": count_bd,
@@ -485,3 +488,38 @@ def delete_view_log(request, log_id):
         messages.success(request, _("Viewing log entry deleted."))
 
     return redirect(next_url)
+
+
+@login_required
+def report_movie_error(request, movie_id):
+    if not ALLOW_MOVIE_ERROR_REPORT:
+        return redirect("view")
+
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    if request.method == "POST":
+        form = MovieErrorReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.movie = movie
+            report.user = request.user
+            report.save()
+
+        next_url = request.POST.get("next")
+        if next_url:
+            return redirect(next_url)
+        return redirect("view")
+    else:
+        form = MovieErrorReportForm()
+
+    next_url = request.GET.get("next", "")
+
+    return render(
+        request,
+        "main/report_movie_error.html",
+        {
+            "form": form,
+            "movie": movie,
+            "next_url": next_url,
+        },
+    )

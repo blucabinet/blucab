@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserCabinet, UserSettings, MovieUserList, Movie
+from .models import UserCabinet, UserSettings, MovieUserList, Movie, MovieErrorReport
 from django.utils.translation import gettext_lazy as _
 
 
@@ -141,3 +141,12 @@ class AddMovieForm(forms.Form):
             }
         ),
     )
+
+
+class MovieErrorReportForm(forms.ModelForm):
+    class Meta:
+        model = MovieErrorReport
+        fields = ["picture_wrong", "content_wrong", "wrong_ean_asin", "comment"]
+        widgets = {
+            "comment": forms.Textarea(attrs={"rows": 3}),
+        }

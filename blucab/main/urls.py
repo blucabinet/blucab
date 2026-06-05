@@ -32,6 +32,11 @@ urlpatterns = [
         views_settings.movie_settings,
         name="movie_settings",
     ),
+    path(
+        "movie_settings/<int:movie_id>/report-error/",
+        views.report_movie_error,
+        name="report_movie_error",
+    ),
     path("view-log/add/<int:mu_id>/", views.add_view_log, name="add_view_log"),
     path(
         "view-log/delete/<int:log_id>/", views.delete_view_log, name="delete_view_log"
