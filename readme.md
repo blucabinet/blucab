@@ -1,7 +1,37 @@
 # blucab
 
+English version and attributions below.
+
+blucab ist eine Software zur Verwaltung deiner physischen Blu-Rays und DVDs als einfach zu bedienender Webservice, der auf dem Django-Framework basiert.
+
+## Disclaimer
+
+Dieses Projekt ist ein reines, nicht-kommerzielles Open-Source-Hobbyprojekt, das ich in meiner Freizeit nach der Arbeit entwickle.
+Die Entwicklung kann unregelmäßig sein und "Breaking Changes" können ohne vorherige Ankündigung auftreten.
+Solltest du das Projekt in einer produktiven Umgebung einsetzen, denke bitte an regelmäßige Backups.
+Ich werde Releases erstellen, sobald ich das Projekt als einsatzbereit erachte.
+Bitte nutze die Software so wie sie ist ("as is") und beachte die Lizenzvereinbarungen.
+Die Entwicklung findet momentan direkt auf dem main-Branch statt. Dies wird sich nach dem ersten Release ändern.
+
+Einige geplante Features sind im GitHub Issue-Tracker zu finden.
+
+Allgemeiner Plan dieses Projekts:
+
+- Eine Lösung zur Verwaltung deiner DVD- und Blu-Ray-Sammlung schaffen (in Zukunft auch Schallplatten? 🤔)
+- Ein Ersatz für das eingestellte flickrack.com sein (Ich hoffe, du hast damals ein FlickRack .csv-Backup gemacht! 😉)
+- Eines Tages stabil und selbst-hostbar sein (es gibt noch ungelöste Probleme)
+  - Releases automatisch bauen und auf Docker-Hub o. Ä. pushen
+  - Eine Website für alle hosten? (Finanzierung?, Rechtliche Aspekte bezüglich der Nutzerdaten?)
+  - Ohne jegliche App nutzbar sein -> kompatibel mit Mobilgeräten
+  - Django-basierte Tests integrieren
+
+Das Projekt ist aktuell ausschließlich auf deutschsprachige Filminformationen ausgelegt.
+Andere Sprachen erfordern weiteren Aufwand.
+Die Identifikation der Disks erfolgt über die European Article Number (EAN).
+
+## English Version
+
 blucab is a software to manage your physical Blu-Rays and DVDs as a easy to use webservice based on the [Django](https://www.djangoproject.com/) Framework.
-An -still in development- Rest-API is available to interface with the service directly, e.g. via the planned mobile App.
 
 ## Disclaimer
 
@@ -10,6 +40,7 @@ The development could be irregular and breaking changes could happen without fur
 If you use the project in a productive environment, please consider backups.
 I will create releases if I consider the project as ready to use.
 Please use it as it is and check the license agreement.
+Development is done on main-branch directly. This will change after the first release.
 
 Some planned features are hidden within the GitHub Issue-Tracker.
 
@@ -20,14 +51,15 @@ General plan of this project:
 - Be stable and self-hostable at some point (there are unresolved issues)
   - Get releases build automatically and pushed to Docker-Hub or similar
   - Host a webpage for everyone? (Funding?, Legal aspects due to user-data?)
-- Be usable without an mobile App first
+- Be usable without any App -> Mobile compatible
 - Integrate django based tests
 
 The project is based around Movie information in German only right now.
-Disk identification is based on the European Article Number (EAN). 
+Other languages will require more work.
+Disk identification is based on the European Article Number (EAN).
 
 
-## Preview
+## Vorschau/Preview
 
 ![Movie View](./Documentation/MovieView.png "Movie View")
 
@@ -84,146 +116,10 @@ After installation you can run the service with your desired port.
 python manage.py runserver 0.0.0.0:8000
 ```
 
-## API (Not updated for a long time!)
-
-The API is based on django-rest-framework and the knox token authentication.
-
-### Http-header
-
-All requests need the http-header:
-
-```
-Content-Type: application/json; charset=UTF-8
-```
-
-### Authentication
-
-#### Login
-
-The token can be derived via _/api/login/_ with the given Content-Type and the following body.
-Multiple tokens can be tied to a user (e.g. here admin) via this POST-request.
-
-```
-{
-    "username": "admin",
-    "password": "PASSWORD"
-}
-```
-
-A response might be:
-
-```
-{
-    "user": {
-        "id": 1,
-        "username": "admin"
-    },
-    "token": "TOKEN_STRING"
-}
-```
-
-#### Logout
-
-Either one token can be logged out or all tokens of the user.
-_/api/auth/logout/_ does the logout for one token, given by the following header next to the Content-Type as GET-request:
-
-```
-Authorization: Token TOKEN_STRING
-```
-
-To logout from all tokens, use _/api/auth/logoutall/_
-
-### Movie
-
-There are multiple endpoints to GET information about movies.
-Based on the same database either all movies _/api/movie/_ or selective movies can be received.
-
-#### Selective movies
-
-A selective request can be either the EAN _/api/movie/EAN_ of the movie or the internal ID _/api/movie/ID_.
-
-A response might be like:
-
-```
-[
-    {
-        "ean": "4010884245141",
-        "asin": "B007IZ41EQ",
-        "title": "Transformers 3 [Blu-ray]",
-        "title_clean": "Transformers 3",
-        "format": "Blu-Ray",
-        "release_year": 2012,
-        "runtime": 154,
-        "fsk": "Freigegeben ab 12 Jahren",
-        "content": "Product Description:Transformers 3 Kurzbeschreibung:Ein [...]",
-        "actor": "Shia LaBeouf, Josh Duhamel, Rosie Huntington-Whiteley, Patrick Dempsey, Frances McDormand",
-        "regisseur": "Michael Bay",
-        "studio": "Paramount Home Entertainment",
-        "genre": "",
-        "language": "",
-        "disc_count": 1,
-        "movie_count": 1,
-        "season_count": 0,
-        "episode_count": 0,
-        "is_series": false,
-        "picture_available": false,
-        "picture_url": "/static/main/dummy.jpg"
-    }
-]
-```
-
-#### Movies of user
-
-To get all movies a user owns, use _/api/movie/user/_.
-A movie is references by its internal ID.
-
-A response might be like:
-
-```
-[
-    {
-        "user_name": "admin",
-        "movie": 661,
-        "movie_title_clean": "Transformers 3",
-        "movie_format": "Blu-Ray",
-        "activated": true,
-        "rating": 0,
-        "viewed": false,
-        "rented": false,
-        "rented_to": "",
-        "date_added": "2024-05-21",
-        "price": "0.00"
-    }
-]
-```
-
-### User specific
-
-User settings are available through _/api/user/settings/_ as GET-request.
-
-A response might be like:
-
-```
-[
-    {
-        "user_name": "admin",
-        "price_unit": "€",
-        "days_for_new": 21,
-        "view_is_public": true,
-        "show_view_title": true,
-        "show_view_details": true,
-        "show_view_icon_new": true,
-        "show_view_icon_rented": true,
-        "show_view_count_disc": true,
-        "show_view_count_movie": true,
-        "show_view_button_details": true
-    }
-]
-```
-
 ## Attributions
 
 - _Rent Vector Icon_ and _Vector New Icon_ by [Muhammad Khaleeq](https://www.vecteezy.com/members/iyikon/)
 - Thanks for the nice Django Tutorial on YouTube by [Tech With Tim](https://www.youtube.com/@TechWithTim)
 - Thanks to bhuma08 for the good overview about [Authentication using knox](https://dev.to/bhuma08/django-user-authentication-using-knox-5f17)
 - Thanks to fraxel and Victor for the [picture trimming code](https://stackoverflow.com/a/10616717)
+- AI (Gemini and ChatGPT) was used while development. It seems to be the new stackoverflow now. Every change is carefully reviewed by a human.
