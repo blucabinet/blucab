@@ -239,3 +239,34 @@ class MovieViewLog(models.Model):
 
     def __str__(self):
         return f"{self.movie_user_list.movie.title_clean} - {self.view_date}"
+
+
+class MovieErrorReport(models.Model):
+    movie = models.ForeignKey(
+        Movie,
+        on_delete=models.CASCADE,
+        related_name="error_reports",
+        verbose_name=_("Movie"),
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="movie_error_reports",
+        verbose_name=_("User"),
+    )
+    picture_wrong = models.BooleanField(default=False, verbose_name=_("Picture Wrong"))
+    content_wrong = models.BooleanField(default=False, verbose_name=_("Content Wrong"))
+    wrong_ean_asin = models.BooleanField(
+        default=False, verbose_name=_("Wrong EAN/ASIN")
+    )
+    comment = models.TextField(blank=True, null=True, verbose_name=_("Comment/Details"))
+    created_at = models.DateTimeField(
+        default=timezone.now, verbose_name=_("Created at")
+    )
+
+    class Meta:
+        verbose_name = _("Movie Error Report")
+        verbose_name_plural = _("Movie Error Reports")
+
+    def __str__(self):
+        return f"{self.movie.title_clean} - {self.user.username}"
