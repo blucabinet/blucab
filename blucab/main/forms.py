@@ -67,6 +67,7 @@ class UpdateMovieUserList(forms.ModelForm):
             "viewed",
             "rented",
             "rented_to",
+            "rented_since",
             "date_added",
             "price",
             "url_custom",
@@ -77,6 +78,15 @@ class UpdateMovieUserList(forms.ModelForm):
             "user",
             "movie",
         ]
+        widgets = {
+            "rating": forms.NumberInput(
+                attrs={"type": "range", "min": "0", "max": "6", "step": "1"}
+            ),
+            "rented_since": forms.DateInput(attrs={"type": "date"}),
+            "date_added": forms.DateInput(attrs={"type": "date"}),
+            "price": forms.NumberInput(attrs={"type": "number", "step": "0.01"}),
+            "url_custom": forms.TextInput(attrs={"type": "url"}),
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
