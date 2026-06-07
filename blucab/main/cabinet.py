@@ -23,6 +23,13 @@ class CabinetCreateView(LoginRequiredMixin, CreateView):
         kwargs["user"] = self.request.user
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        next_url = self.request.GET.get("next") or self.request.POST.get("next")
+        if next_url:
+            context["next_url"] = next_url
+        return context
+
     def get_success_url(self):
         next_url = self.request.POST.get("next")
         if next_url:
@@ -34,11 +41,6 @@ class CabinetDeleteView(LoginRequiredMixin, FormView):
     form_class = CabinetDeleteForm
     template_name = "main/settings_user_cabinet_delete.html"
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
     def form_valid(self, form):
         cabinet_to_delete = form.cleaned_data["cabinet"]
 
@@ -46,6 +48,18 @@ class CabinetDeleteView(LoginRequiredMixin, FormView):
             cabinet_to_delete.delete()
 
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        next_url = self.request.GET.get("next") or self.request.POST.get("next")
+        if next_url:
+            context["next_url"] = next_url
+        return context
 
     def get_success_url(self):
         next_url = self.request.POST.get("next")

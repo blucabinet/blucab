@@ -50,9 +50,9 @@
             {% trans "Cabinet Settings" %}
         </div>
         <div class="card-body">
-            <a href="{% url 'cabinet_add' %}" class="btn btn-outline-success" role="button">{% trans "Add Cabinet" %}</a>
+            <a href="{% url 'cabinet_add' %}?next={{ request.path }}" class="btn btn-outline-success" role="button">{% trans "Add Cabinet" %}</a>
             <br><br>
-            <a href="{% url 'cabinet_delete' %}" class="btn btn-outline-danger" role="button">{% trans "Delete Cabinet" %}</a>
+            <a href="{% url 'cabinet_delete' %}?next={{ request.path }}" class="btn btn-outline-danger" role="button">{% trans "Delete Cabinet" %}</a>
         </div>
     </div>
 

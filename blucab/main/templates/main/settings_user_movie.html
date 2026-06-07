@@ -38,12 +38,12 @@
                                 {{ field|as_crispy_field }}
                             </div>
                             <div class="ms-2" style="margin-bottom: 1rem;">
-                                <a href="{% url 'cabinet_add' %}" class="btn btn-outline-success" title="{% trans 'Add new cabinet' %}">
+                                <a href="{% url 'cabinet_add' %}?next={{ request.path }}" class="btn btn-outline-success" title="{% trans 'Add new cabinet' %}">
                                     <b>+</b>
                                 </a>
                             </div>
                             <div class="ms-2" style="margin-bottom: 1rem;">
-                                <a href="{% url 'cabinet_delete' %}" class="btn btn-outline-danger" title="{% trans 'Delete cabinet' %}">
+                                <a href="{% url 'cabinet_delete' %}?next={{ request.path }}" class="btn btn-outline-danger" title="{% trans 'Delete cabinet' %}">
                                     <b>-</b>
                                 </a>
                             </div>
