@@ -10,28 +10,31 @@
 <h1>{% trans "Report an Error" %}</h1>
 
 {% if user.is_authenticated %}
-    {% with next_val=request.POST.next|default:request.META.HTTP_REFERER %}
-        <div class="mb-3">
-            {% blocktrans with title=movie.title_clean %}
-                You are reporting an error for the movie: <strong>{{ title }}</strong>
-            {% endblocktrans %}
+    <div class="mb-3">
+        {% blocktrans with title=movie.title_clean %}
+            You are reporting an error for the movie: <strong>{{ title }}</strong>
+        {% endblocktrans %}
+    </div>
+    
+    <div class="card" style="max-width: 28rem;">
+        <div class="card-body">
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <div class="d-flex justify-content-between mt-3">
+                    {% if next_url %}
+                        <input type="hidden" name="next" value="{{ next_url }}">
+                        <a href="{{ next_url }}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+                    {% else %}
+                        <a href="{% url 'view' %}" class="btn btn-light" role="button">{% trans "Back" %}</a>
+                    {% endif %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-flag"></i> {% trans "Submit Report" %}
+                    </button>
+                </div>
+            </form>
         </div>
-        
-        <div class="card" style="max-width: 28rem;">
-            <div class="card-body">
-                <form method="post" class="form-group">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <input type="hidden" name="next" value="{{ next_val }}">
-                    <div class="d-flex justify-content-between mt-3">
-                        <a href="{{ next_val }}" class="btn btn-light" role="button">{% trans "Back" %}</a>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="bi bi-flag"></i> {% trans "Submit Report" %}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endwith %}
+    </div>
 {% endif %}
 {% endblock %}
