@@ -126,6 +126,9 @@ class MovieUserList(models.Model):
     rented_to = models.CharField(
         max_length=100, blank=True, null=True, verbose_name=_("Rented to")
     )
+    rented_since = models.DateField(
+        blank=True, null=True, verbose_name=_("Rented since")
+    )
     date_added = models.DateField(default=timezone.now, verbose_name=_("Date added"))
     price = models.DecimalField(
         default=0, max_digits=6, decimal_places=2, verbose_name=_("Price")
