@@ -269,5 +269,17 @@
                 document.getElementById('filterForm').submit();
             }, 800);
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let scrollposition_grid = sessionStorage.getItem('scrollposition_grid');
+            if(scrollposition_grid) {
+                window.scrollTo(0, parseInt(scrollposition_grid));
+                sessionStorage.removeItem('scrollposition_grid');
+            }
+        });
+
+        window.addEventListener("beforeunload", function() {
+            sessionStorage.setItem('scrollposition_grid', window.scrollY);
+        });
     </script>
 {% endblock %}

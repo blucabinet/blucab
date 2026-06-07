@@ -145,6 +145,7 @@
             </div>
         </div>
     </form>
+</div>
 
 <script>
     document.getElementById('selectAll').addEventListener('change', function() {
@@ -187,6 +188,20 @@
         } else if (action !== '') {
             form.submit();
         }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let scrollposition_list = sessionStorage.getItem('scrollposition_list');
+        if(scrollposition_list) {
+            window.scrollTo(0, parseInt(scrollposition_list));
+            sessionStorage.removeItem('scrollposition_list');
+        }
+    });
+
+    window.addEventListener("beforeunload", function() {
+        sessionStorage.setItem('scrollposition_list', window.scrollY);
     });
 </script>
 {% endblock %}
