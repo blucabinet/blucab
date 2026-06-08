@@ -47,6 +47,7 @@ class UpdateMovie(forms.ModelForm):
             "episode_count",
             "is_series",
             "is_bluray_uhd",
+            "is_bluray_3d",
             "picture_available",
             "picture_url_original",
             "picture_url_original_hd",

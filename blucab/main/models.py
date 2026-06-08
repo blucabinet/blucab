@@ -53,6 +53,7 @@ class Movie(models.Model):
     episode_count = models.IntegerField(default=0, verbose_name=_("Episode Count"))
     is_series = models.BooleanField(default=False, verbose_name=_("Is Series"))
     is_bluray_uhd = models.BooleanField(default=False, verbose_name=_("Is Blu-ray UHD"))
+    is_bluray_3d = models.BooleanField(default=False, verbose_name=_("Is Blu-ray 3D"))
     picture_available = models.BooleanField(
         default=False, verbose_name=_("Picture Available")
     )
