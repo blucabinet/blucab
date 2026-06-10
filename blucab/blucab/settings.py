@@ -196,7 +196,7 @@ LOCALE_PATHS = [
     BASE_DIR / "locale/",
 ]
 
-TIME_ZONE = "UTC"
+TIME_ZONE = env.str("DJANGO_TIME_ZONE", "UTC")
 
 USE_TZ = True
 
