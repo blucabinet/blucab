@@ -267,6 +267,19 @@ class MovieErrorReport(models.Model):
     created_at = models.DateTimeField(
         default=timezone.now, verbose_name=_("Created at")
     )
+    checked_at = models.DateTimeField(
+        blank=True, null=True, verbose_name=_("Checked at")
+    )
+    checked_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Checked by"),
+    )
+    checked_comment = models.TextField(
+        blank=True, null=True, verbose_name=_("Checked Comment")
+    )
 
     class Meta:
         verbose_name = _("Movie Error Report")
