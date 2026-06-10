@@ -151,6 +151,7 @@ def view(request):
     filter_viewed = request.GET.get("filter_viewed", "")
     filter_archived = request.GET.get("filter_archived", "")
     filter_is_series = request.GET.get("filter_is_series", "")
+    filter_is_3d = request.GET.get("filter_is_3d", "")
     selected_cabinet = request.GET.get("cabinet", "")
     search_query = request.GET.get("search", "")
 
@@ -182,6 +183,11 @@ def view(request):
         movieuserlist = movieuserlist.filter(movie__is_series=True)
     elif filter_is_series == "0":
         movieuserlist = movieuserlist.filter(movie__is_series=False)
+
+    if filter_is_3d == "1":
+        movieuserlist = movieuserlist.filter(movie__is_bluray_3d=True)
+    elif filter_is_3d == "0":
+        movieuserlist = movieuserlist.filter(movie__is_bluray_3d=False)
 
     if selected_cabinet:
         if selected_cabinet == "none":
@@ -240,6 +246,7 @@ def view(request):
             "filter_viewed": filter_viewed,
             "filter_archived": filter_archived,
             "filter_is_series": filter_is_series,
+            "filter_is_3d": filter_is_3d,
             "cabinets": cabinets,
             "selected_cabinet": selected_cabinet,
         },

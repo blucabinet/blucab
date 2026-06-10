@@ -224,6 +224,22 @@
                                 </div>
                             </div>
                         </li>
+                        <li>
+                            <div class="px-3 py-2 d-flex justify-content-between align-items-center">
+                                <span class="text-light me-3">{% trans "Is 3D" %}:</span>
+
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" name="filter_is_3d" id="is_3d_all" value="" onchange="this.form.submit()" {% if filter_is_3d == '' %}checked{% endif %}>
+                                    <label class="btn btn-outline-secondary" for="is_3d_all">{% trans "All" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_is_3d" id="is_3d_yes" value="1" onchange="this.form.submit()" {% if filter_is_3d == '1' %}checked{% endif %}>
+                                    <label class="btn btn-outline-success" for="is_3d_yes">{% trans "Yes" %}</label>
+
+                                    <input type="radio" class="btn-check" name="filter_is_3d" id="is_3d_no" value="0" onchange="this.form.submit()" {% if filter_is_3d == '0' %}checked{% endif %}>
+                                    <label class="btn btn-outline-danger" for="is_3d_no">{% trans "No" %}</label>
+                                </div>
+                            </div>
+                        </li>
 
                     </ul>
                 </div>
