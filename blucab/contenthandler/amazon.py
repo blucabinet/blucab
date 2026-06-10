@@ -26,6 +26,7 @@ FORMAT_BLURAY = "Blu-Ray"
 FORMAT_DVD = "DVD"
 
 UHD_STR = "4K"
+B3D_STR = "3D"
 
 REMOVE_ITEMS = {
     "[Blu-ray]",
@@ -53,6 +54,9 @@ BLURAY_ITEMS = {
     "[Blu-ray]",
     "(Blu-ray)",
     "[Blu-ray 2D]",
+    "[Blu-ray 3D]",
+    "[3D Blu-ray]",
+    "(Blu-ray 3D)",
     "[4K Ultra HD]",
     "(4K Ultra-HD)",
     "Blu ray",
@@ -70,6 +74,18 @@ BLURAY_UHD_ITEMS = {
     "4K UHD",
     "UHD",
     "BR4K",
+}
+
+BLURAY_3D_ITEMS = {
+    "[Blu-ray 3D]",
+    "[3D Blu-ray]",
+    "(Blu-ray 3D)",
+    "(3D Blu-ray)",
+    "(+ Blu-ray 3D)",
+    "(Blu-ray + Blu-ray 3D)",
+    "Blu-ray 3D",
+    "(2D+3D)",
+    "(3D)",
 }
 
 DVD_ITEMS = {
@@ -287,6 +303,21 @@ class contentParser:
         except:
             return False
 
+    def is_bluray_3d(self, soup) -> bool:
+        title = self.get_title(soup)
+
+        try:
+            if B3D_STR in self.get_mediaformat(soup):
+                return True
+
+            for item in BLURAY_3D_ITEMS:
+                if item in title:
+                    return True
+
+            return False
+        except:
+            return False
+
     def get_fsk_str(self, soup) -> str:
         return self.get_product_information(soup, AMAZON_STR_FSK)
 
@@ -407,5 +438,7 @@ if __name__ == "__main__":
         print("Laufzeit (min) =", pars.get_runtime_min(soup))
         print("Release (str) =", pars.get_release_year_str(soup))
         print("Release (year) =", pars.get_release_year(soup))
+        print("UHD =", pars.is_bluray_uhd(soup))
+        print("3D =", pars.is_bluray_3d(soup))
         # print("Content =", pars.get_content(soup))
         print()

@@ -150,6 +150,9 @@ class handler:
                             "is_bluray_uhd": self._check_bool_string(
                                 row.get("is_bluray_uhd")
                             ),
+                            "is_bluray_3d": self._check_bool_string(
+                                row.get("is_bluray_3d")
+                            ),
                             "picture_url_original": self._check_string(
                                 row.get("picture_url_original")
                             ),
@@ -220,6 +223,7 @@ class handler:
             "needs_parsing",
             "picture_processed",
             "picture_available",
+            "force_picture_disable",
         }
         for item in remove_items:
             try:
@@ -277,6 +281,7 @@ class handler:
                     language=pars.get_language(soup),
                     disc_count=pars.get_disc_count(soup),
                     is_bluray_uhd=pars.is_bluray_uhd(soup),
+                    is_bluray_3d=pars.is_bluray_3d(soup),
                     picture_available=pars_picture_available,
                     picture_url_original=pars_picture_url,
                     picture_url_original_hd=pars_picture_url_hd,
@@ -392,6 +397,9 @@ class handler:
 
         if movie.is_bluray_uhd == False:
             movie.is_bluray_uhd = pars.is_bluray_uhd(soup)
+
+        if movie.is_bluray_3d == False:
+            movie.is_bluray_3d = pars.is_bluray_3d(soup)
 
         # Picture update
         pars_picture_url = pars.get_image_url(soup)
