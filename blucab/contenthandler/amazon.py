@@ -2,6 +2,11 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 AMAZON_BASE_URL = "https://www.amazon.de"
 AMAZON_ASIN = "ASIN"
 AMAZON_STR_FSK = "Alterseinstufung"
@@ -106,10 +111,13 @@ PRODUCT_DESCRIPTION_ITEMS = {
 class contentParser:
 
     # Headers for request
-    HEADERS = {
-        "User-Agent": "Mozilla/6.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36",
-        "Accept-Language": "de",
-    }
+    HEADERS = env.json(
+        "BLUCAB_AMAZON_HEADER",
+        default={
+            "User-Agent": "Mozilla/6.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36",
+            "Accept-Language": "de",
+        },
+    )
 
     def __init__(self, search_term, item_limit=1):
         self.search_link_list = []
