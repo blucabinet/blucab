@@ -218,15 +218,23 @@
           const footer = document.getElementById("pageFooter");
           const hideBtn = document.getElementById("hideFooterBtn");
           const showBtn = document.getElementById("showFooterBtn");
+          const isFooterHidden = sessionStorage.getItem("footer_hidden");
+          
+          if (isFooterHidden === "true") {
+            footer.classList.add("hidden");
+            showBtn.style.display = "flex";
+          }
 
           hideBtn.addEventListener("click", () => {
             footer.classList.add("hidden");
             showBtn.style.display = "flex";
+            sessionStorage.setItem("footer_hidden", "true");
           });
 
           showBtn.addEventListener("click", () => {
             footer.classList.remove("hidden");
             showBtn.style.display = "none";
+            sessionStorage.setItem("footer_hidden", "false");
           });
         </script>
 
