@@ -254,7 +254,7 @@ def view(request):
 
 
 @login_required
-def view_simple(request):
+def view_list(request):
     user = request.user
 
     movieuserlist = MovieUserList.objects.filter(user=user)
@@ -286,7 +286,7 @@ def view_simple(request):
                         selected_movies.update(cabinet_id=cabinet_id)
                     else:
                         messages.error(request, "Invalid cabinet selection.")
-                        return redirect("view_simple")
+                        return redirect("view_list")
 
             elif action == "unset_activated":
                 selected_movies.update(activated=False)
@@ -309,13 +309,13 @@ def view_simple(request):
                     request,
                     f"Successfully deleted {deleted_count} movies from your collection.",
                 )
-                return redirect("view_simple")
+                return redirect("view_list")
 
             messages.success(
                 request, f"Action successfully executed for {len(selected_ids)} movies."
             )
 
-        return redirect("view_simple")
+        return redirect("view_list")
 
     movieuserlist = movieuserlist.order_by("movie__title_clean")
 

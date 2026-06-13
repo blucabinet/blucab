@@ -20,7 +20,7 @@
                 {% else %}
                     <a href="{% url 'settings' %}" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">🔗 {% trans "Share" %}</a>
                 {% endif %}
-                <a href="{% url 'view_simple' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open simple list view' %}">
+                <a href="{% url 'view_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open list view' %}">
                     <i class="bi bi-list-task"></i> {% trans "List View" %}
                 </a>
             {% endif %}
