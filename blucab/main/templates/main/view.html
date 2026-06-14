@@ -23,6 +23,9 @@
                 <a href="{% url 'view_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open list view' %}">
                     <i class="bi bi-list-task"></i> {% trans "List View" %}
                 </a>
+                <a href="{% url 'view_log_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open global watch log' %}">
+                    <i class="bi bi-list-task"></i> {% trans "Log View" %}
+                </a>
             {% endif %}
         {% endif %}
     {% else %}

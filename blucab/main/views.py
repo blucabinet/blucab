@@ -498,6 +498,57 @@ def delete_view_log(request, log_id):
 
 
 @login_required
+def view_log_list(request):
+    user = request.user
+
+    view_logs = MovieViewLog.objects.filter(movie_user_list__user=user)
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        selected_ids = request.POST.getlist("selected_logs")
+
+        if action == "delete" and selected_ids:
+            logs_to_delete = view_logs.filter(id__in=selected_ids)
+
+            affected_mu_ids = list(
+                logs_to_delete.values_list("movie_user_list_id", flat=True).distinct()
+            )
+
+            deleted_count, _ = logs_to_delete.delete()
+
+            for mu_id in affected_mu_ids:
+                mu = MovieUserList.objects.get(id=mu_id)
+                if not mu.view_logs.exists():
+                    mu.viewed = False
+                    mu.save()
+
+            messages.warning(
+                request, f"Successfully deleted {deleted_count} view logs."
+            )
+        return redirect("view_log_list")
+
+    date_from = request.GET.get("date_from", "")
+    date_to = request.GET.get("date_to", "")
+
+    if date_from:
+        view_logs = view_logs.filter(view_date__gte=date_from)
+    if date_to:
+        view_logs = view_logs.filter(view_date__lte=date_to)
+
+    view_logs = view_logs.order_by("-view_date")
+
+    return render(
+        request,
+        "main/view_log_list.html",
+        {
+            "view_logs": view_logs,
+            "date_from": date_from,
+            "date_to": date_to,
+        },
+    )
+
+
+@login_required
 def report_movie_error(request, movie_id):
     if not ALLOW_MOVIE_ERROR_REPORT:
         return redirect("view")

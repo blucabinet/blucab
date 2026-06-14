@@ -2,11 +2,11 @@
 {% load i18n %}
 
 {% block title %}
-    {% trans "blucab - List View" %}
+    {% trans "blucab - Global View Log" %}
 {% endblock %}
 
 {% block contentTitle %}
-    {% trans "List view of your collection" %}
+    {% trans "Global View Logs" %}
 {% endblock %}
 
 {% block content %}
@@ -14,11 +14,28 @@
         
         <div class="mb-3">
             <a href="{% url 'view' %}" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-grid-3x3-gap"></i> {% trans "Back to grid view" %}
+                <i class="bi bi-grid-3x3-gap"></i> {% trans "Back to collection" %}
             </a>
         </div>
 
-        <form method="POST" action="{% url 'view_list' %}" id="bulkActionForm">
+        <form method="GET" action="{% url 'view_log_list' %}" class="row mb-4 bg-light p-3 rounded border align-items-end shadow-sm">
+            <div class="col-auto">
+                <label for="date_from" class="form-label text-dark fw-bold mb-1">{% trans "From Date" %}</label>
+                <input type="date" name="date_from" id="date_from" class="form-control form-control-sm border-secondary" value="{{ date_from }}">
+            </div>
+            <div class="col-auto">
+                <label for="date_to" class="form-label text-dark fw-bold mb-1">{% trans "To Date" %}</label>
+                <input type="date" name="date_to" id="date_to" class="form-control form-control-sm border-secondary" value="{{ date_to }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-funnel"></i> {% trans "Filter" %}
+                </button>
+                <a href="{% url 'view_log_list' %}" class="btn btn-outline-secondary btn-sm">{% trans "Clear" %}</a>
+            </div>
+        </form>
+
+        <form method="POST" action="{% url 'view_log_list' %}" id="bulkActionForm">
             {% csrf_token %}
             
             <div class="row mb-3 bg-light p-3 rounded border align-items-center shadow-sm">
@@ -28,35 +45,9 @@
                 <div class="col-auto">
                     <select name="action" class="form-select form-select-sm border-secondary" id="bulk-action-select" required>
                         <option value="">-- {% trans "Please select" %} --</option>
-                        
-                        <optgroup label="{% trans 'Set state' %}">
-                            <option value="set_activated">{% trans "Activate" %}</option>
-                            <option value="set_rented">{% trans "Mark as 'Rented'" %}</option>
-                            <option value="set_archived">{% trans "Mark as 'Archived'" %}</option>
-                            <option value="set_viewed">{% trans "Mark as 'Viewed'" %}</option>
-                            <option value="set_cabinet">{% trans "Assign cabinet" %}</option>
-                        </optgroup>
-                        
-                        <optgroup label="{% trans 'Remove state' %}">
-                            <option value="unset_activated">{% trans "Deactivate" %}</option>
-                            <option value="unset_rented">{% trans "Remove 'Rented' mark" %}</option>
-                            <option value="unset_archived">{% trans "Remove 'Archived' mark" %}</option>
-                            <option value="unset_viewed">{% trans "Remove 'Viewed' mark" %}</option>
-                            <option value="unset_cabinet">{% trans "Remove from cabinet" %}</option>
-                        </optgroup>
-
                         <optgroup label="{% trans 'Danger Zone' %}">
-                            <option value="delete" class="text-danger fw-bold">{% trans "Delete from collection" %}</option>
+                            <option value="delete" class="text-danger fw-bold">{% trans "Delete view logs" %}</option>
                         </optgroup>
-                    </select>
-                </div>
-                
-                <div class="col-auto" id="cabinet-select-container" style="display: none;">
-                    <select name="cabinet_id" class="form-select form-select-sm border-secondary" id="cabinet-select">
-                        <option value="">-- {% trans "Select cabinet" %} --</option>
-                        {% for cabinet in cabinets %}
-                            <option value="{{ cabinet.id }}">{{ cabinet.name }}</option>
-                        {% endfor %}
                     </select>
                 </div>
                 
@@ -72,36 +63,30 @@
                             <th scope="col" style="width: 40px;" class="bg-light">
                                 <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
                             </th>
-                            <th scope="col" class="bg-light">{% trans "Format" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Title" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Activated" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Rented" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Archived" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Viewed" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Cabinet" %}</th>
+                            <th scope="col" class="bg-light">{% trans "View Date" %}</th>
+                            <th scope="col" class="bg-light">{% trans "Movie Title" %}</th>
+                            <th scope="col" class="bg-light">{% trans "Watched With" %}</th>
+                            <th scope="col" class="bg-light">{% trans "Comment" %}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for mu in movieuserlist %}
+                        {% for log in view_logs %}
                         <tr>
                             <td>
-                                <input class="form-check-input movie-checkbox border-secondary" type="checkbox" name="selected_movies" value="{{ mu.id }}">
+                                <input class="form-check-input log-checkbox border-secondary" type="checkbox" name="selected_logs" value="{{ log.id }}">
                             </td>
-                            <td class="text-secondary">{{ mu.movie.format }}</td>
+                            <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d" }}</td>
                             <td class="fw-normal">
-                                <a href="{% url 'user_movie_settings' mu.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
-                                    {{ mu.movie.title_clean }}
+                                <a href="{% url 'user_movie_settings' log.movie_user_list.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
+                                    {{ log.movie_user_list.movie.title_clean }}
                                 </a>
                             </td>
-                            <td class="text-center">{% if mu.activated %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.rented %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.archived %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.viewed %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-secondary">{{ mu.cabinet.name|default:"-" }}</td>
+                            <td class="text-secondary">{{ log.watched_with|default:"-" }}</td>
+                            <td class="text-secondary">{{ log.comment|default:"-"|truncatechars:60 }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
+                            <td colspan="5" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -112,11 +97,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-danger fw-bold" id="deleteModalLabel">{% trans "Delete Movie(s)" %}</h5>
+                            <h5 class="modal-title text-danger fw-bold" id="deleteModalLabel">{% trans "Delete View Log(s)" %}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
                         </div>
                         <div class="modal-body">
-                            {% trans "Are you sure you want to delete the selected movies from your collection?" %}
+                            {% trans "Are you sure you want to delete the selected view logs?" %}
                             <br>
                             {% trans " This action cannot be undone." %}
                         </div>
@@ -138,7 +123,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
                         </div>
                         <div class="modal-body">
-                            {% trans "Please select at least one movie." %}
+                            {% trans "Please select at least one view log." %}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "OK" %}</button>
@@ -151,32 +136,19 @@
 
     <script>
         document.getElementById('selectAll').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('.movie-checkbox');
+            const checkboxes = document.querySelectorAll('.log-checkbox');
             for (const checkbox of checkboxes) {
                 checkbox.checked = this.checked;
             }
         });
 
         const actionSelect = document.getElementById('bulk-action-select');
-        const cabinetContainer = document.getElementById('cabinet-select-container');
-        const cabinetSelect = document.getElementById('cabinet-select');
-
-        actionSelect.addEventListener('change', function() {
-            if (this.value === 'set_cabinet') {
-                cabinetContainer.style.display = 'block';
-                cabinetSelect.setAttribute('required', 'required');
-            } else {
-                cabinetContainer.style.display = 'none';
-                cabinetSelect.removeAttribute('required');
-                cabinetSelect.value = '';
-            }
-        });
 
         document.getElementById('executeBtn').addEventListener('click', function() {
             const form = document.getElementById('bulkActionForm');
             const action = actionSelect.value;
             
-            const anyChecked = document.querySelectorAll('.movie-checkbox:checked').length > 0;
+            const anyChecked = document.querySelectorAll('.log-checkbox:checked').length > 0;
             
             if (!anyChecked && action !== "") {
                 const noSelectionModal = new bootstrap.Modal(document.getElementById('noSelectionModal'));

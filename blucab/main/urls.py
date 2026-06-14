@@ -41,4 +41,5 @@ urlpatterns = [
     path(
         "view-log/delete/<int:log_id>/", views.delete_view_log, name="delete_view_log"
     ),
+    path("view-log/list/", views.view_log_list, name="view_log_list"),
 ]
