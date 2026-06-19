@@ -30,6 +30,7 @@ MANIFEST
 app_covers/
 app_db/
 app_import/
+db_data/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
