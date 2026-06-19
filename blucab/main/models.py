@@ -10,8 +10,8 @@ from django.utils.translation import gettext_lazy as _
 class Movie(models.Model):
     ean = models.CharField(max_length=16, verbose_name=_("EAN"))
     asin = models.CharField(max_length=16, verbose_name=_("ASIN"))
-    title = models.CharField(max_length=128, verbose_name=_("Title"))
-    title_clean = models.CharField(max_length=128, verbose_name=_("Title Clean"))
+    title = models.CharField(max_length=256, verbose_name=_("Title"))
+    title_clean = models.CharField(max_length=256, verbose_name=_("Title Clean"))
     format = models.CharField(max_length=16, verbose_name=_("Format"))
     release_year = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(9999)],
@@ -216,6 +216,9 @@ class UserSettings(models.Model):
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
+    if kwargs.get("raw", False):
+        return
+
     try:
         if created:
             UserSettings.objects.create(user=instance).save()
