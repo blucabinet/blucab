@@ -28,41 +28,65 @@ services:
     container_name: blucab-app
     ports:
       - '8000:8000'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     depends_on:
-      - blucab-redis
-      #-blucab-db
+      blucab-redis:
+        condition: service_healthy
+      blucab-db:
+        condition: service_healthy
 
-#  blucab-db:
-#    image: mariadb:latest
-#    container_name: blucab-db
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=blucab_root_password
-#      - MYSQL_DATABASE=blucab_db
-#      - MYSQL_USER=blucab_user
-#      - MYSQL_PASSWORD=blucab_user_password
-#    ports:
-#      - '3306:3306'
-#    volumes:
-#      - ./app_db:/var/lib/mysql
+  blucab-db:
+    image: mariadb:latest
+    container_name: blucab-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=insecure-blucab_root_password
+      - MYSQL_DATABASE=blucab
+      - MYSQL_USER=blucab_db_user
+      - MYSQL_PASSWORD=insecure-blucab_user_password
+    volumes:
+      - ./db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   blucab-redis:
     image: redis:alpine
     container_name: blucab-redis
-    ports:
-      - '6379:6379'
+    command: redis-server --requirepass "insecure-password"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "insecure-password", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   blucab-celery-worker:
     <<: *django-base
     container_name: blucab-celery-worker
     command: celery -A blucab worker -l info
     depends_on:
-      - blucab-redis
-      - blucab-app
+      blucab-redis:
+        condition: service_healthy
+      blucab-db:
+        condition: service_healthy
+      blucab-app:
+        condition: service_healthy
 
   blucab-celery-beat:
     <<: *django-base
     container_name: blucab-celery-beat
     command: celery -A blucab beat -l info
     depends_on:
-      - blucab-redis
-      - blucab-app
+      blucab-redis:
+        condition: service_healthy
+      blucab-db:
+        condition: service_healthy
+      blucab-app:
+        condition: service_healthy
