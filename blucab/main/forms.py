@@ -83,8 +83,8 @@ class UpdateMovieUserList(forms.ModelForm):
             "rating": forms.NumberInput(
                 attrs={"type": "range", "min": "0", "max": "6", "step": "1"}
             ),
-            "rented_since": forms.DateInput(attrs={"type": "date"}),
-            "date_added": forms.DateInput(attrs={"type": "date"}),
+            "rented_since": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "date_added": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
             "price": forms.NumberInput(attrs={"type": "number", "step": "0.01"}),
             "url_custom": forms.TextInput(attrs={"type": "url"}),
         }
