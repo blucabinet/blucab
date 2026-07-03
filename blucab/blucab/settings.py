@@ -111,7 +111,7 @@ elif ENV_DATABASE == "postgresql":
             "NAME": env.str("DJANGO_DB_NAME", "blucab"),
             "USER": env.str("DJANGO_DB_USER", "blucab"),
             "PASSWORD": env.str("DJANGO_DB_PASSWORD", "insecure-password").strip('"'),
-            "HOST": env.str("DJANGO_DB_HOST", "localhost"),
+            "HOST": env.str("DJANGO_DB_HOST", "blucab-db"),
             "PORT": env.int("DJANGO_DB_PORT", 5432),
         }
     }
