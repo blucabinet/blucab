@@ -12,8 +12,13 @@ x-django-base: &django-base
     - DJANGO_EMAIL_ENABLE_WHILE_DEBUG=False
     - SECRET_KEY="django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
     - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-    - DJANGO_CELERY_BROKER_URL=redis://blucab-redis:6379/0
-    - DJANGO_DB_ENGINE=sqlite
+    - DJANGO_CELERY_BROKER_URL=redis://:insecure-password@blucab-redis:6379/0
+    - DJANGO_DB_ENGINE=postgresql
+    - DJANGO_DB_NAME=blucab
+    - DJANGO_DB_USER=blucab_db_user
+    - DJANGO_DB_PASSWORD=insecure-blucab_user_password
+    - DJANGO_DB_HOST=blucab-db
+    - DJANGO_DB_PORT=5432
 
     # Superuser settings only for the first run and initial database initialization, then delete these entries or comment them out!
     # Select your own unique password!
@@ -41,17 +46,18 @@ services:
         condition: service_healthy
 
   blucab-db:
-    image: mariadb:latest
+    image: postgres:18
     container_name: blucab-db
+    # user-id from "id -u"
+    user: "1000:1000"
     environment:
-      - MYSQL_ROOT_PASSWORD=insecure-blucab_root_password
-      - MYSQL_DATABASE=blucab
-      - MYSQL_USER=blucab_db_user
-      - MYSQL_PASSWORD=insecure-blucab_user_password
+      - POSTGRES_DB=blucab
+      - POSTGRES_USER=blucab_db_user
+      - POSTGRES_PASSWORD=insecure-blucab_user_password
     volumes:
-      - ./db_data:/var/lib/mysql
+      - ./db_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD-SHELL", "pg_isready -U blucab_db_user -d blucab || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
