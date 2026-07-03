@@ -421,12 +421,31 @@ class contentParser:
 
 if __name__ == "__main__":
 
-    ean = "Star Wars Blu-Ray"
+    # ean = "Star Wars Blu-Ray"
     # ean = "B0DF5PYLT7"
     # ean = "4010232053060"
     # ean = "4010232066398"
 
+    # Weird Pictures (Oil):
+    # ean = "4045167013940"
+    # ean = "4045167013995"
+    # ean = "4009750390009" #Workbench
+
+    # Pictures next to each other:
+    # ean = "4010884243628"
+    # ean = "4010884245202"
+    # ean = "4010884245202"
+    # ean = "5053083198176"
+    # ean = "4006680093321"
+    # ean = "5053083190149"
+    # ean = "5053083148058"
+    # ean = "4010884253269"
+    # ean = "8717418585457"  # Format failed
+    ean = "4006680027272"
+
     pars = contentParser(ean, item_limit=1)
+    print(pars.search_link_list)
+    # print(pars.soups)
 
     for soup in pars.soups:
         # Function calls to display all necessary product information
