@@ -1,8 +1,13 @@
 from django.conf import settings
 from django.http import HttpResponse
-from main.models import Movie, MovieUserList
+from main.models import Movie, MovieUserList, Format
 from .models import FailedAddMovie
-from .amazon import contentParser, PRODUCT_DESCRIPTION_ITEMS, AMAZON_STR_FSK_NO
+from .amazon import (
+    contentParser,
+    PRODUCT_DESCRIPTION_ITEMS,
+    AMAZON_STR_FSK_NO,
+    FORMAT_UNKNOWN,
+)
 from .picture_helper import pictureHelper, PICTURE_NAME_PROCESSED_SD
 
 import csv
@@ -59,6 +64,15 @@ class handler:
 
         return str(input).strip()
 
+    def _get_format_instance(self, format_name: str):
+        format_clean = self._check_string(format_name)
+
+        if not format_clean:
+            format_clean = FORMAT_UNKNOWN
+
+        format_obj, created = Format.objects.get_or_create(name=format_clean)
+        return format_obj
+
     def _import_flickrack(self, file_path: str, user) -> bool:
         with open(file_path, encoding=CSV_ENCODING_FLICKRACK) as csv_file:
             reader = csv.DictReader(csv_file, delimiter=",")
@@ -80,6 +94,8 @@ class handler:
                         fsk_nbr = None
 
                 if ALLOW_CSV_MOVIE_IMPORT:
+                    format_instance = self._get_format_instance(row.get("Format"))
+
                     db_movie, movie_created = Movie.objects.get_or_create(
                         ean=csv_ean,
                         defaults={
@@ -88,7 +104,7 @@ class handler:
                             "title_clean": self._check_string(
                                 row.get("Titel ohne Zusatz")
                             ),
-                            "format": self._check_string(row.get("Format")),
+                            "format": format_instance,
                             "release_year": self._check_int_string(row.get("Release")),
                             "runtime": self._check_int_string(row.get("Laufzeit")),
                             "fsk": csv_fsk_nbr,
@@ -117,13 +133,15 @@ class handler:
 
             for row in reader:
                 if ALLOW_CSV_MOVIE_IMPORT:
+                    format_instance = self._get_format_instance(row.get("format"))
+
                     db_movie, movie_created = Movie.objects.get_or_create(
                         ean=row["ean"],
                         defaults={
                             "asin": self._check_string(row.get("asin")),
                             "title": self._check_string(row.get("title")),
                             "title_clean": self._check_string(row.get("title_clean")),
-                            "format": self._check_string(row.get("format")),
+                            "format": format_instance,
                             "release_year": self._check_int_string(
                                 row.get("release_year")
                             ),
@@ -263,12 +281,14 @@ class handler:
                 if pars_picture_url != None:
                     pars_picture_available = True
 
+                format_instance = self._get_format_instance(pars.get_format(soup))
+
                 m = Movie(
                     ean=ean,
                     asin=pars.get_asin(soup),
                     title=pars.get_title(soup),
                     title_clean=pars.get_title_clean(soup),
-                    format=pars.get_format(soup),
+                    format=format_instance,
                     release_year=pars.get_release_year(soup),
                     runtime=pars.get_runtime_min(soup),
                     fsk=pars.get_fsk_str(soup),

@@ -55,7 +55,7 @@ def cab_uname(request, uname):
             formats.append("DVD")
         if filter_bd:
             formats.append("Blu-Ray")
-        movieuserlist = movieuserlist.filter(movie__format__in=formats)
+        movieuserlist = movieuserlist.filter(movie__format__name__in=formats)
 
     if filter_bd_uhd:
         movieuserlist = movieuserlist.filter(movie__is_bluray_uhd=True)
@@ -85,10 +85,10 @@ def cab_uname(request, uname):
         movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
 
     # Update counts after filtering
-    count_dvd = movieuserlist.filter(movie__format="DVD").count()
-    count_bd = movieuserlist.filter(movie__format="Blu-Ray").count()
+    count_dvd = movieuserlist.filter(movie__format__name="DVD").count()
+    count_bd = movieuserlist.filter(movie__format__name="Blu-Ray").count()
     count_bd_uhd = (
-        movieuserlist.filter(movie__format="Blu-Ray")
+        movieuserlist.filter(movie__format__name="Blu-Ray")
         .filter(movie__is_bluray_uhd=True)
         .count()
     )
@@ -161,7 +161,7 @@ def view(request):
             formats.append("DVD")
         if filter_bd:
             formats.append("Blu-Ray")
-        movieuserlist = movieuserlist.filter(movie__format__in=formats)
+        movieuserlist = movieuserlist.filter(movie__format__name__in=formats)
 
     if filter_bd_uhd:
         movieuserlist = movieuserlist.filter(movie__is_bluray_uhd=True)
@@ -216,10 +216,10 @@ def view(request):
         movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
 
     # Update counts after filtering
-    count_dvd = movieuserlist.filter(movie__format="DVD").count()
-    count_bd = movieuserlist.filter(movie__format="Blu-Ray").count()
+    count_dvd = movieuserlist.filter(movie__format__name="DVD").count()
+    count_bd = movieuserlist.filter(movie__format__name="Blu-Ray").count()
     count_bd_uhd = movieuserlist.filter(
-        movie__format="Blu-Ray", movie__is_bluray_uhd=True
+        movie__format__name="Blu-Ray", movie__is_bluray_uhd=True
     ).count()
     count_rented = movieuserlist.filter(rented=True).count()
 

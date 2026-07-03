@@ -7,12 +7,29 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
+class Format(models.Model):
+    name = models.CharField(max_length=16, unique=True, verbose_name=_("Name"))
+
+    class Meta:
+        verbose_name = _("Format")
+        verbose_name_plural = _("Formats")
+
+    def __str__(self):
+        return self.name
+
+
 class Movie(models.Model):
     ean = models.CharField(max_length=16, verbose_name=_("EAN"))
     asin = models.CharField(max_length=16, verbose_name=_("ASIN"))
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     title_clean = models.CharField(max_length=256, verbose_name=_("Title Clean"))
-    format = models.CharField(max_length=16, verbose_name=_("Format"))
+    format = models.ForeignKey(
+        Format,
+        on_delete=models.PROTECT,
+        blank=False,
+        null=False,
+        verbose_name=_("Format"),
+    )
     release_year = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(9999)],
         blank=True,
