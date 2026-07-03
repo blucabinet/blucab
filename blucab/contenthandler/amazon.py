@@ -29,6 +29,7 @@ AMAZON_STR_PICTURE_HD = "data-old-hires"
 
 FORMAT_BLURAY = "Blu-Ray"
 FORMAT_DVD = "DVD"
+FORMAT_UNKNOWN = "Unknown"
 
 UHD_STR = "4K"
 B3D_STR = "3D"
@@ -274,13 +275,14 @@ class contentParser:
     def get_format(self, soup) -> str:
         input = self.get_title(soup)
 
-        for item in BLURAY_ITEMS:
-            if item in input:
-                return FORMAT_BLURAY
+        if input:
+            for item in BLURAY_ITEMS:
+                if item in input:
+                    return FORMAT_BLURAY
 
-        for item in DVD_ITEMS:
-            if item in input:
-                return FORMAT_DVD
+            for item in DVD_ITEMS:
+                if item in input:
+                    return FORMAT_DVD
 
         # Title did not include the format, try to get it from the mediaformat field
         mediaformat = self.get_mediaformat(soup)
@@ -294,7 +296,7 @@ class contentParser:
                 if item in mediaformat:
                     return FORMAT_DVD
 
-        return None
+        return FORMAT_UNKNOWN
 
     def is_bluray_uhd(self, soup) -> bool:
         title = self.get_title(soup)
