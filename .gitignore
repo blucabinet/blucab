@@ -31,6 +31,7 @@ app_covers/
 app_db/
 app_import/
 db_data/
+db_data_fr/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
