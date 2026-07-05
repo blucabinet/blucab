@@ -26,6 +26,7 @@ class UpdateMovie(forms.ModelForm):
     class Meta:
         model = Movie
         fields = [
+            "activated",
             "ean",
             "asin",
             "title",
@@ -55,7 +56,17 @@ class UpdateMovie(forms.ModelForm):
             "force_picture_disable",
             "needs_parsing",
             "imdb_id",
+            "flickrack_id",
+            "date_added",
+            "date_updated",
         ]
+        widgets = {
+            "date_added": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "date_updated": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "price": forms.NumberInput(attrs={"type": "number", "step": "0.01"}),
+            "picture_url_original": forms.TextInput(attrs={"type": "url"}),
+            "picture_url_original_hd": forms.TextInput(attrs={"type": "url"}),
+        }
 
 
 class UpdateMovieUserList(forms.ModelForm):

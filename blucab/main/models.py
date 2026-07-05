@@ -71,6 +71,7 @@ class Movie(models.Model):
     is_series = models.BooleanField(default=False, verbose_name=_("Is Series"))
     is_bluray_uhd = models.BooleanField(default=False, verbose_name=_("Is Blu-ray UHD"))
     is_bluray_3d = models.BooleanField(default=False, verbose_name=_("Is Blu-ray 3D"))
+    activated = models.BooleanField(default=True, verbose_name=_("Activated"))
     picture_available = models.BooleanField(
         default=False, verbose_name=_("Picture Available")
     )
@@ -89,6 +90,16 @@ class Movie(models.Model):
     )
     force_picture_disable = models.BooleanField(
         default=False, verbose_name=_("Force Deactivate Picture")
+    )
+    date_added = models.DateField(default=timezone.now, verbose_name=_("Date added"))
+    date_updated = models.DateField(
+        default=None, blank=True, null=True, verbose_name=_("Date updated")
+    )
+    flickrack_id = models.IntegerField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Flickrack ID"),
     )
 
     class Meta:
