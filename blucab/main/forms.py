@@ -42,6 +42,7 @@ class UpdateMovie(forms.ModelForm):
             "studio",
             "genre",
             "language",
+            "languages",
             "disc_count",
             "movie_count",
             "season_count",
@@ -66,6 +67,14 @@ class UpdateMovie(forms.ModelForm):
             "price": forms.NumberInput(attrs={"type": "number", "step": "0.01"}),
             "picture_url_original": forms.TextInput(attrs={"type": "url"}),
             "picture_url_original_hd": forms.TextInput(attrs={"type": "url"}),
+            "content": forms.Textarea(attrs={"rows": 5}),
+            "languages": forms.SelectMultiple(
+                attrs={
+                    "class": "select2-multiple",
+                    "data-placeholder": _("Choose Languages..."),
+                    "style": "width: 100%;",
+                }
+            ),
         }
 
 

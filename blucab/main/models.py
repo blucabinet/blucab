@@ -18,6 +18,17 @@ class Format(models.Model):
         return self.name
 
 
+class Language(models.Model):
+    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+
+    class Meta:
+        verbose_name = _("Language")
+        verbose_name_plural = _("Languages")
+
+    def __str__(self):
+        return self.name
+
+
 class Movie(models.Model):
     ean = models.CharField(max_length=16, verbose_name=_("EAN"))
     asin = models.CharField(max_length=16, verbose_name=_("ASIN"))
@@ -63,6 +74,12 @@ class Movie(models.Model):
     )
     language = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Language")
+    )
+    languages = models.ManyToManyField(
+        Language,
+        blank=True,
+        related_name="movies",
+        verbose_name=_("Languages"),
     )
     disc_count = models.IntegerField(default=1, verbose_name=_("Disc Count"))
     movie_count = models.IntegerField(default=1, verbose_name=_("Movie Count"))

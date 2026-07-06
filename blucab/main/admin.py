@@ -6,11 +6,15 @@ from .models import (
     UserCabinet,
     MovieViewLog,
     MovieErrorReport,
+    Format,
+    Language,
 )
 from contenthandler.models import FailedAddMovie
 from django.utils.translation import gettext as _
 
 # Register your models here.
+admin.site.register(Format)
+admin.site.register(Language)
 admin.site.register(Movie)
 admin.site.register(MovieUserList)
 admin.site.register(UserSettings)
