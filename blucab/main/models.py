@@ -29,6 +29,39 @@ class Language(models.Model):
         return self.name
 
 
+class Actor(models.Model):
+    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+
+    class Meta:
+        verbose_name = _("Actor")
+        verbose_name_plural = _("Actors")
+
+    def __str__(self):
+        return self.name
+
+
+class Studio(models.Model):
+    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+
+    class Meta:
+        verbose_name = _("Studio")
+        verbose_name_plural = _("Studios")
+
+    def __str__(self):
+        return self.name
+
+
+class Director(models.Model):
+    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+
+    class Meta:
+        verbose_name = _("Director")
+        verbose_name_plural = _("Directors")
+
+    def __str__(self):
+        return self.name
+
+
 class Movie(models.Model):
     ean = models.CharField(max_length=16, verbose_name=_("EAN"))
     asin = models.CharField(max_length=16, verbose_name=_("ASIN"))
@@ -63,11 +96,29 @@ class Movie(models.Model):
     actor = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Actor")
     )
+    actors = models.ManyToManyField(
+        Actor,
+        blank=True,
+        related_name="movies",
+        verbose_name=_("Actors"),
+    )
     regisseur = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Regisseur")
     )
+    directors = models.ManyToManyField(
+        Director,
+        blank=True,
+        related_name="movies",
+        verbose_name=_("Directors"),
+    )
     studio = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Studio")
+    )
+    studios = models.ManyToManyField(
+        Studio,
+        blank=True,
+        related_name="movies",
+        verbose_name=_("Studios"),
     )
     genre = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Genre")
