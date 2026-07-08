@@ -78,6 +78,27 @@ class UpdateMovie(forms.ModelForm):
                     "style": "width: 100%;",
                 }
             ),
+            "directors": forms.SelectMultiple(
+                attrs={
+                    "class": "select2-multiple",
+                    "data-placeholder": _("Choose Directors..."),
+                    "style": "width: 100%;",
+                }
+            ),
+            "actors": forms.SelectMultiple(
+                attrs={
+                    "class": "select2-multiple",
+                    "data-placeholder": _("Choose Actors..."),
+                    "style": "width: 100%;",
+                }
+            ),
+            "studios": forms.SelectMultiple(
+                attrs={
+                    "class": "select2-multiple",
+                    "data-placeholder": _("Choose Studios..."),
+                    "style": "width: 100%;",
+                }
+            ),
         }
 
 
