@@ -2,7 +2,6 @@
 set -e
 
 echo "Start Migrations"
-python manage.py makemigrations
 python manage.py migrate
 python manage.py createcachetable
 echo "---------------------"
