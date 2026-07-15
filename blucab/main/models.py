@@ -62,6 +62,23 @@ class Director(models.Model):
         return self.name
 
 
+class ContentRating(models.Model):
+    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+    value = models.IntegerField(
+        validators=[MinValueValidator(-1), MaxValueValidator(100)],
+        blank=True,
+        null=True,
+        default=None,
+    )
+
+    class Meta:
+        verbose_name = _("Content Rating")
+        verbose_name_plural = _("Content Ratings")
+
+    def __str__(self):
+        return self.name
+
+
 class Movie(models.Model):
     ean = models.CharField(max_length=16, verbose_name=_("EAN"))
     asin = models.CharField(max_length=16, verbose_name=_("ASIN"))
@@ -89,6 +106,9 @@ class Movie(models.Model):
         null=True,
         default=None,
         verbose_name=_("FSK NBR"),
+    )
+    content_rating = models.ForeignKey(
+        ContentRating, on_delete=models.SET_NULL, blank=True, null=True
     )
     content = models.CharField(
         max_length=10000, blank=True, null=True, verbose_name=_("Content")

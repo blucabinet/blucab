@@ -11,6 +11,7 @@ from .models import (
     Actor,
     Studio,
     Director,
+    ContentRating,
 )
 from contenthandler.models import FailedAddMovie
 from django.utils.translation import gettext as _
@@ -21,6 +22,7 @@ admin.site.register(Language)
 admin.site.register(Actor)
 admin.site.register(Studio)
 admin.site.register(Director)
+admin.site.register(ContentRating)
 admin.site.register(Movie)
 admin.site.register(MovieUserList)
 admin.site.register(UserSettings)
