@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import autocomplete
 from . import cabinet
 from . import views_settings
 from . import csv
@@ -42,4 +43,8 @@ urlpatterns = [
         "view-log/delete/<int:log_id>/", views.delete_view_log, name="delete_view_log"
     ),
     path("view-log/list/", views.view_log_list, name="view_log_list"),
+    path("search/language-autocomplete/", autocomplete.LanguageAutocomplete.as_view(), name="language-autocomplete"),
+    path("search/actor-autocomplete/", autocomplete.ActorAutocomplete.as_view(), name="actor-autocomplete"),
+    path("search/director-autocomplete/", autocomplete.DirectorAutocomplete.as_view(), name="director-autocomplete"),
+    path("search/studio-autocomplete/", autocomplete.StudioAutocomplete.as_view(), name="studio-autocomplete"),
 ]

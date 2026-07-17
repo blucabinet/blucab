@@ -16,14 +16,53 @@ from .models import (
 from contenthandler.models import FailedAddMovie
 from django.utils.translation import gettext as _
 
+
 # Register your models here.
-admin.site.register(Format)
-admin.site.register(Language)
-admin.site.register(Actor)
-admin.site.register(Studio)
-admin.site.register(Director)
-admin.site.register(ContentRating)
-admin.site.register(Movie)
+@admin.register(Format)
+class FormatAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(Language)
+class LanguageAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(Actor)
+class ActorAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(Studio)
+class StudioAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(Director)
+class DirectorAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(ContentRating)
+class ContentRatingAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ("title_clean", "ean", "release_year")
+    search_fields = ("title_clean", "ean", "asin")
+
+    autocomplete_fields = [
+        "format",
+        "content_rating",
+        "actors",
+        "directors",
+        "studios",
+        "languages",
+    ]
+
+
 admin.site.register(MovieUserList)
 admin.site.register(UserSettings)
 admin.site.register(UserCabinet)

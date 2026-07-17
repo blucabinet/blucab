@@ -1,6 +1,7 @@
 from django import forms
-from .models import UserCabinet, UserSettings, MovieUserList, Movie, MovieErrorReport
 from django.utils.translation import gettext_lazy as _
+from dal import autocomplete
+from .models import UserCabinet, UserSettings, MovieUserList, Movie, MovieErrorReport
 
 
 class UpdateUserSettings(forms.ModelForm):
@@ -37,6 +38,7 @@ class UpdateMovie(forms.ModelForm):
             "fsk",
             "fsk_nbr",
             "content",
+            "content_rating",
             "actor",
             "actors",
             "regisseur",
@@ -71,33 +73,33 @@ class UpdateMovie(forms.ModelForm):
             "picture_url_original": forms.TextInput(attrs={"type": "url"}),
             "picture_url_original_hd": forms.TextInput(attrs={"type": "url"}),
             "content": forms.Textarea(attrs={"rows": 5}),
-            "languages": forms.SelectMultiple(
+            "languages": autocomplete.ModelSelect2Multiple(
+                url="language-autocomplete",
                 attrs={
-                    "class": "select2-multiple",
                     "data-placeholder": _("Choose Languages..."),
-                    "style": "width: 100%;",
-                }
+                    "data-theme": "bootstrap-5",
+                },
             ),
-            "directors": forms.SelectMultiple(
+            "directors": autocomplete.ModelSelect2Multiple(
+                url="director-autocomplete",
                 attrs={
-                    "class": "select2-multiple",
                     "data-placeholder": _("Choose Directors..."),
-                    "style": "width: 100%;",
-                }
+                    "data-theme": "bootstrap-5",
+                },
             ),
-            "actors": forms.SelectMultiple(
+            "actors": autocomplete.ModelSelect2Multiple(
+                url="actor-autocomplete",
                 attrs={
-                    "class": "select2-multiple",
                     "data-placeholder": _("Choose Actors..."),
-                    "style": "width: 100%;",
-                }
+                    "data-theme": "bootstrap-5",
+                },
             ),
-            "studios": forms.SelectMultiple(
+            "studios": autocomplete.ModelSelect2Multiple(
+                url="studio-autocomplete",
                 attrs={
-                    "class": "select2-multiple",
                     "data-placeholder": _("Choose Studios..."),
-                    "style": "width: 100%;",
-                }
+                    "data-theme": "bootstrap-5",
+                },
             ),
         }
 
