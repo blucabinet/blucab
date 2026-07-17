@@ -19,7 +19,7 @@ class Format(models.Model):
 
 
 class Language(models.Model):
-    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+    name = models.CharField(max_length=256, unique=True, verbose_name=_("Name"))
 
     class Meta:
         verbose_name = _("Language")
@@ -30,7 +30,7 @@ class Language(models.Model):
 
 
 class Actor(models.Model):
-    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+    name = models.CharField(max_length=256, unique=True, verbose_name=_("Name"))
 
     class Meta:
         verbose_name = _("Actor")
@@ -41,7 +41,7 @@ class Actor(models.Model):
 
 
 class Studio(models.Model):
-    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+    name = models.CharField(max_length=256, unique=True, verbose_name=_("Name"))
 
     class Meta:
         verbose_name = _("Studio")
@@ -52,7 +52,7 @@ class Studio(models.Model):
 
 
 class Director(models.Model):
-    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+    name = models.CharField(max_length=256, unique=True, verbose_name=_("Name"))
 
     class Meta:
         verbose_name = _("Director")
@@ -63,7 +63,7 @@ class Director(models.Model):
 
 
 class ContentRating(models.Model):
-    name = models.CharField(max_length=128, unique=True, verbose_name=_("Name"))
+    name = models.CharField(max_length=256, unique=True, verbose_name=_("Name"))
     value = models.IntegerField(
         validators=[MinValueValidator(-1), MaxValueValidator(100)],
         blank=True,
@@ -110,9 +110,7 @@ class Movie(models.Model):
     content_rating = models.ForeignKey(
         ContentRating, on_delete=models.SET_NULL, blank=True, null=True
     )
-    content = models.CharField(
-        max_length=10000, blank=True, null=True, verbose_name=_("Content")
-    )
+    content = models.TextField(blank=True, null=True, verbose_name=_("Content"))
     actor = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Actor")
     )
