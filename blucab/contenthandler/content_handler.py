@@ -12,7 +12,7 @@ from .picture_helper import pictureHelper, PICTURE_NAME_PROCESSED_SD
 
 import csv
 import os
-import time
+import datetime
 import random
 import re
 from environs import Env
@@ -114,6 +114,7 @@ class handler:
                             "regisseur": self._check_string(row.get("Regisseur/e")),
                             "studio": self._check_string(row.get("Studio")),
                             "needs_parsing": True,
+                            "date_updated": datetime.date.today(),
                         },
                     )
                 try:
@@ -179,6 +180,7 @@ class handler:
                             ),
                             "imdb_id": self._check_string(row.get("imdb_id")),
                             "needs_parsing": False,
+                            "date_updated": datetime.date.today(),
                         },
                     )
                 else:
