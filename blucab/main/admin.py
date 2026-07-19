@@ -63,12 +63,40 @@ class MovieAdmin(admin.ModelAdmin):
     ]
 
 
-admin.site.register(MovieUserList)
-admin.site.register(UserSettings)
-admin.site.register(UserCabinet)
-admin.site.register(FailedAddMovie)
-admin.site.register(MovieViewLog)
-admin.site.register(MovieErrorReport)
+@admin.register(UserCabinet)
+class UserCabinetAdmin(admin.ModelAdmin):
+    search_fields = ["name", "user__username"]
+    autocomplete_fields = ["user"]
+
+
+@admin.register(MovieUserList)
+class MovieUserListAdmin(admin.ModelAdmin):
+    search_fields = ["user__username", "movie__title_clean", "movie__ean"]
+    autocomplete_fields = ["user", "movie", "cabinet"]
+
+
+@admin.register(UserSettings)
+class UserSettingsAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["user"]
+
+
+@admin.register(MovieViewLog)
+class MovieViewLogAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["movie_user_list"]
+
+
+@admin.register(MovieErrorReport)
+class MovieErrorReportAdmin(admin.ModelAdmin):
+    list_display = ("movie", "user", "created_at", "checked_at")
+    autocomplete_fields = ["movie", "user", "checked_by"]
+
+
+@admin.register(FailedAddMovie)
+class FailedAddMovieAdmin(admin.ModelAdmin):
+    list_display = ("ean", "date_added", "is_movie_update", "checked")
+    search_fields = ["ean", "movie__title_clean"]
+    autocomplete_fields = ["movie"]
+
 
 admin.site.site_title = _("blucab site admin")
 admin.site.site_header = _("blucab administration")
