@@ -102,6 +102,18 @@ def cab_uname(request, uname):
         show_view_title = True
         show_card_body = True
 
+    # Query speed optimizations
+    movieuserlist = movieuserlist.select_related(
+        "movie",
+        "movie__format",
+        "cabinet",
+    ).prefetch_related(
+        "movie__actors",
+        "movie__directors",
+        "movie__studios",
+        "movie__languages",
+    )
+
     return render(
         request,
         "main/view.html",
@@ -223,6 +235,18 @@ def view(request):
     ).count()
     count_rented = movieuserlist.filter(rented=True).count()
 
+    # Query speed optimizations
+    movieuserlist = movieuserlist.select_related(
+        "movie",
+        "movie__format",
+        "cabinet",
+    ).prefetch_related(
+        "movie__actors",
+        "movie__directors",
+        "movie__studios",
+        "movie__languages",
+    )
+
     return render(
         request,
         "main/view.html",
@@ -318,6 +342,8 @@ def view_list(request):
         return redirect("view_list")
 
     movieuserlist = movieuserlist.order_by("movie__title_clean")
+
+    movieuserlist = movieuserlist.select_related("movie", "cabinet", "movie__format")
 
     return render(
         request,
@@ -422,9 +448,13 @@ def add_movie(request):
                 url = reverse("add_movie")
                 return redirect(f"{url}?query={query}")
 
-            movies = Movie.objects.filter(
-                Q(title__icontains=query) | Q(title_clean__icontains=query)
-            ).distinct()
+            movies = (
+                Movie.objects.filter(
+                    Q(title__icontains=query) | Q(title_clean__icontains=query)
+                )
+                .select_related("format")
+                .distinct()
+            )
 
             if movies.exists():
                 user_movie_eans = MovieUserList.objects.filter(
@@ -536,6 +566,11 @@ def view_log_list(request):
         view_logs = view_logs.filter(view_date__lte=date_to)
 
     view_logs = view_logs.order_by("-view_date")
+
+    view_logs = view_logs.select_related(
+        "movie_user_list",
+        "movie_user_list__movie",
+    )
 
     return render(
         request,
