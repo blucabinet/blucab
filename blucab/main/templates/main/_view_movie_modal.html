@@ -74,7 +74,7 @@
                                 {% endblocktrans %}
                                 <br>
                             {% endif %}
-                            {% blocktrans with fsk=mu.movie.fsk trimmed %}
+                            {% blocktrans with fsk=mu.movie.content_rating trimmed %}
                                 FSK: {{fsk}}
                             {% endblocktrans %}
                             <br>
@@ -100,7 +100,7 @@
                                     {% endblocktrans %}
                                     <br>
                                 {% endif %}
-                                {% if mu.cabinet != None %}
+                                {% if mu.cabinet %}
                                     {% blocktrans with cabinet=mu.cabinet trimmed %}
                                         Cabinet: {{cabinet}}
                                     {% endblocktrans %}
@@ -130,19 +130,46 @@
 
                             EAN: {{mu.movie.ean}}<br>
                             ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
-                            {% if mu.movie.imdb_id != None %}
-                            IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a><br>
+                            {% if mu.movie.imdb_id %}
+                                IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a><br>
                             {% endif %}
 
                             {% if is_user_view %}
-                                {% if mu.url_custom != None %}
+                                {% if mu.url_custom %}
                                     {% trans "Custom URL" %}: <a href="{{mu.url_custom}}" target="_blank">{{mu.url_name}}</a>
                                 {% endif %}
                             {% endif %}
                         </p>
                     </div>
                 </div>
-                <div>{{mu.movie.content}}</div>
+                {% if mu.movie.directors.all or mu.movie.studios.all or mu.movie.languages.all or mu.movie.actors.all %}
+                    <hr class="mt-4">
+                {% endif %}
+                {% if mu.movie.directors.all %}
+                    {% trans "Directors:" %}
+                    {{ mu.movie.directors.all|join:", " }}
+                    <br>
+                {% endif %}
+                {% if mu.movie.studios.all %}
+                    {% trans "Studio:" %}
+                    {{ mu.movie.studios.all|join:", " }}
+                    <br>
+                {% endif %}
+                {% if mu.movie.actors.all %}
+                    {% trans "Actors:" %}
+                    {{ mu.movie.actors.all|join:", " }}
+                    <br>
+                {% endif %}
+                {% if mu.movie.languages.all %}
+                    {% trans "Languages:" %}
+                    {{ mu.movie.languages.all|join:", " }}
+                    <br>
+                {% endif %}
+                {% if mu.movie.content %}
+                    <hr class="mt-4">
+                    {% trans "Content:" %}
+                    <div>{{mu.movie.content}}</div>
+                {% endif %}
                 {% if is_user_view %}
                     <hr class="mt-4">
                     <h6 class="text-dark fw-bold">{% trans "Viewing History" %}</h6>
