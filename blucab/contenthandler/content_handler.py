@@ -325,17 +325,51 @@ class handler:
             return False, False
 
     def check_all_picture_available(self) -> None:
-        # Only check for SD pictures right now.
-        movies = Movie.objects.filter()
+        cover_dir = os.path.join(settings.MEDIA_ROOT, "cover")
+        try:
+            existing_folders = set(os.listdir(cover_dir))
+        except FileNotFoundError:
+            existing_folders = set()
+
+        movies_to_update = []
+
+        movies = Movie.objects.only(
+            "id", "ean", "picture_available", "picture_processed"
+        ).iterator(chunk_size=10000)
 
         for movie in movies:
-            exists = ph._picture_exists(
-                folder=movie.ean, picture=PICTURE_NAME_PROCESSED_SD
-            )
-            movie.picture_available = exists
-            if not exists:
+            if movie.ean not in existing_folders:
+                exists = False
+            else:
+                exists = ph._picture_exists(
+                    folder=movie.ean, picture=PICTURE_NAME_PROCESSED_SD
+                )
+
+            needs_update = False
+
+            if movie.picture_available != exists:
+                movie.picture_available = exists
+                needs_update = True
+
+            if not exists and movie.picture_processed:
                 movie.picture_processed = False
-            movie.save()
+                needs_update = True
+
+            if needs_update:
+                movies_to_update.append(movie)
+
+            if len(movies_to_update) >= 5000:
+                Movie.objects.bulk_update(
+                    movies_to_update, ["picture_available", "picture_processed"]
+                )
+                movies_to_update.clear()
+
+        # Update any remaining movies
+        if movies_to_update:
+            Movie.objects.bulk_update(
+                movies_to_update, ["picture_available", "picture_processed"]
+            )
+
         return
 
     def picture_update(self) -> None:
