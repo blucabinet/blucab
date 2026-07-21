@@ -76,6 +76,15 @@ class pictureHelper:
 
         return
 
+    def picture_folder_rename(self, old_folder: str, new_folder: str) -> None:
+        old_folder_path = os.path.join(settings.MEDIA_ROOT, "cover", old_folder)
+        new_folder_path = os.path.join(settings.MEDIA_ROOT, "cover", new_folder)
+
+        if os.path.exists(old_folder_path):
+            os.rename(old_folder_path, new_folder_path)
+
+        return
+
     def picture_download(self, url: str, ean: str, is_hd: bool = False) -> None:
         # Only check for SD pictures right now.
         if is_hd:
