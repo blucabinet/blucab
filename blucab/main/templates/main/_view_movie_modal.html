@@ -185,6 +185,12 @@
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
+                                {% if log.season %}
+                                    <div class="small mt-1 text-dark"><strong>{% trans "Season" %}:</strong> {{ log.season }}</div>
+                                {% endif %}
+                                {% if log.episode %}
+                                    <div class="small mt-1 text-dark"><strong>{% trans "Episode" %}:</strong> {{ log.episode }}</div>
+                                {% endif %}
                                 {% if log.watched_with %}
                                     <div class="small mt-1 text-dark"><strong>{% trans "With" %}:</strong> {{ log.watched_with }}</div>
                                 {% endif %}
@@ -218,6 +224,14 @@
                                 <div class="mb-2">
                                     <label class="form-label small text-dark mb-0 fw-bold">{% trans "Date" %}</label>
                                     <input type="date" name="view_date" class="form-control form-control-sm border-secondary text-dark bg-white" value="{% now 'Y-m-d' %}" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small text-dark mb-0 fw-bold">{% trans "Season" %}</label>
+                                    <input type="text" name="season" class="form-control form-control-sm border-secondary text-dark bg-white" placeholder="{% trans 'e.g. 1' %}">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small text-dark mb-0 fw-bold">{% trans "Episode" %}</label>
+                                    <input type="text" name="episode" class="form-control form-control-sm border-secondary text-dark bg-white" placeholder="{% trans 'e.g. 1' %}">
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label small text-dark mb-0 fw-bold">{% trans "Watched with" %}</label>

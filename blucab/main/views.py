@@ -487,6 +487,8 @@ def add_view_log(request, mu_id):
 
     if request.method == "POST":
         view_date = request.POST.get("view_date")
+        season = request.POST.get("season")
+        episode = request.POST.get("episode")
         watched_with = request.POST.get("watched_with")
         comment = request.POST.get("comment")
 
@@ -494,6 +496,8 @@ def add_view_log(request, mu_id):
             MovieViewLog.objects.create(
                 movie_user_list=movie_user_entry,
                 view_date=view_date,
+                season=season,
+                episode=episode,
                 watched_with=watched_with,
                 comment=comment,
             )

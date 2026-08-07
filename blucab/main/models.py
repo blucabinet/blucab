@@ -352,6 +352,20 @@ class MovieViewLog(models.Model):
         max_length=255, blank=True, null=True, verbose_name=_("Watched with")
     )
     comment = models.TextField(blank=True, null=True, verbose_name=_("Comment"))
+    season = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(9999)],
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Season"),
+    )
+    episode = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(9999)],
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Episode"),
+    )
 
     class Meta:
         verbose_name = _("Movie View Log")

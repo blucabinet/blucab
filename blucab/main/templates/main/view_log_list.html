@@ -65,6 +65,8 @@
                             </th>
                             <th scope="col" class="bg-light">{% trans "View Date" %}</th>
                             <th scope="col" class="bg-light">{% trans "Movie Title" %}</th>
+                            <th scope="col" class="bg-light">{% trans "Season" %}</th>
+                            <th scope="col" class="bg-light">{% trans "Episode" %}</th>
                             <th scope="col" class="bg-light">{% trans "Watched With" %}</th>
                             <th scope="col" class="bg-light">{% trans "Comment" %}</th>
                         </tr>
@@ -81,12 +83,14 @@
                                     {{ log.movie_user_list.movie.title_clean }}
                                 </a>
                             </td>
+                            <td class="text-secondary">{{ log.season|default:"-" }}</td>
+                            <td class="text-secondary">{{ log.episode|default:"-" }}</td>
                             <td class="text-secondary">{{ log.watched_with|default:"-" }}</td>
                             <td class="text-secondary">{{ log.comment|default:"-"|truncatechars:60 }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
+                            <td colspan="7" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
