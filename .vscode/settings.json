@@ -1,0 +1,5 @@
+{
+    "files.exclude": {
+        "**/app_covers": true
+    }
+}
