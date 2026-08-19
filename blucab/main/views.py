@@ -386,12 +386,14 @@ def add_movie(request):
 
             if created:
                 url = str(reverse_lazy("view"))
+                edit_url = str(reverse_lazy("user_movie_settings", args=[movie.id]))
                 title = movie.title_clean
 
                 msg = _(
-                    "Movie '%(title)s' successfully added to your <a href='%(url)s' class='alert-link'>collection</a>"
+                    "Movie '<a href='%(edit_url)s' class='alert-link'>%(title)s</a>' successfully added to your <a href='%(url)s' class='alert-link'>collection</a>"
                 ) % {
-                    "url": f"{url}",
+                    "url": url,
+                    "edit_url": f"{edit_url}?next={request.path}",
                     "title": title,
                 }
 
