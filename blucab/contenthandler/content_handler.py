@@ -1,6 +1,15 @@
 from django.conf import settings
 from django.http import HttpResponse
-from main.models import Movie, MovieUserList, Format
+from main.models import (
+    Movie,
+    MovieUserList,
+    Format,
+    Actor,
+    Director,
+    Studio,
+    Language,
+    ContentRating,
+)
 from .models import FailedAddMovie
 from .amazon import (
     contentParser,
@@ -73,6 +82,24 @@ class handler:
         format_obj, created = Format.objects.get_or_create(name=format_clean)
         return format_obj
 
+    def _get_content_rating(self, fsk_string: str):
+        clean_string = self._check_string(fsk_string)
+        if not clean_string:
+            return None
+        rating_obj, _ = ContentRating.objects.get_or_create(name=clean_string)
+        return rating_obj
+
+    def _assign_m2m(self, movie_obj, m2m_field_name: str, model_class, raw_string: str):
+        if not raw_string or str(raw_string).strip() == "":
+            return
+
+        names = [name.strip() for name in raw_string.split(",") if name.strip()]
+        m2m_manager = getattr(movie_obj, m2m_field_name)
+
+        for name in names:
+            instance, _ = model_class.objects.get_or_create(name=name)
+            m2m_manager.add(instance)
+
     def _import_flickrack(self, file_path: str, user) -> bool:
         with open(file_path, encoding=CSV_ENCODING_FLICKRACK) as csv_file:
             reader = csv.DictReader(csv_file, delimiter=",")
@@ -95,6 +122,7 @@ class handler:
 
                 if ALLOW_CSV_MOVIE_IMPORT:
                     format_instance = self._get_format_instance(row.get("Format"))
+                    content_rating_instance = self._get_content_rating(csv_fsk_nbr)
 
                     db_movie, movie_created = Movie.objects.get_or_create(
                         ean=csv_ean,
@@ -107,16 +135,21 @@ class handler:
                             "format": format_instance,
                             "release_year": self._check_int_string(row.get("Release")),
                             "runtime": self._check_int_string(row.get("Laufzeit")),
-                            "fsk": csv_fsk_nbr,
-                            "fsk_nbr": fsk_nbr,
+                            "content_rating": content_rating_instance,
                             "content": self._check_string(row.get("Inhalt")),
-                            "actor": self._check_string(row.get("Schauspieler")),
-                            "regisseur": self._check_string(row.get("Regisseur/e")),
-                            "studio": self._check_string(row.get("Studio")),
                             "needs_parsing": True,
                             "date_updated": datetime.date.today(),
                         },
                     )
+
+                    if movie_created:
+                        self._assign_m2m(
+                            db_movie, "actors", Actor, row.get("Schauspieler")
+                        )
+                        self._assign_m2m(
+                            db_movie, "directors", Director, row.get("Regisseur/e")
+                        )
+                        self._assign_m2m(db_movie, "studios", Studio, row.get("Studio"))
                 try:
                     db_movie = Movie.objects.get(ean=csv_ean)
                 except Movie.DoesNotExist:
@@ -135,6 +168,7 @@ class handler:
             for row in reader:
                 if ALLOW_CSV_MOVIE_IMPORT:
                     format_instance = self._get_format_instance(row.get("format"))
+                    content_rating_instance = self._get_content_rating(row.get("fsk"))
 
                     db_movie, movie_created = Movie.objects.get_or_create(
                         ean=row["ean"],
@@ -147,14 +181,9 @@ class handler:
                                 row.get("release_year")
                             ),
                             "runtime": self._check_int_string(row.get("runtime")),
-                            "fsk": self._check_string(row.get("fsk")),
-                            "fsk_nbr": self._check_int_string(row.get("fsk_nbr")),
+                            "content_rating": content_rating_instance,
                             "content": self._check_string(row.get("content")),
-                            "actor": self._check_string(row.get("actor")),
-                            "regisseur": self._check_string(row.get("regisseur")),
-                            "studio": self._check_string(row.get("studio")),
                             "genre": self._check_string(row.get("genre")),
-                            "language": self._check_string(row.get("language")),
                             "disc_count": self._check_int_string(row.get("disc_count")),
                             "movie_count": self._check_int_string(
                                 row.get("movie_count")
@@ -183,6 +212,16 @@ class handler:
                             "date_updated": datetime.date.today(),
                         },
                     )
+
+                    if movie_created:
+                        self._assign_m2m(db_movie, "actors", Actor, row.get("actor"))
+                        self._assign_m2m(
+                            db_movie, "directors", Director, row.get("regisseur")
+                        )
+                        self._assign_m2m(db_movie, "studios", Studio, row.get("studio"))
+                        self._assign_m2m(
+                            db_movie, "languages", Language, row.get("language")
+                        )
                 else:
                     try:
                         db_movie = Movie.objects.get(ean=row["ean"])
@@ -237,6 +276,8 @@ class handler:
         field_names_mul = [field.name for field in opts_mul.fields]
         field_names_ml = [field.name for field in opts_ml.fields]
 
+        m2m_fields = ["actors", "directors", "studios", "languages"]
+
         remove_items = {
             "id",
             "user",
@@ -256,13 +297,20 @@ class handler:
                 pass
 
         # Write the csv header
-        writer.writerow(field_names_mul + field_names_ml)
+        writer.writerow(field_names_mul + field_names_ml + m2m_fields)
 
         for obj in queryset:
             row_mul = [getattr(obj, field) for field in field_names_mul]
             row_ml = [getattr(obj.movie, field) for field in field_names_ml]
 
-            writer.writerow(row_mul + row_ml)
+            m2m_data = [
+                ",".join([a.name for a in obj.movie.actors.all()]),
+                ",".join([d.name for d in obj.movie.directors.all()]),
+                ",".join([s.name for s in obj.movie.studios.all()]),
+                ",".join([l.name for l in obj.movie.languages.all()]),
+            ]
+
+            writer.writerow(row_mul + row_ml + m2m_data)
 
         return response
 
@@ -284,6 +332,9 @@ class handler:
                     pars_picture_available = True
 
                 format_instance = self._get_format_instance(pars.get_format(soup))
+                content_rating_instance = self._get_content_rating(
+                    pars.get_fsk_str(soup)
+                )
 
                 m = Movie(
                     ean=ean,
@@ -293,14 +344,9 @@ class handler:
                     format=format_instance,
                     release_year=pars.get_release_year(soup),
                     runtime=pars.get_runtime_min(soup),
-                    fsk=pars.get_fsk_str(soup),
-                    fsk_nbr=pars.get_fsk(soup),
+                    content_rating=content_rating_instance,
                     content=pars.get_content(soup),
-                    actor=pars.get_actors(soup),
-                    regisseur=pars.get_regisseur(soup),
-                    studio=pars.get_studio(soup),
                     genre=pars.get_genre(soup),
-                    language=pars.get_language(soup),
                     disc_count=pars.get_disc_count(soup),
                     is_bluray_uhd=pars.is_bluray_uhd(soup),
                     is_bluray_3d=pars.is_bluray_3d(soup),
@@ -312,6 +358,11 @@ class handler:
                 )
 
                 m.save()
+
+                self._assign_m2m(m, "actors", Actor, pars.get_actors(soup))
+                self._assign_m2m(m, "directors", Director, pars.get_regisseur(soup))
+                self._assign_m2m(m, "studios", Studio, pars.get_studio(soup))
+                self._assign_m2m(m, "languages", Language, pars.get_language(soup))
 
                 if pars_picture_available:
                     ph.picture_download_processing(pars_picture_url, ean)
@@ -419,11 +470,8 @@ class handler:
         if movie.runtime == None:
             movie.runtime = pars.get_runtime_min(soup)
 
-        if movie.fsk == None:
-            movie.fsk = pars.get_fsk_str(soup)
-
-        if movie.fsk_nbr == None:
-            movie.fsk_nbr = pars.get_fsk(soup)
+        if movie.content_rating is None:
+            movie.content_rating = self._get_content_rating(pars.get_fsk_str(soup))
 
         if movie.content == None:
             movie.content = pars.get_content(soup)
@@ -431,20 +479,20 @@ class handler:
             for item in PRODUCT_DESCRIPTION_ITEMS:
                 movie.content = movie.content.replace(item, "").lstrip()
 
-        if movie.actor == None:
-            movie.actor = pars.get_actors(soup)
+        if not movie.actors.exists():
+            self._assign_m2m(movie, "actors", Actor, pars.get_actors(soup))
 
-        if movie.regisseur == None:
-            movie.regisseur = pars.get_regisseur(soup)
+        if not movie.directors.exists():
+            self._assign_m2m(movie, "directors", Director, pars.get_regisseur(soup))
 
-        if movie.studio == None:
-            movie.studio = pars.get_studio(soup)
+        if not movie.studios.exists():
+            self._assign_m2m(movie, "studios", Studio, pars.get_studio(soup))
 
         if movie.genre == None:
             movie.genre = pars.get_genre(soup)
 
-        if movie.language == None:
-            movie.language = pars.get_language(soup)
+        if not movie.languages.exists():
+            self._assign_m2m(movie, "languages", Language, pars.get_language(soup))
 
         if movie.disc_count == 1:
             count = pars.get_disc_count(soup)
