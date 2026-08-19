@@ -422,10 +422,10 @@ def add_movie(request):
                     )
 
                     msg = _(
-                        "The movie '%(title)s' is already in your collection. <a href='%(url)s' class='alert-link'>Edit</a>"
+                        "The movie '%(title)s' is already in your collection. <a href='%(edit_url)s' class='alert-link'>Edit</a>"
                     ) % {
                         "title": movie_by_ean.title_clean,
-                        "next_url": f"{edit_url}?next={request.path}",
+                        "edit_url": f"{edit_url}?next={request.path}",
                     }
 
                     messages.warning(request, mark_safe(msg))
