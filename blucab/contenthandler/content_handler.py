@@ -112,14 +112,6 @@ class handler:
                 csv_rating = self._check_int_string(row["Bewertung"])
                 csv_fsk_nbr = row["FSK"]
 
-                try:
-                    fsk_nbr = re.findall(r"\b\d+\b", csv_fsk_nbr)[0]
-                except IndexError:
-                    if csv_fsk_nbr == AMAZON_STR_FSK_NO:
-                        fsk_nbr = 0
-                    else:
-                        fsk_nbr = None
-
                 if ALLOW_CSV_MOVIE_IMPORT:
                     format_instance = self._get_format_instance(row.get("Format"))
                     content_rating_instance = self._get_content_rating(csv_fsk_nbr)
