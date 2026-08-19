@@ -1,5 +1,17 @@
 {
-    "files.exclude": {
-        "**/app_covers": true
-    }
+  "files.exclude": {
+    "**/app_covers": true,
+    "**/db_data": true,
+    "**/db_data_fr": true
+  },
+  "files.watcherExclude": {
+    "**/app_covers/**": true,
+    "**/db_data/**": true,
+    "**/db_data_fr/**": true
+  },
+  "python.analysis.exclude": [
+    "**/app_covers",
+    "**/db_data",
+    "**/db_data_fr"
+  ]
 }
