@@ -89,14 +89,58 @@ class handler:
         rating_obj, _ = ContentRating.objects.get_or_create(name=clean_string)
         return rating_obj
 
-    def _assign_m2m(self, movie_obj, m2m_field_name: str, model_class, raw_string: str):
+    def _assign_m2m(
+        self,
+        movie_obj,
+        m2m_field_name: str,
+        model_class,
+        raw_string: str,
+        is_person: bool = False,
+    ):
         if not raw_string or str(raw_string).strip() == "":
             return
 
-        names = [name.strip() for name in raw_string.split(",") if name.strip()]
-        m2m_manager = getattr(movie_obj, m2m_field_name)
+        parts = [name.strip() for name in raw_string.split(",") if name.strip()]
+        final_names = []
 
-        for name in names:
+        if is_person:
+            i = 0
+            while i < len(parts):
+                current_part = parts[i]
+
+                # Check next elements for a check
+                if i + 1 < len(parts):
+                    next_part = parts[i + 1]
+
+                    combo_first_last = f"{next_part} {current_part}"
+                    combo_last_first = f"{current_part} {next_part}"
+
+                    # Check for "Surname Name" within DB
+                    if model_class.objects.filter(name=combo_first_last).exists():
+                        final_names.append(combo_first_last)
+                        i += 2
+                        continue
+
+                    # Check for "Name Surname" within DB
+                    elif model_class.objects.filter(name=combo_last_first).exists():
+                        final_names.append(combo_last_first)
+                        i += 2
+                        continue
+
+                    # Fallback
+                    if " " not in current_part or " " not in next_part:
+                        final_names.append(combo_first_last)
+                        i += 2
+                        continue
+
+                # If the check does not apply, use names as given
+                final_names.append(current_part)
+                i += 1
+        else:
+            final_names = parts
+
+        m2m_manager = getattr(movie_obj, m2m_field_name)
+        for name in final_names:
             instance, _ = model_class.objects.get_or_create(name=name)
             m2m_manager.add(instance)
 
@@ -136,10 +180,18 @@ class handler:
 
                     if movie_created:
                         self._assign_m2m(
-                            db_movie, "actors", Actor, row.get("Schauspieler")
+                            db_movie,
+                            "actors",
+                            Actor,
+                            row.get("Schauspieler"),
+                            is_person=True,
                         )
                         self._assign_m2m(
-                            db_movie, "directors", Director, row.get("Regisseur/e")
+                            db_movie,
+                            "directors",
+                            Director,
+                            row.get("Regisseur/e"),
+                            is_person=True,
                         )
                         self._assign_m2m(db_movie, "studios", Studio, row.get("Studio"))
                 try:
@@ -206,9 +258,15 @@ class handler:
                     )
 
                     if movie_created:
-                        self._assign_m2m(db_movie, "actors", Actor, row.get("actor"))
                         self._assign_m2m(
-                            db_movie, "directors", Director, row.get("regisseur")
+                            db_movie, "actors", Actor, row.get("actor"), is_person=True
+                        )
+                        self._assign_m2m(
+                            db_movie,
+                            "directors",
+                            Director,
+                            row.get("regisseur"),
+                            is_person=True,
                         )
                         self._assign_m2m(db_movie, "studios", Studio, row.get("studio"))
                         self._assign_m2m(
@@ -351,8 +409,12 @@ class handler:
 
                 m.save()
 
-                self._assign_m2m(m, "actors", Actor, pars.get_actors(soup))
-                self._assign_m2m(m, "directors", Director, pars.get_regisseur(soup))
+                self._assign_m2m(
+                    m, "actors", Actor, pars.get_actors(soup), is_person=True
+                )
+                self._assign_m2m(
+                    m, "directors", Director, pars.get_regisseur(soup), is_person=True
+                )
                 self._assign_m2m(m, "studios", Studio, pars.get_studio(soup))
                 self._assign_m2m(m, "languages", Language, pars.get_language(soup))
 
@@ -472,10 +534,14 @@ class handler:
                 movie.content = movie.content.replace(item, "").lstrip()
 
         if not movie.actors.exists():
-            self._assign_m2m(movie, "actors", Actor, pars.get_actors(soup))
+            self._assign_m2m(
+                movie, "actors", Actor, pars.get_actors(soup), is_person=True
+            )
 
         if not movie.directors.exists():
-            self._assign_m2m(movie, "directors", Director, pars.get_regisseur(soup))
+            self._assign_m2m(
+                movie, "directors", Director, pars.get_regisseur(soup), is_person=True
+            )
 
         if not movie.studios.exists():
             self._assign_m2m(movie, "studios", Studio, pars.get_studio(soup))
