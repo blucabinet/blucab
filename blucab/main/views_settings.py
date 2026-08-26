@@ -18,9 +18,7 @@ def user_settings(request):
         form = UpdateUserSettings(request.POST, instance=user_settings_model)
 
         if form.is_valid():
-            for field, value in form.cleaned_data.items():
-                user_settings_model.__dict__[field] = value
-            user_settings_model.save()
+            form.save()
     else:
         form = UpdateUserSettings(instance=user_settings_model)
 
@@ -52,9 +50,7 @@ def movie_settings(request, movie_id):
         form = UpdateMovie(request.POST, instance=movie_model)
 
         if form.is_valid():
-            for field, value in form.cleaned_data.items():
-                movie_model.__dict__[field] = value
-            movie_model.save()
+            form.save()
 
         next_url = request.POST.get("next")
         if next_url:
@@ -92,9 +88,7 @@ def user_movie_settings(request, movie_id):
         form = UpdateMovieUserList(request.POST, instance=user_movie_model, user=user)
 
         if form.is_valid():
-            for field, value in form.cleaned_data.items():
-                user_movie_model.__dict__[field] = value
-            user_movie_model.save()
+            form.save()
 
             next_url = request.POST.get("next")
             if next_url:
