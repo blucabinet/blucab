@@ -67,10 +67,3 @@ def csv_export(request):
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
     return response
-
-
-@login_required
-def content_update(request):
-    ch = handler()
-    ch.content_update()
-    return render(request, "main/home.html", {})
