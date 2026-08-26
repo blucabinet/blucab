@@ -171,6 +171,7 @@ class Movie(models.Model):
         default=False, verbose_name=_("Picture Processed")
     )
     needs_parsing = models.BooleanField(default=True, verbose_name=_("Needs Parsing"))
+    force_parsing = models.BooleanField(default=False, verbose_name=_("Force Parsing"))
     imdb_id = models.CharField(
         max_length=100, blank=True, null=True, verbose_name=_("IMDb ID")
     )

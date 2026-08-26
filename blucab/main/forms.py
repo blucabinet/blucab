@@ -55,6 +55,7 @@ class UpdateMovie(forms.ModelForm):
             "picture_processed",
             "force_picture_disable",
             "needs_parsing",
+            "force_parsing",
             "imdb_id",
             "flickrack_id",
             "date_added",
