@@ -564,16 +564,11 @@ class handler:
             movie.is_bluray_3d = pars.is_bluray_3d(soup)
 
         # Picture update
-        pars_picture_url = pars.get_image_url(soup)
+        if movie.picture_url_original == None:
+            movie.picture_url_original = pars.get_image_url(soup, use_hd=False)
 
         if movie.picture_url_original_hd == None:
             movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
-
-        if (pars_picture_url != None) and (movie.picture_available == False):
-            ph.picture_download_processing(pars_picture_url, movie_ean)
-            movie.picture_url_original = pars_picture_url
-            movie.picture_available = True
-            movie.picture_processed = True
 
         movie.needs_parsing = False
         movie.save()
