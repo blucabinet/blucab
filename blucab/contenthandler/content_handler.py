@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponse
+from django.db.models import Q
 from main.models import (
     Movie,
     MovieUserList,
@@ -571,6 +572,8 @@ class handler:
             movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
 
         movie.needs_parsing = False
+        movie.force_parsing = False
+
         movie.save()
 
         return True
@@ -578,7 +581,17 @@ class handler:
     def get_missing_information(self) -> None:
         from .tasks import task_update_movie
 
-        movies = Movie.objects.filter(needs_parsing=True)
+        # We ignore old Flickrack-Data for now as the database is huge
+        movies = Movie.objects.filter(
+            Q(force_parsing=True)
+            | (
+                Q(needs_parsing=True)
+                & Q(flickrack_id__isnull=True)
+                & Q(failedaddmovie__isnull=True)
+            )
+        )
+
+        print(f"Found {movies.count()} movies scheduled for parsing update.")
 
         for movie in movies:
             random_delay = random.randint(1, 10)
