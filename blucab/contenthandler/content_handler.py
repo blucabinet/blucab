@@ -571,6 +571,7 @@ class handler:
         if movie.picture_url_original_hd == None:
             movie.picture_url_original_hd = pars.get_image_url(soup, use_hd=True)
 
+        movie.date_updated = datetime.date.today()
         movie.needs_parsing = False
         movie.force_parsing = False
 
