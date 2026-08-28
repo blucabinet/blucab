@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-23 17:52+0200\n"
+"POT-Creation-Date: 2026-08-29 00:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: contenthandler/models.py:8 main/models.py:11
+#: contenthandler/models.py:8 main/models.py:83
 #: main/templates/main/add_movie_confirm.html:30
 #: main/templates/main/add_movie_results.html:32
 msgid "EAN"
 msgstr "EAN"
 
-#: contenthandler/models.py:10 main/models.py:133
+#: contenthandler/models.py:10 main/models.py:185 main/models.py:252
 msgid "Date added"
 msgstr "Hinzugefügt am"
 
@@ -36,8 +36,8 @@ msgstr "Ist ein existierender Film"
 msgid "Checked"
 msgstr "Ausgewählt"
 
-#: contenthandler/models.py:17 main/models.py:117 main/models.py:256
-#: main/templates/main/_view_movie_modal.html:222
+#: contenthandler/models.py:17 main/models.py:236 main/models.py:390
+#: main/templates/main/_view_movie_modal.html:263
 #: main/templates/main/settings_user_movie.html:26
 msgid "Movie"
 msgstr "Film"
@@ -50,11 +50,11 @@ msgstr "Fehlgeschlagener Film Import"
 msgid "Failed Movie Imports"
 msgstr "Fehlgeschlagene Film Importe"
 
-#: main/admin.py:22
+#: main/admin.py:101
 msgid "blucab site admin"
 msgstr "blucab Seiten Administration"
 
-#: main/admin.py:23
+#: main/admin.py:102
 msgid "blucab administration"
 msgstr "blucab Administration"
 
@@ -66,322 +66,404 @@ msgstr "Bitte eine Datei für den Upload auswählen."
 msgid "CSV import started in the background. Please wait..."
 msgstr "CSV import im Hintergrund gestartet. Bitte warten..."
 
-#: main/forms.py:109
+#: main/forms.py:74
+msgid "Choose Languages..."
+msgstr "Wähle Sprachen..."
+
+#: main/forms.py:81
+msgid "Choose Directors..."
+msgstr "Wähle Regisseur..."
+
+#: main/forms.py:88
+msgid "Choose Actors..."
+msgstr "Wähle Schauspieler..."
+
+#: main/forms.py:95
+msgid "Choose Studios..."
+msgstr "Wähle Studios..."
+
+#: main/forms.py:150
 msgid "e.g. Living Room Cabinet"
 msgstr "z.b. Wohnzimmer Schrank"
 
-#: main/forms.py:122
+#: main/forms.py:163
 msgid "You already have a cabinet with this name."
 msgstr "Du hast bereits einen Schrank mit diesem Namen."
 
-#: main/forms.py:130
+#: main/forms.py:171
 msgid "Cabinet to delete"
 msgstr "Zu löschender Schrank"
 
-#: main/forms.py:131
+#: main/forms.py:172
 msgid "--- Choose a cabinet ---"
 msgstr "--- Wähle einen Schrank ---"
 
-#: main/forms.py:146
+#: main/forms.py:187
 msgid "EAN or Title"
 msgstr "EAN oder Titel"
 
-#: main/forms.py:151
+#: main/forms.py:192
 msgid "Enter EAN or search term"
 msgstr "EAN oder Suchbegriff eingeben"
 
-#: main/models.py:12
-msgid "ASIN"
-msgstr "ASIN"
+#: main/models.py:11 main/models.py:22 main/models.py:33 main/models.py:44
+#: main/models.py:55 main/models.py:66
+msgid "Name"
+msgstr ""
 
-#: main/models.py:13 main/templates/main/view_list.html:76
-msgid "Title"
-msgstr "Titel"
-
-#: main/models.py:14
-msgid "Title Clean"
-msgstr "Titel bereinigt"
-
-#: main/models.py:15 main/templates/main/add_movie_confirm.html:31
+#: main/models.py:14 main/models.py:92
+#: main/templates/main/add_movie_confirm.html:31
 #: main/templates/main/add_movie_results.html:33
 #: main/templates/main/view_list.html:75
 msgid "Format"
 msgstr "Format"
 
-#: main/models.py:21 main/templates/main/add_movie_confirm.html:33
+#: main/models.py:15
+msgid "Formats"
+msgstr "Formate"
+
+#: main/models.py:25 main/models.py:149
+msgid "Language"
+msgstr "Sprache"
+
+#: main/models.py:26 main/models.py:155
+#: main/templates/main/_view_movie_modal.html:164
+msgid "Languages"
+msgstr "Sprachen"
+
+#: main/models.py:36 main/models.py:119
+msgid "Actor"
+msgstr "Schauspieler"
+
+#: main/models.py:37 main/models.py:125
+#: main/templates/main/_view_movie_modal.html:159
+msgid "Actors"
+msgstr "Schauspieler"
+
+#: main/models.py:47 main/models.py:137
+#: main/templates/main/_view_movie_modal.html:154
+msgid "Studio"
+msgstr "Studio"
+
+#: main/models.py:48 main/models.py:143
+msgid "Studios"
+msgstr "Studios"
+
+#: main/models.py:58
+msgid "Director"
+msgstr "Regisseur"
+
+#: main/models.py:59 main/models.py:134
+#: main/templates/main/_view_movie_modal.html:149
+msgid "Directors"
+msgstr "Regisseur"
+
+#: main/models.py:75 main/models.py:115
+msgid "Content Rating"
+msgstr "Inhaltsbewertung"
+
+#: main/models.py:76
+msgid "Content Ratings"
+msgstr "Inhaltsbewertungen"
+
+#: main/models.py:84
+msgid "ASIN"
+msgstr "ASIN"
+
+#: main/models.py:85 main/templates/main/view_list.html:76
+msgid "Title"
+msgstr "Titel"
+
+#: main/models.py:86
+msgid "Title Clean"
+msgstr "Titel bereinigt"
+
+#: main/models.py:99 main/templates/main/add_movie_confirm.html:33
 #: main/templates/main/add_movie_results.html:35
 msgid "Release Year"
 msgstr "Erscheinungsjahr"
 
-#: main/models.py:23
+#: main/models.py:101
 msgid "Runtime"
 msgstr "Laufzeit"
 
-#: main/models.py:24
+#: main/models.py:102
 msgid "FSK"
 msgstr "FSK"
 
-#: main/models.py:30
+#: main/models.py:108
 msgid "FSK NBR"
 msgstr "FSK Nbr"
 
-#: main/models.py:33
+#: main/models.py:117 main/templates/main/_view_movie_modal.html:170
 msgid "Content"
 msgstr "Inhalt"
 
-#: main/models.py:36
-msgid "Actor"
-msgstr "Schauspieler"
-
-#: main/models.py:39
+#: main/models.py:128
 msgid "Regisseur"
 msgstr "Regisseur"
 
-#: main/models.py:42
-msgid "Studio"
-msgstr "Studio"
-
-#: main/models.py:45
+#: main/models.py:146
 msgid "Genre"
 msgstr "Genre"
 
-#: main/models.py:48
-msgid "Language"
-msgstr "Sprache"
-
-#: main/models.py:50
+#: main/models.py:157
 msgid "Disc Count"
 msgstr "Anzahl der Discs"
 
-#: main/models.py:51
+#: main/models.py:158
 msgid "Movie Count"
 msgstr "Anzahl der Filme"
 
-#: main/models.py:52
+#: main/models.py:159
 msgid "Season Count"
 msgstr "Anzahl der Staffeln"
 
-#: main/models.py:53
+#: main/models.py:160
 msgid "Episode Count"
 msgstr "Anzahl der Episoden"
 
-#: main/models.py:54 main/templates/main/view.html:216
+#: main/models.py:161 main/templates/main/view.html:216
 msgid "Is Series"
 msgstr "Ist eine Serie"
 
-#: main/models.py:55
+#: main/models.py:162
 msgid "Is Blu-ray UHD"
 msgstr "Ist eine UHD Blu-ray"
 
-#: main/models.py:56
+#: main/models.py:163
 msgid "Is Blu-ray 3D"
 msgstr "Ist eine 3D Blu-ray"
 
-#: main/models.py:58
-msgid "Picture Available"
-msgstr "Bild verfügbar"
-
-#: main/models.py:61
-msgid "Picture URL Original"
-msgstr "Original Bild URL"
-
-#: main/models.py:64
-msgid "Picture URL Original HD"
-msgstr "Original Bild URL HD"
-
-#: main/models.py:67
-msgid "Picture Processed"
-msgstr "Bild verarbeitet"
-
-#: main/models.py:69
-msgid "Needs Parsing"
-msgstr "Benötigt parsing"
-
-#: main/models.py:71
-msgid "IMDb ID"
-msgstr "IMDb ID"
-
-#: main/models.py:74
-msgid "Force Deactivate Picture"
-msgstr "Bild deaktivieren erzwingen"
-
-#: main/models.py:78
-msgid "Movies"
-msgstr "Filme"
-
-#: main/models.py:90 main/models.py:114 main/models.py:168 main/models.py:262
-msgid "User"
-msgstr "Nutzer"
-
-#: main/models.py:93
-msgid "Cabinet Name"
-msgstr "Schrankname"
-
-#: main/models.py:101 main/templates/main/view_list.html:81
-msgid "Cabinet"
-msgstr "Schrank"
-
-#: main/models.py:102
-msgid "Cabinets"
-msgstr "Schränke"
-
-#: main/models.py:119 main/templates/main/view_list.html:77
+#: main/models.py:164 main/models.py:238 main/templates/main/view_list.html:77
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: main/models.py:123
+#: main/models.py:166
+msgid "Picture Available"
+msgstr "Bild verfügbar"
+
+#: main/models.py:169
+msgid "Picture URL Original"
+msgstr "Original Bild URL"
+
+#: main/models.py:172
+msgid "Picture URL Original HD"
+msgstr "Original Bild URL HD"
+
+#: main/models.py:175
+msgid "Picture Processed"
+msgstr "Bild verarbeitet"
+
+#: main/models.py:177
+msgid "Needs Parsing"
+msgstr "Benötigt parsing"
+
+#: main/models.py:178
+msgid "Force Parsing"
+msgstr "Parsing erzwingen"
+
+#: main/models.py:180
+msgid "IMDb ID"
+msgstr "IMDb ID"
+
+#: main/models.py:183
+msgid "Force Deactivate Picture"
+msgstr "Bild deaktivieren erzwingen"
+
+#: main/models.py:187
+msgid "Date updated"
+msgstr "Update Datum"
+
+#: main/models.py:193
+msgid "Flickrack ID"
+msgstr ""
+
+#: main/models.py:197
+msgid "Movies"
+msgstr "Filme"
+
+#: main/models.py:209 main/models.py:233 main/models.py:288 main/models.py:396
+msgid "User"
+msgstr "Nutzer"
+
+#: main/models.py:212
+msgid "Cabinet Name"
+msgstr "Schrankname"
+
+#: main/models.py:220 main/models.py:268 main/templates/main/view_list.html:81
+msgid "Cabinet"
+msgstr "Schrank"
+
+#: main/models.py:221
+msgid "Cabinets"
+msgstr "Schränke"
+
+#: main/models.py:242
 msgid "Rating"
 msgstr "Bewertung"
 
-#: main/models.py:125 main/templates/main/view.html:184
+#: main/models.py:244 main/templates/main/view.html:184
 #: main/templates/main/view_list.html:80
 msgid "Viewed"
 msgstr "Bereits gesehen"
 
-#: main/models.py:126 main/templates/main/_view_movie_modal.html:124
+#: main/models.py:245 main/templates/main/_view_movie_modal.html:124
 #: main/templates/main/view.html:155 main/templates/main/view_list.html:78
 msgid "Rented"
 msgstr "Verliehen"
 
-#: main/models.py:128
+#: main/models.py:247
 msgid "Rented to"
 msgstr "Verliehen an"
 
-#: main/models.py:131
+#: main/models.py:250
 msgid "Rented since"
 msgstr "Verliehen seit"
 
-#: main/models.py:135
+#: main/models.py:254
 msgid "Price"
 msgstr "Preis"
 
-#: main/models.py:137 main/templates/main/view.html:200
+#: main/models.py:256 main/templates/main/view.html:200
 #: main/templates/main/view_list.html:79
 msgid "Archived"
 msgstr "Archiviert"
 
-#: main/models.py:139 main/templates/main/_view_movie_modal.html:139
+#: main/models.py:258 main/templates/main/_view_movie_modal.html:139
 msgid "Custom URL"
 msgstr "Eigene URL"
 
-#: main/models.py:142
+#: main/models.py:261
 msgid "Custom URL Name"
 msgstr "Eigener URL Name"
 
-#: main/models.py:156 main/models.py:234
+#: main/models.py:276 main/models.py:354
 msgid "User Movie List"
 msgstr "Nutzer Film Liste"
 
-#: main/models.py:171
+#: main/models.py:291
 msgid "Price Unit"
 msgstr "Preis Einheit"
 
-#: main/models.py:176
+#: main/models.py:296
 msgid "Days since adding a movie to show the new sign"
 msgstr "Tage seit dem Hinzufügen eines Films, um das NEW Schild zu zeigen"
 
-#: main/models.py:179
+#: main/models.py:299
 msgid "The library can be viewed publicly"
 msgstr "Die Bibliothek ist öffentlich einsehbar"
 
-#: main/models.py:182
+#: main/models.py:302
 msgid "Show Movie title"
 msgstr "Filmtitel anzeigen"
 
-#: main/models.py:185
+#: main/models.py:305
 msgid "Show Movie details"
 msgstr "Filmdetails anzeigen"
 
-#: main/models.py:188
+#: main/models.py:308
 msgid "Show the new sign"
 msgstr "NEW Schild anzeigen"
 
-#: main/models.py:191
+#: main/models.py:311
 msgid "Show the rented sign"
 msgstr "RENT Schild anzeigen"
 
-#: main/models.py:194
+#: main/models.py:314
 msgid "Show the number of disks"
 msgstr "Anzahl der Discs anzeigen"
 
-#: main/models.py:197
+#: main/models.py:317
 msgid "Show the number of movies"
 msgstr "Anzahl der Filme anzeigen"
 
-#: main/models.py:200
+#: main/models.py:320
 msgid "Show the details button"
 msgstr "Details Knopf anzeigen"
 
-#: main/models.py:203
+#: main/models.py:323
 msgid "Show the share button"
 msgstr "Teilen Knopf anzeigen"
 
-#: main/models.py:206
+#: main/models.py:326
 msgid "Last time an export was executed"
 msgstr "Zeitpunkt des letzten Exports"
 
-#: main/models.py:210 main/templates/main/settings_user.html:11
+#: main/models.py:330 main/templates/main/settings_user.html:11
 msgid "User Settings"
 msgstr "Benutzereinstellungen"
 
-#: main/models.py:236 main/templates/main/view_log_list.html:66
+#: main/models.py:356 main/templates/main/view_log_list.html:66
 msgid "View Date"
 msgstr "Ansichtsdatum"
 
-#: main/models.py:238 main/templates/main/_view_movie_modal.html:196
+#: main/models.py:358 main/templates/main/_view_movie_modal.html:237
 msgid "Watched with"
 msgstr "Gesehen mit"
 
-#: main/models.py:240 main/templates/main/_view_movie_modal.html:200
-#: main/templates/main/view_log_list.html:69
+#: main/models.py:360 main/templates/main/_view_movie_modal.html:241
+#: main/templates/main/view_log_list.html:71
 msgid "Comment"
 msgstr "Kommentar"
 
-#: main/models.py:243
+#: main/models.py:366 main/templates/main/_view_movie_modal.html:189
+#: main/templates/main/_view_movie_modal.html:229
+#: main/templates/main/view_log_list.html:68
+msgid "Season"
+msgstr "Staffel"
+
+#: main/models.py:373 main/templates/main/_view_movie_modal.html:192
+#: main/templates/main/_view_movie_modal.html:233
+#: main/templates/main/view_log_list.html:69
+msgid "Episode"
+msgstr "Folge"
+
+#: main/models.py:377
 msgid "Movie View Log"
 msgstr "Film Ansichtshistorie"
 
-#: main/models.py:244
+#: main/models.py:378
 msgid "Movie View Logs"
 msgstr "Film Ansichtshistorie"
 
-#: main/models.py:264
+#: main/models.py:398
 msgid "Picture Wrong"
 msgstr "Bild falsch"
 
-#: main/models.py:265
+#: main/models.py:399
 msgid "Content Wrong"
 msgstr "Inhalt falsch"
 
-#: main/models.py:267
+#: main/models.py:401
 msgid "Wrong EAN/ASIN"
 msgstr "Falsche EAN/ASIN"
 
-#: main/models.py:269
+#: main/models.py:403
 msgid "Comment/Details"
 msgstr "Kommentar/Details"
 
-#: main/models.py:271
+#: main/models.py:405
 msgid "Created at"
 msgstr "Erstellt am"
 
-#: main/models.py:274
+#: main/models.py:408
 msgid "Checked at"
 msgstr "Geprüft am"
 
-#: main/models.py:281
+#: main/models.py:415
 msgid "Checked by"
 msgstr "Geprüft von"
 
-#: main/models.py:284
+#: main/models.py:418
 msgid "Checked Comment"
 msgstr "Prüf Kommentar"
 
-#: main/models.py:288
+#: main/models.py:422
 msgid "Movie Error Report"
 msgstr "Filmfehler Bericht"
 
-#: main/models.py:289
+#: main/models.py:423
 msgid "Movie Error Reports"
 msgstr "Filmfehler Berichte"
 
@@ -578,70 +660,75 @@ msgstr "Film ist archiviert"
 msgid "Rented to %(rented_to)s"
 msgstr "Ausgeliehen an %(rented_to)s"
 
-#: main/templates/main/_view_movie_modal.html:148
+#: main/templates/main/_view_movie_modal.html:175
 msgid "Viewing History"
 msgstr "Ansichtshistorie"
 
-#: main/templates/main/_view_movie_modal.html:157
+#: main/templates/main/_view_movie_modal.html:184
 msgid "Delete log"
 msgstr "Eintrag löschen"
 
-#: main/templates/main/_view_movie_modal.html:162
+#: main/templates/main/_view_movie_modal.html:195
 msgid "With"
 msgstr "Mit"
 
-#: main/templates/main/_view_movie_modal.html:170
+#: main/templates/main/_view_movie_modal.html:203
 msgid "Are you sure you want to delete this entry?"
 msgstr "Bist du sicher, dass du diesen Eintrag löschen möchtest?"
 
-#: main/templates/main/_view_movie_modal.html:174
+#: main/templates/main/_view_movie_modal.html:207
 msgid "Yes, delete"
 msgstr "Ja, löschen"
 
-#: main/templates/main/_view_movie_modal.html:176
+#: main/templates/main/_view_movie_modal.html:209
 #: main/templates/main/settings_user_movie.html:78
 #: main/templates/main/view_list.html:124
-#: main/templates/main/view_log_list.html:109
+#: main/templates/main/view_log_list.html:113
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: main/templates/main/_view_movie_modal.html:184
+#: main/templates/main/_view_movie_modal.html:217
 msgid "No viewing history yet."
 msgstr "Bisher keine Ansichtshistorie vorhanden."
 
-#: main/templates/main/_view_movie_modal.html:192
+#: main/templates/main/_view_movie_modal.html:225
 msgid "Date"
 msgstr "Datum"
 
-#: main/templates/main/_view_movie_modal.html:197
+#: main/templates/main/_view_movie_modal.html:230
+#: main/templates/main/_view_movie_modal.html:234
+msgid "e.g. 1"
+msgstr "z.B. 1"
+
+#: main/templates/main/_view_movie_modal.html:238
 msgid "e.g. Alice, Bob"
 msgstr "z.B. Alice, Bob"
 
-#: main/templates/main/_view_movie_modal.html:203
+#: main/templates/main/_view_movie_modal.html:244
 #: main/templates/main/settings_movie.html:33
 #: main/templates/main/settings_user.html:29
 #: main/templates/main/settings_user_movie.html:61
 msgid "Save"
 msgstr "Speichern"
 
-#: main/templates/main/_view_movie_modal.html:210
+#: main/templates/main/_view_movie_modal.html:251
 msgid "Add Viewing Date"
 msgstr "Ansichtsdatum hinzufügen"
 
-#: main/templates/main/_view_movie_modal.html:216
+#: main/templates/main/_view_movie_modal.html:257
 msgid "Report movie error"
 msgstr "Filmfehler melden"
 
-#: main/templates/main/_view_movie_modal.html:227
+#: main/templates/main/_view_movie_modal.html:268
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: main/templates/main/_view_movie_modal.html:231
+#: main/templates/main/_view_movie_modal.html:272
 #: main/templates/main/settings_user_movie.html:72
 #: main/templates/main/view_list.html:116
 #: main/templates/main/view_list.html:138
-#: main/templates/main/view_log_list.html:101
-#: main/templates/main/view_log_list.html:123
+#: main/templates/main/view_log_list.html:105
+#: main/templates/main/view_log_list.html:127
 msgid "Close"
 msgstr "Schließen"
 
@@ -668,7 +755,9 @@ msgstr "Barcode per Kamera scannen"
 
 #: main/templates/main/add_movie.html:34
 msgid "Note: Scan with Camera works best with a smartphone rear-camera."
-msgstr "Notiz: Das einscannen funktioniert am besten mit der Hauptkamera eines Smartphones"
+msgstr ""
+"Notiz: Das einscannen funktioniert am besten mit der Hauptkamera eines "
+"Smartphones"
 
 #: main/templates/main/add_movie.html:40
 msgid "Cancel Scan"
@@ -759,8 +848,8 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: main/templates/main/base.html:92
-msgid "View"
-msgstr "View"
+msgid "Collection"
+msgstr "Sammlung"
 
 #: main/templates/main/base.html:96
 msgid "About"
@@ -874,8 +963,8 @@ msgid ""
 "        "
 msgstr ""
 "\n"
-"            Du meldest einen Fehler für den folgenden Film: <strong>%(title)s</"
-"strong>\n"
+"            Du meldest einen Fehler für den folgenden Film: "
+"<strong>%(title)s</strong>\n"
 "        "
 
 #: main/templates/main/report_movie_error.html:33
@@ -1014,7 +1103,7 @@ msgstr ""
 
 #: main/templates/main/settings_user_movie.html:79
 #: main/templates/main/view_list.html:125
-#: main/templates/main/view_log_list.html:110
+#: main/templates/main/view_log_list.html:114
 msgid "Yes, delete it"
 msgstr "Ja, löschen"
 
@@ -1260,7 +1349,7 @@ msgid "Execute"
 msgstr "Ausführen"
 
 #: main/templates/main/view_list.html:92
-#: main/templates/main/view_log_list.html:80
+#: main/templates/main/view_log_list.html:82
 msgid "Edit movie"
 msgstr "Film bearbeiten"
 
@@ -1275,15 +1364,17 @@ msgstr "Film(e) löschen"
 #: main/templates/main/view_list.html:119
 msgid ""
 "Are you sure you want to delete the selected movies from your collection?"
-msgstr "Bist du sicher, dass du die gewählten Filme aus deiner Sammlung löschen möchtest?"
+msgstr ""
+"Bist du sicher, dass du die gewählten Filme aus deiner Sammlung löschen "
+"möchtest?"
 
 #: main/templates/main/view_list.html:121
-#: main/templates/main/view_log_list.html:106
+#: main/templates/main/view_log_list.html:110
 msgid " This action cannot be undone."
 msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 
 #: main/templates/main/view_list.html:136
-#: main/templates/main/view_log_list.html:121
+#: main/templates/main/view_log_list.html:125
 msgid "Notice"
 msgstr "Hinweis"
 
@@ -1292,7 +1383,7 @@ msgid "Please select at least one movie."
 msgstr "Bitte mindestens einen Film wählen."
 
 #: main/templates/main/view_list.html:144
-#: main/templates/main/view_log_list.html:129
+#: main/templates/main/view_log_list.html:133
 msgid "OK"
 msgstr "OK"
 
@@ -1332,71 +1423,74 @@ msgstr "Einträge löschen"
 msgid "Movie Title"
 msgstr "Filmtitel"
 
-#: main/templates/main/view_log_list.html:68
+#: main/templates/main/view_log_list.html:70
 msgid "Watched With"
 msgstr "Gesehen mit"
 
-#: main/templates/main/view_log_list.html:89
+#: main/templates/main/view_log_list.html:93
 msgid "No view logs found for this period."
 msgstr "Keine Ansichtseinträge für diesen Zeitraum gefunden."
 
-#: main/templates/main/view_log_list.html:100
+#: main/templates/main/view_log_list.html:104
 msgid "Delete View Log(s)"
 msgstr "Lösche Ansichtseintrag"
 
-#: main/templates/main/view_log_list.html:104
+#: main/templates/main/view_log_list.html:108
 msgid "Are you sure you want to delete the selected view logs?"
 msgstr "Bist du sicher, dass du die ausgewählten Einträge löschen möchtest?"
 
-#: main/templates/main/view_log_list.html:126
+#: main/templates/main/view_log_list.html:130
 msgid "Please select at least one view log."
 msgstr "Bitte wähle mindestens einen Eintrag."
 
-#: main/views.py:344
+#: main/views.py:370
 msgid "DEBUG mode is activated! Not for production usage!"
 msgstr "DEBUG Modus ist aktiviert! Nicht für den produktiven Einsatz!"
 
-#: main/views.py:366
+#: main/views.py:393
 #, python-format
 msgid ""
-"Movie '%(title)s' successfully added to your <a href='%(url)s' class='alert-"
-"link'>collection</a>"
+"Movie '<a href='%(edit_url)s' class='alert-link'>%(title)s</a>' successfully "
+"added to your <a href='%(url)s' class='alert-link'>collection</a>"
 msgstr ""
+"Der Film '<a href='%(edit_url)s' class='alert-link'>%(title)s</a>' wurde "
+"erfolgreich zu deiner <a href='%(url)s' class='alert-link'>Sammlung</a> "
+"hinzugefügt"
 
-#: main/views.py:375
+#: main/views.py:403
 msgid "This movie is already in your collection."
-msgstr ""
-"Dieser Film ist bereits in deiner Sammlung."
+msgstr "Dieser Film ist bereits in deiner Sammlung."
 
-#: main/views.py:379
+#: main/views.py:407
 msgid "Error: Movie not found."
 msgstr "Fehler: Film nicht gefunden."
 
-#: main/views.py:399
+#: main/views.py:427
 #, python-format
 msgid ""
-"The movie '%(title)s' is already in your collection. <a href='%(url)s' "
+"The movie '%(title)s' is already in your collection. <a href='%(edit_url)s' "
 "class='alert-link'>Edit</a>"
 msgstr ""
-"Der Film '%(title)s' ist bereits in deiner Sammlung. <a href='%(url)s' "
+"Der Film '%(title)s' ist bereits in deiner Sammlung. <a href='%(edit_url)s' "
 "class='alert-link'>Bearbeiten</a>"
 
-#: main/views.py:419
+#: main/views.py:447
 msgid ""
 "EAN not found. The movie is being fetched in the background. Please check "
 "back later."
 msgstr ""
-"EAN nicht gefunden. Der Film wird im Hintergrund abgerufen. Bitte später erneut versuchen."
+"EAN nicht gefunden. Der Film wird im Hintergrund abgerufen. Bitte später "
+"erneut versuchen."
 
-#: main/views.py:444
+#: main/views.py:476
 msgid "No movies found matching your search."
 msgstr "Keine Filme gefunden, die deiner Suche entsprechen."
 
-#: main/views.py:475
+#: main/views.py:511
 msgid "Viewing history updated."
 msgstr "Ansichtshistorie aktualisiert."
 
-#: main/views.py:495
+#: main/views.py:531
 msgid "Viewing log entry deleted."
 msgstr "Ansichtseintrag gelöscht."
 
@@ -1513,8 +1607,10 @@ msgstr ""
 "passiert ist.\n"
 
 #: register/templates/email/password_reset_subject.txt:2
+#, python-format
 msgid "[blucab] Password reset for your blucab account (%(username)s)"
-msgstr "[blucab] Passwort zurücksetzen für dein blucab Benutzerkonto (%(username)s)"
+msgstr ""
+"[blucab] Passwort zurücksetzen für dein blucab Benutzerkonto (%(username)s)"
 
 #: register/templates/register/change_email.html:5
 msgid "blucab - Change your email"
@@ -1708,16 +1804,3 @@ msgstr ""
 #: register/views.py:207 register/views.py:228
 msgid "Your email address has been updated successfully."
 msgstr "Deine E-Mail Adresse wurde erfolgreich aktualisiert!"
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "                Processed the file: %(file_url)s\n"
-#~ "            "
-#~ msgstr ""
-#~ "\n"
-#~ "                Datei wurde verarbeitet: %(file_url)s\n"
-#~ "            "
-
-#~ msgid "Homepage"
-#~ msgstr "Startseite"

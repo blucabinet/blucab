@@ -108,7 +108,11 @@ class Movie(models.Model):
         verbose_name=_("FSK NBR"),
     )
     content_rating = models.ForeignKey(
-        ContentRating, on_delete=models.SET_NULL, blank=True, null=True
+        ContentRating,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_("Content Rating"),
     )
     content = models.TextField(blank=True, null=True, verbose_name=_("Content"))
     actor = models.CharField(
@@ -261,6 +265,7 @@ class MovieUserList(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        verbose_name=_("Cabinet"),
     )
 
     class Meta:

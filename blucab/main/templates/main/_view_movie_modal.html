@@ -146,28 +146,28 @@
                     <hr class="mt-4">
                 {% endif %}
                 {% if mu.movie.directors.all %}
-                    {% trans "Directors:" %}
+                    {% trans "Directors" %}:
                     {{ mu.movie.directors.all|join:", " }}
                     <br>
                 {% endif %}
                 {% if mu.movie.studios.all %}
-                    {% trans "Studio:" %}
+                    {% trans "Studio" %}:
                     {{ mu.movie.studios.all|join:", " }}
                     <br>
                 {% endif %}
                 {% if mu.movie.actors.all %}
-                    {% trans "Actors:" %}
+                    {% trans "Actors" %}:
                     {{ mu.movie.actors.all|join:", " }}
                     <br>
                 {% endif %}
                 {% if mu.movie.languages.all %}
-                    {% trans "Languages:" %}
+                    {% trans "Languages" %}:
                     {{ mu.movie.languages.all|join:", " }}
                     <br>
                 {% endif %}
                 {% if mu.movie.content %}
                     <hr class="mt-4">
-                    {% trans "Content:" %}
+                    {% trans "Content" %}:
                     <div>{{mu.movie.content}}</div>
                 {% endif %}
                 {% if is_user_view %}
