@@ -99,14 +99,6 @@ class Movie(models.Model):
         verbose_name=_("Release Year"),
     )
     runtime = models.IntegerField(blank=True, null=True, verbose_name=_("Runtime"))
-    fsk = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("FSK"))
-    fsk_nbr = models.IntegerField(
-        validators=[MinValueValidator(-1), MaxValueValidator(100)],
-        blank=True,
-        null=True,
-        default=None,
-        verbose_name=_("FSK NBR"),
-    )
     content_rating = models.ForeignKey(
         ContentRating,
         on_delete=models.SET_NULL,
@@ -115,26 +107,17 @@ class Movie(models.Model):
         verbose_name=_("Content Rating"),
     )
     content = models.TextField(blank=True, null=True, verbose_name=_("Content"))
-    actor = models.CharField(
-        max_length=500, blank=True, null=True, verbose_name=_("Actor")
-    )
     actors = models.ManyToManyField(
         Actor,
         blank=True,
         related_name="movies",
         verbose_name=_("Actors"),
     )
-    regisseur = models.CharField(
-        max_length=500, blank=True, null=True, verbose_name=_("Regisseur")
-    )
     directors = models.ManyToManyField(
         Director,
         blank=True,
         related_name="movies",
         verbose_name=_("Directors"),
-    )
-    studio = models.CharField(
-        max_length=500, blank=True, null=True, verbose_name=_("Studio")
     )
     studios = models.ManyToManyField(
         Studio,
@@ -144,9 +127,6 @@ class Movie(models.Model):
     )
     genre = models.CharField(
         max_length=500, blank=True, null=True, verbose_name=_("Genre")
-    )
-    language = models.CharField(
-        max_length=500, blank=True, null=True, verbose_name=_("Language")
     )
     languages = models.ManyToManyField(
         Language,
