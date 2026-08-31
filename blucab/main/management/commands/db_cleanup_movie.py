@@ -69,6 +69,9 @@ class Command(BaseCommand):
             if self._clean_title(movie):
                 needs_update = True
 
+            if self._clean_title_clean(movie):
+                needs_update = True
+
             if self._clean_content(movie):
                 needs_update = True
 
@@ -124,6 +127,26 @@ class Command(BaseCommand):
 
     def _clean_title(self, movie: Movie) -> bool:
         """
+        Cleans the title by removing substrings by resolving HTML entities like &amp; to &.
+        """
+        new_clean_title = movie.title
+
+        # Replace HTML encoded ampersands
+        new_clean_title = new_clean_title.replace("&amp;", "&")
+
+        # Only mark as changed if the new clean title differs from the current one
+        if movie.title != new_clean_title:
+            if self.print_output:
+                self.stdout.write(
+                    f"Title cleaned: '{movie.title}' -> '{new_clean_title}'"
+                )
+            movie.title = new_clean_title
+            return True
+
+        return False
+
+    def _clean_title_clean(self, movie: Movie) -> bool:
+        """
         Cleans the title by removing substrings defined in various item sets
         and resolving HTML entities like &amp; to &.
         Never touches the original 'title', only updates 'title_clean'.
@@ -163,7 +186,7 @@ class Command(BaseCommand):
         if movie.title_clean != new_clean_title:
             if self.print_output:
                 self.stdout.write(
-                    f"Title cleaned: '{movie.title_clean}' -> '{new_clean_title}'"
+                    f"Title_clean cleaned: '{movie.title_clean}' -> '{new_clean_title}'"
                 )
             movie.title_clean = new_clean_title
             return True
