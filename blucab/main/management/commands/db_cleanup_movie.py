@@ -89,6 +89,7 @@ class Command(BaseCommand):
                     Movie.objects.bulk_update(
                         movies_to_update,
                         [
+                            "title",
                             "title_clean",
                             "is_bluray_uhd",
                             "is_bluray_3d",
@@ -102,6 +103,7 @@ class Command(BaseCommand):
             Movie.objects.bulk_update(
                 movies_to_update,
                 [
+                    "title",
                     "title_clean",
                     "is_bluray_uhd",
                     "is_bluray_3d",
