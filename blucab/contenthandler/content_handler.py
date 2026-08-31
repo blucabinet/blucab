@@ -325,17 +325,20 @@ class handler:
 
         writer = csv.writer(response)
         field_names_mul = [field.name for field in opts_mul.fields]
-        field_names_ml = [field.name for field in opts_ml.fields]
+        field_names_movielist = [field.name for field in opts_ml.fields]
 
         m2m_fields = ["actors", "directors", "studios", "languages"]
 
         remove_items = {
             "id",
             "user",
+            "activated",
             "needs_parsing",
+            "force_parsing",
             "picture_processed",
             "picture_available",
             "force_picture_disable",
+            "date_updated",
         }
         for item in remove_items:
             try:
@@ -343,16 +346,21 @@ class handler:
             except:
                 pass
             try:
-                field_names_ml.remove(item)
+                field_names_movielist.remove(item)
             except:
                 pass
 
+        try:
+            field_names_movielist.remove("date_added")
+        except:
+            pass
+
         # Write the csv header
-        writer.writerow(field_names_mul + field_names_ml + m2m_fields)
+        writer.writerow(field_names_mul + field_names_movielist + m2m_fields)
 
         for obj in queryset:
             row_mul = [getattr(obj, field) for field in field_names_mul]
-            row_ml = [getattr(obj.movie, field) for field in field_names_ml]
+            row_ml = [getattr(obj.movie, field) for field in field_names_movielist]
 
             m2m_data = [
                 ",".join([a.name for a in obj.movie.actors.all()]),
