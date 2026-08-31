@@ -1,7 +1,6 @@
 import re
 import time
 from django.core.management.base import BaseCommand
-from django.db import transaction
 from main.models import Movie, Format
 from contenthandler.amazon import (
     REMOVE_ITEMS,
@@ -45,6 +44,7 @@ class Command(BaseCommand):
         start_time = time.time()
 
         is_dry_run = options["dry_run"]
+        self.print_output = options["print_log"]
 
         if is_dry_run:
             self.stdout.write(
