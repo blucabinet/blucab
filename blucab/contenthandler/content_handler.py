@@ -34,9 +34,8 @@ CSV_ENCODING_UTF8 = "utf-8"
 CSV_ENCODING_FLICKRACK = "ISO-8859-1"
 CSV_ENCODING_BLUCAB = CSV_ENCODING_UTF8
 
-IDENTIFIER_FLICKRACK = b"Position,EAN,ASIN,Titel,Titel ohne Zusatz,Format,Release,Laufzeit,FSK,Inhalt,Schauspieler,Regisseur/e,Studio,Bewertung\n"
-IDENTIFIER_BLUCAB_1 = b"movie,activated,rating,viewed,rented,rented_to,date_added,price,ean,asin,title,title_clean,format,release_year,runtime,fsk,fsk_nbr,content,actor,regisseur,studio,genre,language,disc_count,movie_count,season_count,episode_count,is_series,is_bluray_uhd,picture_url_original,picture_url_original_hd,imdb_id\r\n"
-IDENTIFIER_BLUCAB_2 = b"movie,activated,rating,viewed,rented,rented_to,date_added,price,archived,ean,asin,title,title_clean,format,release_year,runtime,fsk,fsk_nbr,content,actor,regisseur,studio,genre,language,disc_count,movie_count,season_count,episode_count,is_series,is_bluray_uhd,picture_url_original,picture_url_original_hd,imdb_id\r\n"
+FLICKRACK_SIGNATURE = {"Position", "Titel ohne Zusatz", "Bewertung"}
+BLUCAB_SIGNATURE = {"rating", "title_clean", "ean"}
 
 ph = pictureHelper()
 
@@ -288,14 +287,13 @@ class handler:
                         "viewed": self._check_bool_string(row.get("viewed")),
                         "rented": self._check_bool_string(row.get("rented")),
                         "rented_to": self._check_string(row.get("rented_to")),
+                        "rented_since": self._check_string(row.get("rented_since")),
                         "date_added": self._check_string(row.get("date_added")),
                         "price": self._check_string(row.get("price")),
                         "archived": self._check_bool_string(row.get("archived")),
+                        "url_custom": self._check_string(row.get("url_custom")),
+                        "url_name": self._check_string(row.get("url_name")),
                     },
-                )
-
-                print(
-                    f"{'Erstellt' if list_created else 'Aktualisiert'}: {db_movie.title}"
                 )
 
         return True
@@ -304,14 +302,15 @@ class handler:
         file_path = os.path.join(settings.BASE_DIR, "import", filename)
 
         # Probe for csv header, as flickrack and blucab use different encodings
-        with open(file_path, "rb") as file:
-            header = file.readline()
+        with open(file_path, "r", encoding="utf-8-sig", errors="ignore") as f:
+            header_row = next(csv.reader(f), [])
+            header_set = set(header_row)
 
-        if header == IDENTIFIER_FLICKRACK:
-            return self._import_flickrack(file_path, user)
+            if FLICKRACK_SIGNATURE.issubset(header_set):
+                return self._import_flickrack(file_path, user)
 
-        if header in (IDENTIFIER_BLUCAB_1, IDENTIFIER_BLUCAB_2):
-            return self._import_blucab(file_path, user)
+            if BLUCAB_SIGNATURE.issubset(header_set):
+                return self._import_blucab(file_path, user)
 
         return False
 
@@ -332,7 +331,6 @@ class handler:
         remove_items = {
             "id",
             "user",
-            "activated",
             "needs_parsing",
             "force_parsing",
             "picture_processed",
@@ -352,6 +350,7 @@ class handler:
 
         try:
             field_names_movielist.remove("date_added")
+            field_names_movielist.remove("activated")
         except:
             pass
 
