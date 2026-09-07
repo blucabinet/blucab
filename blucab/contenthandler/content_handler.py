@@ -394,6 +394,12 @@ class handler:
                     pars.get_fsk_str(soup)
                 )
 
+                parsed_disc_count = pars.get_disc_count(soup)
+                if parsed_disc_count is None:
+                    disc_count_val = Movie._meta.get_field("disc_count").get_default()
+                else:
+                    disc_count_val = parsed_disc_count
+
                 m = Movie(
                     ean=ean,
                     asin=pars.get_asin(soup),
@@ -405,7 +411,7 @@ class handler:
                     content_rating=content_rating_instance,
                     content=pars.get_content(soup),
                     genre=pars.get_genre(soup),
-                    disc_count=pars.get_disc_count(soup),
+                    disc_count=disc_count_val,
                     is_bluray_uhd=pars.is_bluray_uhd(soup),
                     is_bluray_3d=pars.is_bluray_3d(soup),
                     picture_available=pars_picture_available,
