@@ -498,8 +498,8 @@ def add_view_log(request, mu_id):
             MovieViewLog.objects.create(
                 movie_user_list=movie_user_entry,
                 view_date=view_date,
-                season=season,
-                episode=episode,
+                season=season or None,
+                episode=episode or None,
                 watched_with=watched_with,
                 comment=comment,
             )

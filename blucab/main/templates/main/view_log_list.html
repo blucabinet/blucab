@@ -77,7 +77,7 @@
                             <td>
                                 <input class="form-check-input log-checkbox border-secondary" type="checkbox" name="selected_logs" value="{{ log.id }}">
                             </td>
-                            <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d" }}</td>
+                            <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d - H:i" }}</td>
                             <td class="fw-normal">
                                 <a href="{% url 'user_movie_settings' log.movie_user_list.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
                                     {{ log.movie_user_list.movie.title_clean }}
