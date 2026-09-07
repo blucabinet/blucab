@@ -333,7 +333,7 @@ class MovieViewLog(models.Model):
         related_name="view_logs",
         verbose_name=_("User Movie List"),
     )
-    view_date = models.DateField(default=timezone.now, verbose_name=_("View Date"))
+    view_date = models.DateTimeField(default=timezone.now, verbose_name=_("View Date"))
     watched_with = models.CharField(
         max_length=255, blank=True, null=True, verbose_name=_("Watched with")
     )
