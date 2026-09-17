@@ -71,16 +71,24 @@
                 scannerContainer.style.display = 'block';
                 startBtn.style.display = 'none';
 
+                const savedDeviceId = localStorage.getItem('blucab_camera_device_id');
+                const videoConstraints = {
+                    width: { ideal: 1920, min: 1280 }, 
+                    height: { ideal: 1080, min: 720 }
+                };
+
+                if (savedDeviceId) {
+                    videoConstraints.deviceId = { exact: savedDeviceId };
+                } else {
+                    videoConstraints.facingMode = "environment";
+                }
+
                 Quagga.init({
                     inputStream: {
                         name: "Live",
                         type: "LiveStream",
                         target: document.querySelector('#interactive'),
-                        constraints: {
-                            facingMode: "environment", 
-                            width: { ideal: 1920, min: 1280 }, 
-                            height: { ideal: 1080, min: 720 },
-                        },
+                        constraints: videoConstraints,
                         area: { top: "10%", right: "10%", left: "10%", bottom: "10%" }
                     },
                     numOfWorkers: navigator.hardwareConcurrency || 4, 
@@ -95,6 +103,9 @@
                     }
                 }, function(err) {
                     if (err) {
+                        if (savedDeviceId) {
+                            localStorage.removeItem('blucab_camera_device_id');
+                        }
                         console.error(err);
                         alert("{% trans 'Camera could not be started. Check permissions.' %}");
                         scannerContainer.style.display = 'none';
@@ -103,6 +114,14 @@
                         return;
                     }
                     Quagga.start();
+
+                    const track = Quagga.CameraAccess.getActiveTrack();
+                    if (track && typeof track.getSettings === 'function') {
+                        const settings = track.getSettings();
+                        if (settings.deviceId) {
+                            localStorage.setItem('blucab_camera_device_id', settings.deviceId);
+                        }
+                    }
                 });
 
                 Quagga.onProcessed(function(result) {
