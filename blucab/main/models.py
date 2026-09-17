@@ -81,7 +81,9 @@ class ContentRating(models.Model):
 
 class Movie(models.Model):
     ean = models.CharField(max_length=16, verbose_name=_("EAN"))
-    asin = models.CharField(max_length=16, verbose_name=_("ASIN"))
+    asin = models.CharField(
+        blank=True, null=True, default=None, max_length=16, verbose_name=_("ASIN")
+    )
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     title_clean = models.CharField(max_length=256, verbose_name=_("Title Clean"))
     format = models.ForeignKey(
