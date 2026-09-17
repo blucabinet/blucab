@@ -128,8 +128,12 @@
                                 {% endif %}
                             {% endif %}
 
-                            EAN: {{mu.movie.ean}}<br>
-                            ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
+                            {% if mu.movie.ean %}
+                                EAN: {{mu.movie.ean}}<br>
+                            {% endif %}
+                            {% if mu.movie.asin %}
+                                ASIN: <a href="https://www.amazon.de/dp/{{mu.movie.asin}}" target="_blank">{{mu.movie.asin}}</a><br>
+                            {% endif %}
                             {% if mu.movie.imdb_id %}
                                 IMDb: <a href="https://www.imdb.com/de/title/{{mu.movie.imdb_id}}" target="_blank">{{mu.movie.imdb_id}}</a><br>
                             {% endif %}
