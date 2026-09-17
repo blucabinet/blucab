@@ -78,7 +78,9 @@
 
                                 {% if is_user_view %}
                                     {% if usersettings.show_view_details %}
-                                        <p class="card-text">{{mu.movie.runtime}} min</p>
+                                        {% if mu.movie.runtime %}
+                                            <p class="card-text">{{mu.movie.runtime}} min</p>
+                                        {% endif %}
                                         {% if not mu.movie.disc_count is 1 %}
                                             {% if usersettings.show_view_count_disc %}
                                                 <p class="card-text">
