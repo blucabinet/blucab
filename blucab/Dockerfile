@@ -2,7 +2,7 @@
 # https://devguide.python.org/versions/
 FROM python:3.13
 
-RUN apt update && apt install -y gettext
+RUN apt update && apt install -y gettext curl
 
 WORKDIR /app
 
@@ -20,12 +20,13 @@ COPY . .
 # Process files
 RUN ["chmod", "+x", "./entrypoint.sh"]
 
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-# Default command on container startup
-ENTRYPOINT ["./entrypoint.sh"]
-
 HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
 
+
+# Default command on container startup
+ENTRYPOINT ["./entrypoint.sh"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
