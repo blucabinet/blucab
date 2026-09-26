@@ -8,10 +8,8 @@ x-django-base: &django-base
   env_file:
     - ./.env.dev
   environment:
-    - DEBUG=False
-    - DJANGO_EMAIL_ENABLE_WHILE_DEBUG=False
-    - SECRET_KEY="django-insecure-3@vfzox&c=0vq#=&ahgc3uyq7sv_y%391)r=3gl(h0(s0b8=t$"
-    - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+    - DEBUG=True
+    - DJANGO_EMAIL_ENABLE_WHILE_DEBUG=True
     - DJANGO_CELERY_BROKER_URL=redis://:insecure-password@blucab-redis:6379/0
     - DJANGO_DB_ENGINE=postgresql
     - DJANGO_DB_NAME=blucab
@@ -19,13 +17,6 @@ x-django-base: &django-base
     - DJANGO_DB_PASSWORD=insecure-blucab_user_password
     - DJANGO_DB_HOST=blucab-db
     - DJANGO_DB_PORT=5432
-
-    # Superuser settings only for the first run and initial database initialization, then delete these entries or comment them out!
-    # Select your own unique password!
-    #- DJANGO_SUPERUSER_USERNAME=admin
-    #- DJANGO_SUPERUSER_PASSWORD=hululu
-    #- DJANGO_SUPERUSER_EMAIL=example@example.com
-
 
 services:
   blucab-app:
@@ -44,6 +35,8 @@ services:
         condition: service_healthy
       blucab-db:
         condition: service_healthy
+    networks:
+      - blucab_net
 
   blucab-db:
     image: postgres:18
@@ -62,6 +55,9 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    networks:
+      - blucab_net
+
 
   blucab-redis:
     image: redis:alpine
@@ -72,6 +68,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - blucab_net
 
   blucab-celery-worker:
     <<: *django-base
@@ -84,6 +82,8 @@ services:
         condition: service_healthy
       blucab-app:
         condition: service_healthy
+    networks:
+      - blucab_net
 
   blucab-celery-beat:
     <<: *django-base
@@ -96,3 +96,9 @@ services:
         condition: service_healthy
       blucab-app:
         condition: service_healthy
+    networks:
+      - blucab_net
+
+networks:
+  blucab_net:
+    driver: bridge
