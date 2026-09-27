@@ -23,4 +23,5 @@ echo "---------------------"
 
 echo "Entrypoint Done"
 echo "Start Server"
-$@
+
+exec $@
