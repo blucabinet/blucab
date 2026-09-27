@@ -1,0 +1,114 @@
+x-django-base: &django-base
+  build: blucab
+  volumes:
+    - ./app_db:/app/db
+    - ./app_covers:/app/media/cover
+    - ./app_import:/app/import
+    - /etc/localtime:/etc/localtime:ro
+  env_file:
+    - ./.env.prod
+  environment:
+    - DEBUG=False
+    - DJANGO_EMAIL_ENABLE_WHILE_DEBUG=False
+    - DJANGO_CELERY_BROKER_URL=redis://:insecure-password@blucab-redis:6379/0
+    - DJANGO_DB_ENGINE=postgresql
+    - DJANGO_DB_NAME=blucab
+    - DJANGO_DB_USER=blucab_db_user
+    - DJANGO_DB_PASSWORD=insecure-blucab_user_password
+    - DJANGO_DB_HOST=blucab-db
+    - DJANGO_DB_PORT=5432
+
+services:
+  blucab-app:
+    <<: *django-base
+    container_name: blucab-app
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    depends_on:
+      blucab-redis:
+        condition: service_healthy
+      blucab-db:
+        condition: service_healthy
+    networks:
+      - backend_to_proxy
+      - blucab_net
+
+  blucab-db:
+    image: postgres:18
+    container_name: blucab-db
+    # user-id from "id -u"
+    user: "1000:1000"
+    environment:
+      - POSTGRES_DB=blucab
+      - POSTGRES_USER=blucab_db_user
+      - POSTGRES_PASSWORD=insecure-blucab_user_password
+    volumes:
+      - ./db_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blucab_db_user -d blucab || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - blucab_net
+
+  blucab-media-server:
+       image: nginx:alpine
+       container_name: blucab-media-server
+       restart: always
+       networks:
+         - backend_to_proxy
+       volumes:
+         - ./app_covers:/app/media:ro
+         - ./media-server.conf:/etc/nginx/conf.d/default.conf:ro
+
+  blucab-redis:
+    image: redis:alpine
+    container_name: blucab-redis
+    command: redis-server --requirepass "insecure-password"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "insecure-password", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - blucab_net
+
+  blucab-celery-worker:
+    <<: *django-base
+    container_name: blucab-celery-worker
+    command: celery -A blucab worker -l info
+    depends_on:
+      blucab-redis:
+        condition: service_healthy
+      blucab-db:
+        condition: service_healthy
+      blucab-app:
+        condition: service_healthy
+    networks:
+      - blucab_net
+
+  blucab-celery-beat:
+    <<: *django-base
+    container_name: blucab-celery-beat
+    command: celery -A blucab beat -l info
+    depends_on:
+      blucab-redis:
+        condition: service_healthy
+      blucab-db:
+        condition: service_healthy
+      blucab-app:
+        condition: service_healthy
+    networks:
+      - blucab_net
+
+networks:
+  blucab_net:
+    driver: bridge
+  backend_to_proxy:
+    external: true
