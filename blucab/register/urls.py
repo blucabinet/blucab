@@ -3,6 +3,13 @@ from django.urls import path, include
 from . import views
 from .forms import ResetPasswordForm
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
+EMAIL_FROM_NOREPLY = env.str("DJANGO_EMAIL_FROM_NOREPLY", "no-reply@localhost")
+
 urlpatterns = [
     path("captcha/", include("captcha.urls")),
     path("user/register/", views.register, name="register"),
@@ -22,6 +29,7 @@ urlpatterns = [
             template_name="register/password_reset.html",
             email_template_name="email/password_reset_email.html",
             subject_template_name="email/password_reset_subject.txt",
+            from_email=EMAIL_FROM_NOREPLY,
         ),
         name="password_reset",
     ),
