@@ -12,7 +12,9 @@
         {% csrf_token %}
         {{ form|crispy }}
         <p>
-            {% trans "Don't have an account?" %} <a href="{% url 'register' %}">{% trans "Register" %}</a>.<br>
+            {% if allow_registration %}
+                {% trans "Don't have an account?" %} <a href="{% url 'register' %}">{% trans "Register" %}</a>.<br>
+            {% endif %}
             {% trans "Forgot your password?" %} <a href="{% url 'password_reset' %}">{% trans "Reset password" %}</a>.
         </p>
         <button type="submit" class="btn btn-success">{% trans "Login" %}</button>

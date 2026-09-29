@@ -11,6 +11,7 @@ env.read_env()
 EMAIL_FROM_NOREPLY = env.str("DJANGO_EMAIL_FROM_NOREPLY", "no-reply@localhost")
 
 urlpatterns = [
+    path("login/", views.login_view.as_view(), name="login"),
     path("captcha/", include("captcha.urls")),
     path("user/register/", views.register, name="register"),
     path("user/activate/<uidb64>/<token>/", views.activate, name="activate"),

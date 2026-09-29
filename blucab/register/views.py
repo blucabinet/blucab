@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -98,6 +99,15 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, _("The activation link is invalid or has expired!"))
         return redirect("register")
+
+
+class login_view(LoginView):
+    template_name = "registration/login.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["allow_registration"] = ALLOW_REGISTRATION
+        return context
 
 
 @login_required
