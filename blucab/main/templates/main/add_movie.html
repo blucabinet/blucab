@@ -35,6 +35,15 @@
             </p>
 
             <div id="scanner-container" style="display: none; margin-top: 15px;">
+                <div class="mb-2">
+                    <label for="camera-select" class="form-label">
+                        {% trans "Camera" %}
+                    </label>
+                    <select id="camera-select" class="form-select">
+                        <option value="">{% trans "Select camera..." %}</option>
+                    </select>
+                </div>
+
                 <div id="interactive" class="viewport" style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
                 <button type="button" id="btn-stop-scanner" class="btn btn-danger w-100 mt-2">
                     {% trans "Cancel Scan" %}
@@ -62,23 +71,78 @@
             const scannerContainer = document.getElementById('scanner-container');
             const queryInput = document.getElementById('id_query'); 
             const form = document.getElementById('add-movie-form');
+            const cameraSelect = document.getElementById('camera-select');
             
             let isSubmitting = false;
 
-            startBtn.addEventListener('click', function() {
+            async function loadCameras() {
+                try {
+                    const devices = await navigator.mediaDevices.enumerateDevices();
+                    const cameras = devices.filter(device => device.kind === 'videoinput');
+
+                    cameraSelect.innerHTML = '';
+
+                    cameras.forEach((camera, index) => {
+                        const option = document.createElement('option');
+                        option.value = camera.deviceId;
+                        option.textContent = camera.label || `{% trans "Camera" %} ${index + 1}`;
+                        cameraSelect.appendChild(option);
+                    });
+
+                    const savedDeviceId = localStorage.getItem('blucab_camera_device_id');
+
+                    if (savedDeviceId && cameras.some(camera => camera.deviceId === savedDeviceId)) {
+                        cameraSelect.value = savedDeviceId;
+                    } else {
+                        const rearCamera = cameras.find(camera =>
+                            /back|rear|environment/i.test(camera.label)
+                        );
+
+                        if (rearCamera) {
+                            cameraSelect.value = rearCamera.deviceId;
+                        } else if (cameras.length > 0) {
+                            cameraSelect.value = cameras[0].deviceId;
+                        }
+                    }
+                } catch (err) {
+                    console.error('Could not enumerate cameras:', err);
+                }
+            }
+
+            startBtn.addEventListener('click', async function() {
                 sessionStorage.setItem('blucab_scanner_active', 'true');
-                
+
                 scannerContainer.style.display = 'block';
                 startBtn.style.display = 'none';
 
-                const savedDeviceId = localStorage.getItem('blucab_camera_device_id');
+                // Request camera permission first.
+                // Android only exposes useful camera labels after permission was granted.
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: true
+                    });
+
+                    stream.getTracks().forEach(track => track.stop());
+                } catch (err) {
+                    console.error('Camera permission denied:', err);
+                    alert("{% trans 'Camera permission is required.' %}");
+                    scannerContainer.style.display = 'none';
+                    startBtn.style.display = 'block';
+                    sessionStorage.removeItem('blucab_scanner_active');
+                    return;
+                }
+
+                await loadCameras();
+
+                const selectedDeviceId = cameraSelect.value;
+
                 const videoConstraints = {
-                    width: { ideal: 1920, min: 1280 }, 
-                    height: { ideal: 1080, min: 720 }
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
                 };
 
-                if (savedDeviceId) {
-                    videoConstraints.deviceId = { exact: savedDeviceId };
+                if (selectedDeviceId) {
+                    videoConstraints.deviceId = { exact: selectedDeviceId };
                 } else {
                     videoConstraints.facingMode = "environment";
                 }
@@ -156,6 +220,22 @@
                         searchBtn.click();
                     }
                 });
+            });
+
+            cameraSelect.addEventListener('change', function() {
+                const deviceId = cameraSelect.value;
+
+                if (!deviceId) {
+                    return;
+                }
+
+                localStorage.setItem('blucab_camera_device_id', deviceId);
+
+                if (Quagga) {
+                    Quagga.stop();
+                }
+
+                startBtn.click();
             });
 
             stopBtn.addEventListener('click', function() {
