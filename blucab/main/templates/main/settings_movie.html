@@ -18,7 +18,15 @@
     {% if movie.picture_available and not movie.force_picture_disable %}
         <img src="{% get_media_prefix %}cover/{{movie.ean}}/cover.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
     {% else %}
+        {% trans "Shown in view" %}
+        <br>
         <img src="{% static 'main/dummy.jpg' %}" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+        <br>
+        <br>
+        {% trans "Picture downloaded" %}
+        <br>
+        <img src="{% get_media_prefix %}cover/{{movie.ean}}/cover.jpg" class="card-img-top" alt="Picture of the cover", style="width: 10rem;">
+
     {% endif %}
     <br><br>
     <div class="card" style="max-width: 28rem;">
