@@ -73,10 +73,10 @@ def cab_uname(request, uname):
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
-        "rating_desc": "-rating",
         "rating_asc": "rating",
-        "date_desc": "-date_added",
+        "rating_desc": "-rating",
         "date_asc": "date_added",
+        "date_desc": "-date_added",
         "runtime_asc": "movie__runtime",
         "runtime_desc": "-movie__runtime",
     }
@@ -216,10 +216,12 @@ def view(request):
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
-        "rating_desc": "-rating",
+        "inventory_code_asc": "inventory_code",
+        "inventory_code_desc": "-inventory_code",
         "rating_asc": "rating",
-        "date_desc": "-date_added",
+        "rating_desc": "-rating",
         "date_asc": "date_added",
+        "date_desc": "-date_added",
         "runtime_asc": "movie__runtime",
         "runtime_desc": "-movie__runtime",
     }
