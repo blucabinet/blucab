@@ -104,6 +104,7 @@ class UpdateMovieUserList(forms.ModelForm):
         model = MovieUserList
         fields = [
             "activated",
+            "inventory_code",
             "archived",
             "rating",
             "viewed",
@@ -136,6 +137,24 @@ class UpdateMovieUserList(forms.ModelForm):
 
         if user:
             self.fields["cabinet"].queryset = UserCabinet.objects.filter(user=user)
+
+    def clean_inventory_code(self):
+        inventory_code = self.cleaned_data["inventory_code"]
+
+        if not inventory_code:
+            return None
+
+        if (
+            MovieUserList.objects.filter(
+                user=self.instance.user,
+                inventory_code=inventory_code,
+            )
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
+            raise forms.ValidationError(_("This inventory code is already in use."))
+
+        return inventory_code
 
 
 class CabinetAddForm(forms.ModelForm):
