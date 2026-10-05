@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-29 00:16+0200\n"
+"POT-Creation-Date: 2026-10-05 18:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "EAN"
 msgstr ""
 
-#: contenthandler/models.py:10 main/models.py:185 main/models.py:252
+#: contenthandler/models.py:10 main/models.py:167 main/models.py:240
 msgid "Date added"
 msgstr ""
 
@@ -36,8 +36,8 @@ msgstr ""
 msgid "Checked"
 msgstr ""
 
-#: contenthandler/models.py:17 main/models.py:236 main/models.py:390
-#: main/templates/main/_view_movie_modal.html:263
+#: contenthandler/models.py:17 main/models.py:218 main/models.py:385
+#: main/templates/main/_view_movie_modal.html:270
 #: main/templates/main/settings_user_movie.html:26
 msgid "Movie"
 msgstr ""
@@ -82,27 +82,31 @@ msgstr ""
 msgid "Choose Studios..."
 msgstr ""
 
-#: main/forms.py:150
+#: main/forms.py:155
+msgid "This inventory code is already in use."
+msgstr ""
+
+#: main/forms.py:169
 msgid "e.g. Living Room Cabinet"
 msgstr ""
 
-#: main/forms.py:163
+#: main/forms.py:182
 msgid "You already have a cabinet with this name."
 msgstr ""
 
-#: main/forms.py:171
+#: main/forms.py:190
 msgid "Cabinet to delete"
 msgstr ""
 
-#: main/forms.py:172
+#: main/forms.py:191
 msgid "--- Choose a cabinet ---"
 msgstr ""
 
-#: main/forms.py:187
+#: main/forms.py:206
 msgid "EAN or Title"
 msgstr ""
 
-#: main/forms.py:192
+#: main/forms.py:211
 msgid "Enter EAN or search term"
 msgstr ""
 
@@ -111,7 +115,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: main/models.py:14 main/models.py:92
+#: main/models.py:14 main/models.py:94
 #: main/templates/main/add_movie_confirm.html:31
 #: main/templates/main/add_movie_results.html:33
 #: main/templates/main/view_list.html:75
@@ -122,30 +126,29 @@ msgstr ""
 msgid "Formats"
 msgstr ""
 
-#: main/models.py:25 main/models.py:149
+#: main/models.py:25
 msgid "Language"
 msgstr ""
 
-#: main/models.py:26 main/models.py:155
-#: main/templates/main/_view_movie_modal.html:164
+#: main/models.py:26 main/models.py:137
+#: main/templates/main/_view_movie_modal.html:171
 msgid "Languages"
 msgstr ""
 
-#: main/models.py:36 main/models.py:119
+#: main/models.py:36
 msgid "Actor"
 msgstr ""
 
-#: main/models.py:37 main/models.py:125
-#: main/templates/main/_view_movie_modal.html:159
+#: main/models.py:37 main/models.py:116
+#: main/templates/main/_view_movie_modal.html:166
 msgid "Actors"
 msgstr ""
 
-#: main/models.py:47 main/models.py:137
-#: main/templates/main/_view_movie_modal.html:154
+#: main/models.py:47 main/templates/main/_view_movie_modal.html:161
 msgid "Studio"
 msgstr ""
 
-#: main/models.py:48 main/models.py:143
+#: main/models.py:48 main/models.py:128
 msgid "Studios"
 msgstr ""
 
@@ -153,12 +156,12 @@ msgstr ""
 msgid "Director"
 msgstr ""
 
-#: main/models.py:59 main/models.py:134
-#: main/templates/main/_view_movie_modal.html:149
+#: main/models.py:59 main/models.py:122
+#: main/templates/main/_view_movie_modal.html:156
 msgid "Directors"
 msgstr ""
 
-#: main/models.py:75 main/models.py:115
+#: main/models.py:75 main/models.py:109
 msgid "Content Rating"
 msgstr ""
 
@@ -166,304 +169,296 @@ msgstr ""
 msgid "Content Ratings"
 msgstr ""
 
-#: main/models.py:84
+#: main/models.py:85
 msgid "ASIN"
 msgstr ""
 
-#: main/models.py:85 main/templates/main/view_list.html:76
+#: main/models.py:87 main/templates/main/view_list.html:76
 msgid "Title"
 msgstr ""
 
-#: main/models.py:86
+#: main/models.py:88
 msgid "Title Clean"
 msgstr ""
 
-#: main/models.py:99 main/templates/main/add_movie_confirm.html:33
+#: main/models.py:101 main/templates/main/add_movie_confirm.html:33
 #: main/templates/main/add_movie_results.html:35
 msgid "Release Year"
 msgstr ""
 
-#: main/models.py:101
+#: main/models.py:103
 msgid "Runtime"
 msgstr ""
 
-#: main/models.py:102
-msgid "FSK"
-msgstr ""
-
-#: main/models.py:108
-msgid "FSK NBR"
-msgstr ""
-
-#: main/models.py:117 main/templates/main/_view_movie_modal.html:170
+#: main/models.py:111 main/templates/main/_view_movie_modal.html:177
 msgid "Content"
 msgstr ""
 
-#: main/models.py:128
-msgid "Regisseur"
-msgstr ""
-
-#: main/models.py:146
+#: main/models.py:131
 msgid "Genre"
 msgstr ""
 
-#: main/models.py:157
+#: main/models.py:139
 msgid "Disc Count"
 msgstr ""
 
-#: main/models.py:158
+#: main/models.py:140
 msgid "Movie Count"
 msgstr ""
 
-#: main/models.py:159
+#: main/models.py:141
 msgid "Season Count"
 msgstr ""
 
-#: main/models.py:160
+#: main/models.py:142
 msgid "Episode Count"
 msgstr ""
 
-#: main/models.py:161 main/templates/main/view.html:216
+#: main/models.py:143 main/templates/main/view.html:218
 msgid "Is Series"
 msgstr ""
 
-#: main/models.py:162
+#: main/models.py:144
 msgid "Is Blu-ray UHD"
 msgstr ""
 
-#: main/models.py:163
+#: main/models.py:145
 msgid "Is Blu-ray 3D"
 msgstr ""
 
-#: main/models.py:164 main/models.py:238 main/templates/main/view_list.html:77
+#: main/models.py:146 main/models.py:220 main/templates/main/view_list.html:77
 msgid "Activated"
 msgstr ""
 
-#: main/models.py:166
+#: main/models.py:148
 msgid "Picture Available"
 msgstr ""
 
-#: main/models.py:169
+#: main/models.py:151
 msgid "Picture URL Original"
 msgstr ""
 
-#: main/models.py:172
+#: main/models.py:154
 msgid "Picture URL Original HD"
 msgstr ""
 
-#: main/models.py:175
+#: main/models.py:157
 msgid "Picture Processed"
 msgstr ""
 
-#: main/models.py:177
+#: main/models.py:159
 msgid "Needs Parsing"
 msgstr ""
 
-#: main/models.py:178
+#: main/models.py:160
 msgid "Force Parsing"
 msgstr ""
 
-#: main/models.py:180
+#: main/models.py:162
 msgid "IMDb ID"
 msgstr ""
 
-#: main/models.py:183
+#: main/models.py:165
 msgid "Force Deactivate Picture"
 msgstr ""
 
-#: main/models.py:187
+#: main/models.py:169
 msgid "Date updated"
 msgstr ""
 
-#: main/models.py:193
+#: main/models.py:175
 msgid "Flickrack ID"
 msgstr ""
 
-#: main/models.py:197
+#: main/models.py:179
 msgid "Movies"
 msgstr ""
 
-#: main/models.py:209 main/models.py:233 main/models.py:288 main/models.py:396
+#: main/models.py:191 main/models.py:215 main/models.py:283 main/models.py:391
 msgid "User"
 msgstr ""
 
-#: main/models.py:212
+#: main/models.py:194
 msgid "Cabinet Name"
 msgstr ""
 
-#: main/models.py:220 main/models.py:268 main/templates/main/view_list.html:81
+#: main/models.py:202 main/models.py:256 main/templates/main/view_list.html:81
 msgid "Cabinet"
 msgstr ""
 
-#: main/models.py:221
+#: main/models.py:203
 msgid "Cabinets"
 msgstr ""
 
-#: main/models.py:242
+#: main/models.py:225 main/templates/main/_view_movie_modal.html:132
+msgid "Inventory Code"
+msgstr ""
+
+#: main/models.py:230
 msgid "Rating"
 msgstr ""
 
-#: main/models.py:244 main/templates/main/view.html:184
+#: main/models.py:232 main/templates/main/view.html:186
 #: main/templates/main/view_list.html:80
 msgid "Viewed"
 msgstr ""
 
-#: main/models.py:245 main/templates/main/_view_movie_modal.html:124
-#: main/templates/main/view.html:155 main/templates/main/view_list.html:78
+#: main/models.py:233 main/templates/main/_view_movie_modal.html:124
+#: main/templates/main/view.html:157 main/templates/main/view_list.html:78
 msgid "Rented"
 msgstr ""
 
-#: main/models.py:247
+#: main/models.py:235
 msgid "Rented to"
 msgstr ""
 
-#: main/models.py:250
+#: main/models.py:238
 msgid "Rented since"
 msgstr ""
 
-#: main/models.py:254
+#: main/models.py:242
 msgid "Price"
 msgstr ""
 
-#: main/models.py:256 main/templates/main/view.html:200
+#: main/models.py:244 main/templates/main/view.html:202
 #: main/templates/main/view_list.html:79
 msgid "Archived"
 msgstr ""
 
-#: main/models.py:258 main/templates/main/_view_movie_modal.html:139
+#: main/models.py:246 main/templates/main/_view_movie_modal.html:146
 msgid "Custom URL"
 msgstr ""
 
-#: main/models.py:261
+#: main/models.py:249
 msgid "Custom URL Name"
 msgstr ""
 
-#: main/models.py:276 main/models.py:354
+#: main/models.py:271 main/models.py:349
 msgid "User Movie List"
 msgstr ""
 
-#: main/models.py:291
+#: main/models.py:286
 msgid "Price Unit"
 msgstr ""
 
-#: main/models.py:296
+#: main/models.py:291
 msgid "Days since adding a movie to show the new sign"
 msgstr ""
 
-#: main/models.py:299
+#: main/models.py:294
 msgid "The library can be viewed publicly"
 msgstr ""
 
-#: main/models.py:302
+#: main/models.py:297
 msgid "Show Movie title"
 msgstr ""
 
-#: main/models.py:305
+#: main/models.py:300
 msgid "Show Movie details"
 msgstr ""
 
-#: main/models.py:308
+#: main/models.py:303
 msgid "Show the new sign"
 msgstr ""
 
-#: main/models.py:311
+#: main/models.py:306
 msgid "Show the rented sign"
 msgstr ""
 
-#: main/models.py:314
+#: main/models.py:309
 msgid "Show the number of disks"
 msgstr ""
 
-#: main/models.py:317
+#: main/models.py:312
 msgid "Show the number of movies"
 msgstr ""
 
-#: main/models.py:320
+#: main/models.py:315
 msgid "Show the details button"
 msgstr ""
 
-#: main/models.py:323
+#: main/models.py:318
 msgid "Show the share button"
 msgstr ""
 
-#: main/models.py:326
+#: main/models.py:321
 msgid "Last time an export was executed"
 msgstr ""
 
-#: main/models.py:330 main/templates/main/settings_user.html:11
+#: main/models.py:325 main/templates/main/settings_user.html:11
 msgid "User Settings"
 msgstr ""
 
-#: main/models.py:356 main/templates/main/view_log_list.html:66
+#: main/models.py:351 main/templates/main/view_log_list.html:66
 msgid "View Date"
 msgstr ""
 
-#: main/models.py:358 main/templates/main/_view_movie_modal.html:237
+#: main/models.py:353 main/templates/main/_view_movie_modal.html:244
 msgid "Watched with"
 msgstr ""
 
-#: main/models.py:360 main/templates/main/_view_movie_modal.html:241
+#: main/models.py:355 main/templates/main/_view_movie_modal.html:248
 #: main/templates/main/view_log_list.html:71
 msgid "Comment"
 msgstr ""
 
-#: main/models.py:366 main/templates/main/_view_movie_modal.html:189
-#: main/templates/main/_view_movie_modal.html:229
+#: main/models.py:361 main/templates/main/_view_movie_modal.html:196
+#: main/templates/main/_view_movie_modal.html:236
 #: main/templates/main/view_log_list.html:68
 msgid "Season"
 msgstr ""
 
-#: main/models.py:373 main/templates/main/_view_movie_modal.html:192
-#: main/templates/main/_view_movie_modal.html:233
+#: main/models.py:368 main/templates/main/_view_movie_modal.html:199
+#: main/templates/main/_view_movie_modal.html:240
 #: main/templates/main/view_log_list.html:69
 msgid "Episode"
 msgstr ""
 
-#: main/models.py:377
+#: main/models.py:372
 msgid "Movie View Log"
 msgstr ""
 
-#: main/models.py:378
+#: main/models.py:373
 msgid "Movie View Logs"
 msgstr ""
 
-#: main/models.py:398
+#: main/models.py:393
 msgid "Picture Wrong"
 msgstr ""
 
-#: main/models.py:399
+#: main/models.py:394
 msgid "Content Wrong"
 msgstr ""
 
-#: main/models.py:401
+#: main/models.py:396
 msgid "Wrong EAN/ASIN"
 msgstr ""
 
-#: main/models.py:403
+#: main/models.py:398
 msgid "Comment/Details"
 msgstr ""
 
-#: main/models.py:405
+#: main/models.py:400
 msgid "Created at"
 msgstr ""
 
-#: main/models.py:408
+#: main/models.py:403
 msgid "Checked at"
 msgstr ""
 
-#: main/models.py:415
+#: main/models.py:410
 msgid "Checked by"
 msgstr ""
 
-#: main/models.py:418
+#: main/models.py:413
 msgid "Checked Comment"
 msgstr ""
 
-#: main/models.py:422
+#: main/models.py:417
 msgid "Movie Error Report"
 msgstr ""
 
-#: main/models.py:423
+#: main/models.py:418
 msgid "Movie Error Reports"
 msgstr ""
 
@@ -494,16 +489,16 @@ msgstr ""
 msgid "You might need to"
 msgstr ""
 
-#: main/templates/error/403.html:12 main/templates/main/add_movie.html:178
+#: main/templates/error/403.html:12 main/templates/main/add_movie.html:277
 #: main/templates/main/add_movie_confirm.html:48
 #: main/templates/main/add_movie_results.html:59
-#: main/templates/main/base.html:110 main/templates/main/csv_import.html:96
-#: main/templates/main/home.html:20 main/templates/main/settings_movie.html:48
+#: main/templates/main/base.html:112 main/templates/main/csv_import.html:96
+#: main/templates/main/home.html:20 main/templates/main/settings_movie.html:56
 #: main/templates/main/settings_user.html:75
 #: main/templates/main/settings_user_cabinet_add.html:40
 #: main/templates/main/settings_user_cabinet_delete.html:41
 #: main/templates/main/settings_user_movie.html:98
-#: register/templates/registration/login.html:18
+#: register/templates/registration/login.html:20
 msgid "Login"
 msgstr ""
 
@@ -531,7 +526,7 @@ msgstr ""
 msgid "blucab - Imprint"
 msgstr ""
 
-#: main/templates/legal/legal.html:9 main/templates/main/base.html:99
+#: main/templates/legal/legal.html:9 main/templates/main/base.html:101
 msgid "Imprint"
 msgstr ""
 
@@ -543,7 +538,7 @@ msgstr ""
 msgid "blucab - Privacy Policy"
 msgstr ""
 
-#: main/templates/legal/privacy.html:9 main/templates/main/base.html:100
+#: main/templates/legal/privacy.html:9 main/templates/main/base.html:102
 msgid "Privacy Policy"
 msgstr ""
 
@@ -570,7 +565,7 @@ msgid "Picture of the cover"
 msgstr ""
 
 #: main/templates/main/_view_movie_modal.html:23
-#: main/templates/main/view.html:149
+#: main/templates/main/view.html:151
 msgid "UHD"
 msgstr ""
 
@@ -590,7 +585,7 @@ msgid "%(movie_count)s Movie"
 msgstr ""
 
 #: main/templates/main/_view_movie_modal.html:45
-#: main/templates/main/view.html:94
+#: main/templates/main/view.html:96
 #, python-format
 msgid "%(movie_count)s Movies"
 msgstr ""
@@ -653,75 +648,75 @@ msgid "Movie is archived"
 msgstr ""
 
 #: main/templates/main/_view_movie_modal.html:119
-#: main/templates/main/view.html:102
+#: main/templates/main/view.html:104
 #, python-format
 msgid "Rented to %(rented_to)s"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:175
+#: main/templates/main/_view_movie_modal.html:182
 msgid "Viewing History"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:184
+#: main/templates/main/_view_movie_modal.html:191
 msgid "Delete log"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:195
+#: main/templates/main/_view_movie_modal.html:202
 msgid "With"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:203
+#: main/templates/main/_view_movie_modal.html:210
 msgid "Are you sure you want to delete this entry?"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:207
+#: main/templates/main/_view_movie_modal.html:214
 msgid "Yes, delete"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:209
+#: main/templates/main/_view_movie_modal.html:216
 #: main/templates/main/settings_user_movie.html:78
 #: main/templates/main/view_list.html:124
 #: main/templates/main/view_log_list.html:113
 msgid "Cancel"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:217
+#: main/templates/main/_view_movie_modal.html:224
 msgid "No viewing history yet."
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:225
+#: main/templates/main/_view_movie_modal.html:232
 msgid "Date"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:230
-#: main/templates/main/_view_movie_modal.html:234
+#: main/templates/main/_view_movie_modal.html:237
+#: main/templates/main/_view_movie_modal.html:241
 msgid "e.g. 1"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:238
+#: main/templates/main/_view_movie_modal.html:245
 msgid "e.g. Alice, Bob"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:244
-#: main/templates/main/settings_movie.html:33
+#: main/templates/main/_view_movie_modal.html:251
+#: main/templates/main/settings_movie.html:41
 #: main/templates/main/settings_user.html:29
 #: main/templates/main/settings_user_movie.html:61
 msgid "Save"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:251
+#: main/templates/main/_view_movie_modal.html:258
 msgid "Add Viewing Date"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:257
+#: main/templates/main/_view_movie_modal.html:264
 msgid "Report movie error"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:268
+#: main/templates/main/_view_movie_modal.html:275
 msgid "Edit"
 msgstr ""
 
-#: main/templates/main/_view_movie_modal.html:272
+#: main/templates/main/_view_movie_modal.html:279
 #: main/templates/main/settings_user_movie.html:72
 #: main/templates/main/view_list.html:116
 #: main/templates/main/view_list.html:138
@@ -743,7 +738,7 @@ msgstr ""
 msgid "Seems you got something new %(username)s!"
 msgstr ""
 
-#: main/templates/main/add_movie.html:26 main/templates/main/view.html:162
+#: main/templates/main/add_movie.html:26 main/templates/main/view.html:164
 msgid "Search"
 msgstr ""
 
@@ -755,17 +750,25 @@ msgstr ""
 msgid "Note: Scan with Camera works best with a smartphone rear-camera."
 msgstr ""
 
-#: main/templates/main/add_movie.html:40
+#: main/templates/main/add_movie.html:40 main/templates/main/add_movie.html:88
+msgid "Camera"
+msgstr ""
+
+#: main/templates/main/add_movie.html:43
+msgid "Select camera..."
+msgstr ""
+
+#: main/templates/main/add_movie.html:49
 msgid "Cancel Scan"
 msgstr ""
 
-#: main/templates/main/add_movie.html:47 main/templates/main/add_movie.html:51
+#: main/templates/main/add_movie.html:56 main/templates/main/add_movie.html:60
 #: main/templates/main/add_movie_confirm.html:44
 #: main/templates/main/add_movie_results.html:55
 #: main/templates/main/report_movie_error.html:28
 #: main/templates/main/report_movie_error.html:30
-#: main/templates/main/settings_movie.html:39
-#: main/templates/main/settings_movie.html:43
+#: main/templates/main/settings_movie.html:47
+#: main/templates/main/settings_movie.html:51
 #: main/templates/main/settings_user_cabinet_add.html:31
 #: main/templates/main/settings_user_cabinet_add.html:35
 #: main/templates/main/settings_user_cabinet_delete.html:32
@@ -775,19 +778,23 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: main/templates/main/add_movie.html:99
+#: main/templates/main/add_movie.html:128
+msgid "Camera permission is required."
+msgstr ""
+
+#: main/templates/main/add_movie.html:174
 msgid "Camera could not be started. Check permissions."
 msgstr ""
 
-#: main/templates/main/add_movie.html:136
+#: main/templates/main/add_movie.html:219
 msgid "Searching"
 msgstr ""
 
-#: main/templates/main/add_movie.html:177
+#: main/templates/main/add_movie.html:276
 #: main/templates/main/add_movie_confirm.html:47
 #: main/templates/main/add_movie_results.html:58
 #: main/templates/main/csv_import.html:95
-#: main/templates/main/settings_movie.html:47
+#: main/templates/main/settings_movie.html:55
 #: main/templates/main/settings_user.html:74
 #: main/templates/main/settings_user_cabinet_add.html:39
 #: main/templates/main/settings_user_cabinet_delete.html:40
@@ -834,37 +841,37 @@ msgstr ""
 msgid "Already in collection"
 msgstr ""
 
-#: main/templates/main/base.html:86
+#: main/templates/main/base.html:88
 msgid "Home"
 msgstr ""
 
-#: main/templates/main/base.html:89
+#: main/templates/main/base.html:91
 #: main/templates/main/settings_user_cabinet_add.html:25
 msgid "Add"
 msgstr ""
 
-#: main/templates/main/base.html:92
+#: main/templates/main/base.html:94
 msgid "Collection"
 msgstr ""
 
-#: main/templates/main/base.html:96
+#: main/templates/main/base.html:98
 msgid "About"
 msgstr ""
 
-#: main/templates/main/base.html:107
+#: main/templates/main/base.html:109
 #: register/templates/registration/logout.html:13
 msgid "Logout"
 msgstr ""
 
-#: main/templates/main/base.html:120
+#: main/templates/main/base.html:122
 msgid "Admin"
 msgstr ""
 
-#: main/templates/main/base.html:148
+#: main/templates/main/base.html:150
 msgid "Apply"
 msgstr ""
 
-#: main/templates/main/base.html:197
+#: main/templates/main/base.html:199
 msgid "Visit"
 msgstr ""
 
@@ -972,6 +979,14 @@ msgstr ""
 
 #: main/templates/main/settings_movie.html:17
 msgid "Picture"
+msgstr ""
+
+#: main/templates/main/settings_movie.html:21
+msgid "Shown in view"
+msgstr ""
+
+#: main/templates/main/settings_movie.html:26
+msgid "Picture downloaded"
 msgstr ""
 
 #: main/templates/main/settings_user.html:5
@@ -1138,111 +1153,111 @@ msgstr ""
 msgid "Public view of %(username)s's collection"
 msgstr ""
 
-#: main/templates/main/view.html:85
+#: main/templates/main/view.html:87
 #, python-format
 msgid "%(disc_count)s Disks"
 msgstr ""
 
-#: main/templates/main/view.html:109
+#: main/templates/main/view.html:111
 msgid "Details"
 msgstr ""
 
-#: main/templates/main/view.html:121
+#: main/templates/main/view.html:123
 msgid "Filter active or no movies available."
 msgstr ""
 
-#: main/templates/main/view.html:123
+#: main/templates/main/view.html:125
 msgid "Add a movie."
 msgstr ""
 
-#: main/templates/main/view.html:146
+#: main/templates/main/view.html:148
 msgid "Blu-Rays"
 msgstr ""
 
-#: main/templates/main/view.html:152
+#: main/templates/main/view.html:154
 msgid "DVDs"
 msgstr ""
 
-#: main/templates/main/view.html:157
+#: main/templates/main/view.html:159
 msgid "Total"
 msgstr ""
 
-#: main/templates/main/view.html:168
+#: main/templates/main/view.html:170
 msgid "All Cabinets"
 msgstr ""
 
-#: main/templates/main/view.html:179
+#: main/templates/main/view.html:181
 msgid "More"
 msgstr ""
 
-#: main/templates/main/view.html:188 main/templates/main/view.html:204
-#: main/templates/main/view.html:220 main/templates/main/view.html:236
+#: main/templates/main/view.html:190 main/templates/main/view.html:206
+#: main/templates/main/view.html:222 main/templates/main/view.html:238
 msgid "All"
 msgstr ""
 
-#: main/templates/main/view.html:191 main/templates/main/view.html:207
-#: main/templates/main/view.html:223 main/templates/main/view.html:239
+#: main/templates/main/view.html:193 main/templates/main/view.html:209
+#: main/templates/main/view.html:225 main/templates/main/view.html:241
 msgid "Yes"
 msgstr ""
 
-#: main/templates/main/view.html:194 main/templates/main/view.html:210
-#: main/templates/main/view.html:226 main/templates/main/view.html:242
+#: main/templates/main/view.html:196 main/templates/main/view.html:212
+#: main/templates/main/view.html:228 main/templates/main/view.html:244
 msgid "No"
 msgstr ""
 
-#: main/templates/main/view.html:232
+#: main/templates/main/view.html:234
 msgid "Is 3D"
 msgstr ""
 
-#: main/templates/main/view.html:253
+#: main/templates/main/view.html:255
 msgid "Default sorting"
 msgstr ""
 
-#: main/templates/main/view.html:254
+#: main/templates/main/view.html:256
 msgid "Title (A-Z)"
 msgstr ""
 
-#: main/templates/main/view.html:255
+#: main/templates/main/view.html:257
 msgid "Title (Z-A)"
 msgstr ""
 
-#: main/templates/main/view.html:256
+#: main/templates/main/view.html:258
 msgid "Rating (Highest)"
 msgstr ""
 
-#: main/templates/main/view.html:257
+#: main/templates/main/view.html:259
 msgid "Rating (Lowest)"
 msgstr ""
 
-#: main/templates/main/view.html:258
+#: main/templates/main/view.html:260
 msgid "Date (Newest)"
 msgstr ""
 
-#: main/templates/main/view.html:259
+#: main/templates/main/view.html:261
 msgid "Date (Oldest)"
 msgstr ""
 
-#: main/templates/main/view.html:260
+#: main/templates/main/view.html:262
 msgid "Runtime (Shortest)"
 msgstr ""
 
-#: main/templates/main/view.html:261
+#: main/templates/main/view.html:263
 msgid "Runtime (Longest)"
 msgstr ""
 
-#: main/templates/main/view.html:267 main/templates/main/view.html:269
+#: main/templates/main/view.html:269 main/templates/main/view.html:271
 msgid "Reset filter"
 msgstr ""
 
-#: main/templates/main/view.html:274
+#: main/templates/main/view.html:276
 msgid "Zoom Out"
 msgstr ""
 
-#: main/templates/main/view.html:276
+#: main/templates/main/view.html:278
 msgid "Zoom In"
 msgstr ""
 
-#: main/templates/main/view.html:277
+#: main/templates/main/view.html:279
 msgid "Reset Zoom"
 msgstr ""
 
@@ -1676,7 +1691,7 @@ msgid "blucab - Create an Account"
 msgstr ""
 
 #: register/templates/register/register.html:14
-#: register/templates/registration/login.html:15
+#: register/templates/registration/login.html:16
 msgid "Register"
 msgstr ""
 
@@ -1684,15 +1699,15 @@ msgstr ""
 msgid "Login Here"
 msgstr ""
 
-#: register/templates/registration/login.html:15
+#: register/templates/registration/login.html:16
 msgid "Don't have an account?"
 msgstr ""
 
-#: register/templates/registration/login.html:16
+#: register/templates/registration/login.html:18
 msgid "Forgot your password?"
 msgstr ""
 
-#: register/templates/registration/login.html:16
+#: register/templates/registration/login.html:18
 msgid "Reset password"
 msgstr ""
 
@@ -1700,50 +1715,50 @@ msgstr ""
 msgid "Logout Here"
 msgstr ""
 
-#: register/views.py:41
+#: register/views.py:42
 msgid "Activate your blucab Account"
 msgstr ""
 
-#: register/views.py:64
+#: register/views.py:65
 msgid ""
 "You should have received an email to confirm your email address and complete "
 "the registration."
 msgstr ""
 
-#: register/views.py:95
+#: register/views.py:96
 msgid "Thank you for the confirmation. You can now log in."
 msgstr ""
 
-#: register/views.py:99 register/views.py:232
+#: register/views.py:100 register/views.py:242
 msgid "The activation link is invalid or has expired!"
 msgstr ""
 
-#: register/views.py:112
+#: register/views.py:122
 msgid "Your password was successfully updated!"
 msgstr ""
 
-#: register/views.py:115
+#: register/views.py:125
 msgid "Please correct the error below."
 msgstr ""
 
-#: register/views.py:135
+#: register/views.py:145
 msgid "blucab Account deleted"
 msgstr ""
 
-#: register/views.py:152
+#: register/views.py:162
 msgid "A confirmation email has been sent to your email address."
 msgstr ""
 
-#: register/views.py:177
+#: register/views.py:187
 msgid "Verify your new email address"
 msgstr ""
 
-#: register/views.py:200
+#: register/views.py:210
 msgid ""
 "A confirmation email has been sent to your new email address. Please confirm "
 "the change by clicking the link in the email."
 msgstr ""
 
-#: register/views.py:207 register/views.py:228
+#: register/views.py:217 register/views.py:238
 msgid "Your email address has been updated successfully."
 msgstr ""
