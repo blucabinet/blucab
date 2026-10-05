@@ -1,4 +1,6 @@
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Case, F, Value, When, IntegerField
+from django.db.models.expressions import Func
+from django.db.models.functions import Upper
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -16,6 +18,39 @@ env.read_env()
 
 DEBUG = env.bool("DEBUG", False)
 ALLOW_MOVIE_ERROR_REPORT = env.bool("BLUCAB_ALLOW_MOVIE_ERROR_REPORT", True)
+
+
+class RegexReplace(Func):
+    function = "REGEXP_REPLACE"
+    arity = 4
+
+
+def natural_sort_key(expression, max_digits=20):
+    """
+    Create a PostgreSQL natural-sort key.
+
+    Every numeric sequence is left-padded with zeros to max_digits.
+    Non-numeric text remains unchanged.
+
+    Examples:
+        A2B30    -> A00000000000000000002B00000000000000030
+        A10B2    -> A00000000000000000010B00000000000000002
+        AB3CD30  -> AB00000000000000000003CD00000000000000030
+    """
+    result = Upper(expression)
+
+    for length in range(1, max_digits + 1):
+        pattern = rf"(^|[^0-9])([0-9]{{{length}}})([^0-9]|$)"
+        replacement = rf"\1{'0' * (max_digits - length)}\2\3"
+
+        result = RegexReplace(
+            result,
+            Value(pattern),
+            Value(replacement),
+            Value("g"),
+        )
+
+    return result
 
 
 def legal(request):
@@ -212,8 +247,6 @@ def view(request):
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
-        "inventory_code_asc": "inventory_code",
-        "inventory_code_desc": "-inventory_code",
         "rating_asc": "rating",
         "rating_desc": "-rating",
         "date_asc": "date_added",
@@ -224,6 +257,32 @@ def view(request):
 
     if sort_by in sort_mapping:
         movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
+
+    elif sort_by in ("inventory_code_asc", "inventory_code_desc"):
+        movieuserlist = movieuserlist.annotate(
+            inventory_code_natural=natural_sort_key("inventory_code"),
+            inventory_code_empty=Case(
+                When(
+                    Q(inventory_code__isnull=True) | Q(inventory_code=""),
+                    then=Value(1),
+                ),
+                default=Value(0),
+                output_field=IntegerField(),
+            ),
+        )
+
+        if sort_by == "inventory_code_asc":
+            movieuserlist = movieuserlist.order_by(
+                "inventory_code_empty",
+                F("inventory_code_natural").asc(nulls_last=True),
+                "inventory_code",
+            )
+        else:
+            movieuserlist = movieuserlist.order_by(
+                "inventory_code_empty",
+                F("inventory_code_natural").desc(nulls_last=True),
+                "-inventory_code",
+            )
 
     # Update counts after filtering
     count_dvd = movieuserlist.filter(movie__format__name="DVD").count()
