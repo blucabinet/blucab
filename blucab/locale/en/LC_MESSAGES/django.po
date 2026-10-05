@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-05 18:32+0200\n"
+"POT-Creation-Date: 2026-10-05 19:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1222,42 +1222,50 @@ msgid "Title (Z-A)"
 msgstr ""
 
 #: main/templates/main/view.html:258
-msgid "Rating (Highest)"
-msgstr ""
-
-#: main/templates/main/view.html:259
-msgid "Rating (Lowest)"
-msgstr ""
-
-#: main/templates/main/view.html:260
-msgid "Date (Newest)"
-msgstr ""
-
-#: main/templates/main/view.html:261
-msgid "Date (Oldest)"
-msgstr ""
-
-#: main/templates/main/view.html:262
 msgid "Runtime (Shortest)"
 msgstr ""
 
-#: main/templates/main/view.html:263
+#: main/templates/main/view.html:259
 msgid "Runtime (Longest)"
 msgstr ""
 
-#: main/templates/main/view.html:269 main/templates/main/view.html:271
+#: main/templates/main/view.html:261
+msgid "Inventory Code (A-Z)"
+msgstr ""
+
+#: main/templates/main/view.html:262
+msgid "Inventory Code (Z-A)"
+msgstr ""
+
+#: main/templates/main/view.html:263
+msgid "Rating (Lowest)"
+msgstr ""
+
+#: main/templates/main/view.html:264
+msgid "Rating (Highest)"
+msgstr ""
+
+#: main/templates/main/view.html:265
+msgid "Date (Oldest)"
+msgstr ""
+
+#: main/templates/main/view.html:266
+msgid "Date (Newest)"
+msgstr ""
+
+#: main/templates/main/view.html:273 main/templates/main/view.html:275
 msgid "Reset filter"
 msgstr ""
 
-#: main/templates/main/view.html:276
+#: main/templates/main/view.html:280
 msgid "Zoom Out"
 msgstr ""
 
-#: main/templates/main/view.html:278
+#: main/templates/main/view.html:282
 msgid "Zoom In"
 msgstr ""
 
-#: main/templates/main/view.html:279
+#: main/templates/main/view.html:283
 msgid "Reset Zoom"
 msgstr ""
 
@@ -1442,47 +1450,47 @@ msgstr ""
 msgid "Please select at least one view log."
 msgstr ""
 
-#: main/views.py:370
+#: main/views.py:368
 msgid "DEBUG mode is activated! Not for production usage!"
 msgstr ""
 
-#: main/views.py:393
+#: main/views.py:391
 #, python-format
 msgid ""
 "Movie '<a href='%(edit_url)s' class='alert-link'>%(title)s</a>' successfully "
 "added to your <a href='%(url)s' class='alert-link'>collection</a>"
 msgstr ""
 
-#: main/views.py:403
+#: main/views.py:401
 msgid "This movie is already in your collection."
 msgstr ""
 
-#: main/views.py:407
+#: main/views.py:405
 msgid "Error: Movie not found."
 msgstr ""
 
-#: main/views.py:427
+#: main/views.py:425
 #, python-format
 msgid ""
 "The movie '%(title)s' is already in your collection. <a href='%(edit_url)s' "
 "class='alert-link'>Edit</a>"
 msgstr ""
 
-#: main/views.py:447
+#: main/views.py:445
 msgid ""
 "EAN not found. The movie is being fetched in the background. Please check "
 "back later."
 msgstr ""
 
-#: main/views.py:476
+#: main/views.py:474
 msgid "No movies found matching your search."
 msgstr ""
 
-#: main/views.py:511
+#: main/views.py:509
 msgid "Viewing history updated."
 msgstr ""
 
-#: main/views.py:531
+#: main/views.py:529
 msgid "Viewing log entry deleted."
 msgstr ""
 
