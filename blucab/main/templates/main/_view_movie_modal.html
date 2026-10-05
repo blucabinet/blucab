@@ -128,6 +128,9 @@
                                 {% endif %}
                             {% endif %}
 
+                            {% if mu.inventory_code %}
+                                {% trans "Inventory Code" %}: {{mu.inventory_code}}<br>
+                            {% endif %}
                             {% if mu.movie.ean %}
                                 EAN: {{mu.movie.ean}}<br>
                             {% endif %}

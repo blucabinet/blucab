@@ -218,6 +218,12 @@ class MovieUserList(models.Model):
         Movie, on_delete=models.CASCADE, null=True, verbose_name=_("Movie")
     )
     activated = models.BooleanField(default=True, verbose_name=_("Activated"))
+    inventory_code = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name=_("Inventory Code"),
+    )
     rating = models.IntegerField(
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(6)],
@@ -251,10 +257,17 @@ class MovieUserList(models.Model):
     )
 
     class Meta:
-        unique_together = (
-            "user",
-            "movie",
-        )
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "movie"],
+                name="unique_user_movie",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "inventory_code"],
+                name="unique_user_inventory_code",
+            ),
+        ]
+
         verbose_name = _("User Movie List")
         verbose_name_plural = verbose_name
 
