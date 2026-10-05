@@ -257,13 +257,13 @@
                     <option value="title_desc" {% if sort_by == 'title_desc' %}selected{% endif %}>{% trans "Title (Z-A)" %}</option>
                     <option value="runtime_asc" {% if sort_by == 'runtime_asc' %}selected{% endif %}>{% trans "Runtime (Shortest)" %}</option>
                     <option value="runtime_desc" {% if sort_by == 'runtime_desc' %}selected{% endif %}>{% trans "Runtime (Longest)" %}</option>
+                    <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>{% trans "Date (Oldest)" %}</option>
+                    <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>{% trans "Date (Newest)" %}</option>
                     {% if is_user_view %}
                         <option value="inventory_code_asc" {% if sort_by == 'inventory_code_asc' %}selected{% endif %}>{% trans "Inventory Code (A-Z)" %}</option>
                         <option value="inventory_code_desc" {% if sort_by == 'inventory_code_desc' %}selected{% endif %}>{% trans "Inventory Code (Z-A)" %}</option>
                         <option value="rating_asc" {% if sort_by == 'rating_asc' %}selected{% endif %}>{% trans "Rating (Lowest)" %}</option>
                         <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>{% trans "Rating (Highest)" %}</option>
-                        <option value="date_asc" {% if sort_by == 'date_asc' %}selected{% endif %}>{% trans "Date (Oldest)" %}</option>
-                        <option value="date_desc" {% if sort_by == 'date_desc' %}selected{% endif %}>{% trans "Date (Newest)" %}</option>
                     {% endif %}
                 </select>
             </div>

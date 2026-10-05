@@ -108,6 +108,8 @@ def cab_uname(request, uname):
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
+        "date_asc": "date_added",
+        "date_desc": "-date_added",
         "runtime_asc": "movie__runtime",
         "runtime_desc": "-movie__runtime",
     }
