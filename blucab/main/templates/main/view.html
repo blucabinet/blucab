@@ -252,7 +252,7 @@
             
             <div>
                 <select class="form-select form-select-sm bg-dark text-light border-secondary" name="sort" onchange="this.form.submit()" style="width: auto;">
-                    <option value="" {% if not sort_by %}selected{% endif %}>{% trans "Default sorting" %}</option>
+                    <option value="default" {% if not sort_by %}selected{% endif %}>{% trans "Default sorting" %}</option>
                     <option value="title_asc" {% if sort_by == 'title_asc' %}selected{% endif %}>{% trans "Title (A-Z)" %}</option>
                     <option value="title_desc" {% if sort_by == 'title_desc' %}selected{% endif %}>{% trans "Title (Z-A)" %}</option>
                     <option value="runtime_asc" {% if sort_by == 'runtime_asc' %}selected{% endif %}>{% trans "Runtime (Shortest)" %}</option>

@@ -105,6 +105,11 @@ def cab_uname(request, uname):
         )
 
     sort_by = request.GET.get("sort", "")
+
+    if sort_by == "":
+        # Preselected sorting
+        sort_by = "title_asc"
+
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
