@@ -154,6 +154,7 @@ class handler:
                     continue
 
                 csv_rating = self._check_int_string(row["Bewertung"])
+                csv_position = self._check_int_string(row["Position"])
                 csv_fsk_nbr = row["FSK"]
 
                 if ALLOW_CSV_MOVIE_IMPORT:
@@ -199,8 +200,13 @@ class handler:
                 except Movie.DoesNotExist:
                     return False
 
-                MovieUserList.objects.get_or_create(
-                    user=user, movie=db_movie, defaults={"rating": csv_rating}
+                user_movie, movie_user_created = MovieUserList.objects.update_or_create(
+                    user=user,
+                    movie=db_movie,
+                    defaults={
+                        "rating": csv_rating,
+                        "inventory_code": csv_position,
+                    },
                 )
 
         return True
@@ -278,7 +284,7 @@ class handler:
                     except Movie.DoesNotExist:
                         return False
 
-                list_item, list_created = MovieUserList.objects.update_or_create(
+                user_movie, movie_user_created = MovieUserList.objects.update_or_create(
                     user=user,
                     movie=db_movie,
                     defaults={
