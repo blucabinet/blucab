@@ -277,8 +277,8 @@ class MovieUserList(models.Model):
 
 class UserSettings(models.Model):
     SORT_CHOICES = [
-        ("title_asc", _("Title A-Z")),
-        ("title_desc", _("Title Z-A")),
+        ("title_asc", _("Title (A-Z)")),
+        ("title_desc", _("Title (Z-A)")),
         ("runtime_asc", _("Runtime (Shortest)")),
         ("runtime_desc", _("Runtime (Longest)")),
         ("date_asc", _("Date (Oldest)")),
