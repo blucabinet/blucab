@@ -276,6 +276,19 @@ class MovieUserList(models.Model):
 
 
 class UserSettings(models.Model):
+    SORT_CHOICES = [
+        ("title_asc", _("Title A-Z")),
+        ("title_desc", _("Title Z-A")),
+        ("runtime_asc", _("Runtime (Shortest)")),
+        ("runtime_desc", _("Runtime (Longest)")),
+        ("date_asc", _("Date (Oldest)")),
+        ("date_desc", _("Date (Newest)")),
+        ("inventory_code_asc", _("Inventory Code (A-Z)")),
+        ("inventory_code_desc", _("Inventory Code (Z-A)")),
+        ("rating_asc", _("Rating (Lowest)")),
+        ("rating_desc", _("Rating (Highest)")),
+    ]
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -319,6 +332,12 @@ class UserSettings(models.Model):
     )
     last_export = models.DateTimeField(
         blank=True, null=True, verbose_name=_("Last time an export was executed")
+    )
+    default_sort = models.CharField(
+        max_length=30,
+        choices=SORT_CHOICES,
+        default="title_asc",
+        verbose_name=_("Default sorting"),
     )
 
     class Meta:
