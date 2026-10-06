@@ -1237,7 +1237,7 @@ msgstr "Titel (Z-A)"
 
 #: main/templates/main/view.html:258
 msgid "Runtime (Shortest)"
-msgstr "Laufzeit: (Kürzeste)"
+msgstr "Laufzeit (Kürzeste)"
 
 #: main/templates/main/view.html:259
 msgid "Runtime (Longest)"

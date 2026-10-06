@@ -105,9 +105,16 @@ def cab_uname(request, uname):
         )
 
     sort_by = request.GET.get("sort", "")
+
+    if sort_by == "":
+        # Preselected sorting
+        sort_by = "title_asc"
+
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
+        "date_asc": "date_added",
+        "date_desc": "-date_added",
         "runtime_asc": "movie__runtime",
         "runtime_desc": "-movie__runtime",
     }
@@ -243,7 +250,6 @@ def view(request):
             Q(movie__title_clean__icontains=search_query)
         )
 
-    sort_by = request.GET.get("sort", "")
     sort_mapping = {
         "title_asc": "movie__title_clean",
         "title_desc": "-movie__title_clean",
@@ -254,6 +260,8 @@ def view(request):
         "runtime_asc": "movie__runtime",
         "runtime_desc": "-movie__runtime",
     }
+
+    sort_by = request.GET.get("sort") or usersettings.default_sort
 
     if sort_by in sort_mapping:
         movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])

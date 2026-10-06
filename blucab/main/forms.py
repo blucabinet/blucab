@@ -16,6 +16,7 @@ class UpdateUserSettings(forms.ModelForm):
             "show_view_button_details",
             "show_view_details",
             "show_view_count_disc",
+            "default_sort",
             "show_view_count_movie",
             "days_for_new",
             "price_unit",
