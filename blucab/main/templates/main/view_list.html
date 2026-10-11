@@ -73,14 +73,92 @@
                                 <th scope="col" style="width: 40px;" class="bg-light">
                                     <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
                                 </th>
-                                <th scope="col" class="bg-light">{% trans "Format" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Title" %}</th>
-                                <th scope="col" class="text-center bg-light">{% trans "Activated" %}</th>
-                                <th scope="col" class="text-center bg-light">{% trans "Rented" %}</th>
-                                <th scope="col" class="text-center bg-light">{% trans "Archived" %}</th>
-                                <th scope="col" class="text-center bg-light">{% trans "Viewed" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Cabinet" %}</th>
+                                
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="1" style="cursor: pointer;">
+                                    {% trans "Format" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="2" style="cursor: pointer;">
+                                    {% trans "Title" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="3" style="cursor: pointer;">
+                                    {% trans "Activated" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="4" style="cursor: pointer;">
+                                    {% trans "Rented" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="5" style="cursor: pointer;">
+                                    {% trans "Archived" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="6" style="cursor: pointer;">
+                                    {% trans "Viewed" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="7" style="cursor: pointer;">
+                                    {% trans "Cabinet" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
                             </tr>
+                            <tr class="bg-light">
+                            <th class="bg-light"></th>
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="1"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter format' %}">
+                            </th>
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="2"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter title' %}">
+                            </th>
+
+                            {% for column in "3456" %}
+                                <th class="bg-light">
+                                    <select class="form-select form-select-sm column-filter"
+                                            data-column="{{ column }}"
+                                            data-filter-type="boolean"
+                                            aria-label="{% trans 'Filter status' %}">
+                                        <option value="">{% trans "All" %}</option>
+                                        <option value="true">{% trans "Yes" %}</option>
+                                        <option value="false">{% trans "No" %}</option>
+                                    </select>
+                                </th>
+                            {% endfor %}
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="7"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter cabinet' %}">
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
                             {% for mu in movieuserlist %}
@@ -94,10 +172,41 @@
                                         {{ mu.movie.title_clean }}
                                     </a>
                                 </td>
-                                <td class="text-center">{% if mu.activated %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                                <td class="text-center">{% if mu.rented %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                                <td class="text-center">{% if mu.archived %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                                <td class="text-center">{% if mu.viewed %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
+                                <td class="text-center"
+                                    data-value="{% if mu.activated %}true{% else %}false{% endif %}">
+                                    {% if mu.activated %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center"
+                                    data-value="{% if mu.rented %}true{% else %}false{% endif %}">
+                                    {% if mu.rented %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center"
+                                    data-value="{% if mu.archived %}true{% else %}false{% endif %}">
+                                    {% if mu.archived %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center"
+                                    data-value="{% if mu.viewed %}true{% else %}false{% endif %}">
+                                    {% if mu.viewed %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
                                 <td class="text-secondary">{{ mu.cabinet.name|default:"-" }}</td>
                             </tr>
                             {% empty %}
@@ -206,6 +315,119 @@
 
         window.addEventListener("beforeunload", function() {
             sessionStorage.setItem('scrollposition_list', window.scrollY);
+        });
+    </script>
+
+    <script>
+        // Column filtering
+        const table = document.querySelector('.table-responsive table');
+        const tbody = table.querySelector('tbody');
+
+        function applyColumnFilters() {
+            const filters = Array.from(
+                table.querySelectorAll('.column-filter')
+            );
+
+            const rows = Array.from(tbody.rows).filter(
+                row => row.cells.length === 8
+            );
+
+            rows.forEach(row => {
+                const visible = filters.every(filter => {
+                    const column = Number(filter.dataset.column);
+                    const cell = row.cells[column];
+                    const value = filter.value.trim().toLowerCase();
+
+                    if (!value) {
+                        return true;
+                    }
+
+                    if (filter.dataset.filterType === 'boolean') {
+                        return cell.dataset.value === value;
+                    }
+
+                    return cell.textContent.trim().toLowerCase().includes(value);
+                });
+
+                row.style.display = visible ? '' : 'none';
+            });
+        }
+
+        table.querySelectorAll('.column-filter').forEach(filter => {
+            filter.addEventListener('input', applyColumnFilters);
+            filter.addEventListener('change', applyColumnFilters);
+        });
+
+        // Column sorting: supports text and Boolean columns
+        table.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = Number(header.dataset.sortColumn);
+                const direction =
+                    header.dataset.sortDirection === 'asc' ? 'desc' : 'asc';
+
+                table.querySelectorAll('[data-sort-column]').forEach(item => {
+                    delete item.dataset.sortDirection;
+
+                    const icon = item.querySelector('.sort-indicator');
+
+                    if (icon) {
+                        icon.classList.remove('bi-arrow-up', 'bi-arrow-down');
+                        icon.classList.add('bi-arrow-down-up');
+                    }
+                });
+
+                header.dataset.sortDirection = direction;
+
+                const indicator = header.querySelector('.sort-indicator');
+
+                if (indicator) {
+                    indicator.classList.remove('bi-arrow-down-up');
+                    indicator.classList.add(
+                        direction === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'
+                    );
+                }
+
+                const rows = Array.from(tbody.rows).filter(
+                    row => row.cells.length === 8
+                );
+
+                rows.sort((a, b) => {
+                    const aCell = a.cells[column];
+                    const bCell = b.cells[column];
+
+                    const aValue = aCell.dataset.value
+                        ?? aCell.textContent.trim();
+
+                    const bValue = bCell.dataset.value
+                        ?? bCell.textContent.trim();
+
+                    let result;
+
+                    if (
+                        aCell.dataset.value !== undefined &&
+                        bCell.dataset.value !== undefined
+                    ) {
+                        // Boolean columns
+                        result = aValue === bValue
+                            ? 0
+                            : (aValue === 'true' ? -1 : 1);
+                    } else {
+                        // Text and numeric columns
+                        result = aValue.localeCompare(
+                            bValue,
+                            undefined,
+                            {
+                                numeric: true,
+                                sensitivity: 'base'
+                            }
+                        );
+                    }
+
+                    return direction === 'asc' ? result : -result;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+            });
         });
     </script>
 {% endblock %}

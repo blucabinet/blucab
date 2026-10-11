@@ -62,14 +62,60 @@
                         <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
                             <tr>
                                 <th scope="col" style="width: 40px;" class="bg-light">
-                                    <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
+                                    <input class="form-check-input border-secondary"
+                                        type="checkbox"
+                                        id="selectAll">
                                 </th>
-                                <th scope="col" class="bg-light">{% trans "View Date" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Movie Title" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Season" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Episode" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Watched With" %}</th>
-                                <th scope="col" class="bg-light">{% trans "Comment" %}</th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="1" style="cursor: pointer;">
+                                    {% trans "View Date" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="2" style="cursor: pointer;">
+                                    {% trans "Movie Title" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="3" style="cursor: pointer;">
+                                    {% trans "Season" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="4" style="cursor: pointer;">
+                                    {% trans "Episode" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="5" style="cursor: pointer;">
+                                    {% trans "Watched With" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="6" style="cursor: pointer;">
+                                    {% trans "Comment" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th class="bg-light"></th>
+
+                                {% for column in "123456" %}
+                                    <th class="bg-light">
+                                        <input type="text"
+                                            class="form-control form-control-sm column-filter"
+                                            data-column="{{ column }}"
+                                            placeholder="{% trans 'Filter' %}"
+                                            aria-label="{% trans 'Filter column' %}">
+                                    </th>
+                                {% endfor %}
                             </tr>
                         </thead>
                         <tbody>
@@ -182,6 +228,98 @@
 
         window.addEventListener("beforeunload", function() {
             sessionStorage.setItem('scrollposition_list', window.scrollY);
+        });
+    </script>
+
+    <script>
+        const logTable = document.querySelector('.table-responsive table');
+        const logTbody = logTable.querySelector('tbody');
+
+        // Column filtering
+        function applyColumnFilters() {
+            const filters = Array.from(
+                logTable.querySelectorAll('.column-filter')
+            );
+
+            const rows = Array.from(logTbody.rows).filter(
+                row => row.cells.length === 7
+            );
+
+            rows.forEach(row => {
+                const visible = filters.every(filter => {
+                    const column = Number(filter.dataset.column);
+                    const cell = row.cells[column];
+                    const value = filter.value.trim().toLowerCase();
+
+                    if (!value) {
+                        return true;
+                    }
+
+                    return cell.textContent
+                        .trim()
+                        .toLowerCase()
+                        .includes(value);
+                });
+
+                row.style.display = visible ? '' : 'none';
+            });
+        }
+
+        logTable.querySelectorAll('.column-filter').forEach(filter => {
+            filter.addEventListener('input', applyColumnFilters);
+        });
+
+        // Column sorting
+        logTable.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = Number(header.dataset.sortColumn);
+                const direction =
+                    header.dataset.sortDirection === 'asc' ? 'desc' : 'asc';
+
+                logTable.querySelectorAll('[data-sort-column]').forEach(item => {
+                    delete item.dataset.sortDirection;
+
+                    const icon = item.querySelector('.sort-indicator');
+
+                    if (icon) {
+                        icon.classList.remove('bi-arrow-up', 'bi-arrow-down');
+                        icon.classList.add('bi-arrow-down-up');
+                    }
+                });
+
+                header.dataset.sortDirection = direction;
+
+                const indicator = header.querySelector('.sort-indicator');
+
+                if (indicator) {
+                    indicator.classList.remove('bi-arrow-down-up');
+                    indicator.classList.add(
+                        direction === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'
+                    );
+                }
+
+                const rows = Array.from(logTbody.rows).filter(
+                    row => row.cells.length === 7
+                );
+
+                rows.sort((a, b) => {
+                    const aValue = a.cells[column].textContent.trim();
+                    const bValue = b.cells[column].textContent.trim();
+
+                    const result = aValue.localeCompare(
+                        bValue,
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: 'base'
+                        }
+                    );
+
+                    return direction === 'asc' ? result : -result;
+                });
+
+                rows.forEach(row => logTbody.appendChild(row));
+            });
         });
     </script>
 {% endblock %}
