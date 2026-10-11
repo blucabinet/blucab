@@ -82,36 +82,42 @@
 
                                 <th scope="col" class="bg-light"
                                     data-sort-column="2" style="cursor: pointer;">
+                                    {% trans "Inventory Code" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="3" style="cursor: pointer;">
                                     {% trans "Title" %}
                                     <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
                                 </th>
 
                                 <th scope="col" class="text-center bg-light"
-                                    data-sort-column="3" style="cursor: pointer;">
+                                    data-sort-column="4" style="cursor: pointer;">
                                     {% trans "Activated" %}
                                     <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
                                 </th>
 
                                 <th scope="col" class="text-center bg-light"
-                                    data-sort-column="4" style="cursor: pointer;">
+                                    data-sort-column="5" style="cursor: pointer;">
                                     {% trans "Rented" %}
                                     <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
                                 </th>
 
                                 <th scope="col" class="text-center bg-light"
-                                    data-sort-column="5" style="cursor: pointer;">
+                                    data-sort-column="6" style="cursor: pointer;">
                                     {% trans "Archived" %}
                                     <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
                                 </th>
 
                                 <th scope="col" class="text-center bg-light"
-                                    data-sort-column="6" style="cursor: pointer;">
+                                    data-sort-column="7" style="cursor: pointer;">
                                     {% trans "Viewed" %}
                                     <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
                                 </th>
 
                                 <th scope="col" class="bg-light"
-                                    data-sort-column="7" style="cursor: pointer;">
+                                    data-sort-column="8" style="cursor: pointer;">
                                     {% trans "Cabinet" %}
                                     <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
                                 </th>
@@ -134,10 +140,19 @@
                                     data-column="2"
                                     data-filter-type="text"
                                     placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter inventory code' %}">
+                            </th>
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="3"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
                                     aria-label="{% trans 'Filter title' %}">
                             </th>
 
-                            {% for column in "3456" %}
+                            {% for column in "4567" %}
                                 <th class="bg-light">
                                     <select class="form-select form-select-sm column-filter"
                                             data-column="{{ column }}"
@@ -153,7 +168,7 @@
                             <th class="bg-light">
                                 <input type="text"
                                     class="form-control form-control-sm column-filter"
-                                    data-column="7"
+                                    data-column="8"
                                     data-filter-type="text"
                                     placeholder="{% trans 'Filter' %}"
                                     aria-label="{% trans 'Filter cabinet' %}">
@@ -167,6 +182,7 @@
                                     <input class="form-check-input movie-checkbox border-secondary" type="checkbox" name="selected_movies" value="{{ mu.id }}">
                                 </td>
                                 <td class="text-secondary">{{ mu.movie.format }}</td>
+                                <td class="text-secondary">{{ mu.inventory_code|default:"-" }}</td>
                                 <td class="fw-normal">
                                     <a href="{% url 'user_movie_settings' mu.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
                                         {{ mu.movie.title_clean }}
@@ -211,7 +227,7 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
+                                <td colspan="9" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -329,7 +345,7 @@
             );
 
             const rows = Array.from(tbody.rows).filter(
-                row => row.cells.length === 8
+                row => row.cells.length === 9
             );
 
             rows.forEach(row => {
@@ -359,6 +375,8 @@
         });
 
         // Column sorting: supports text and Boolean columns
+        const columnCount = table.tHead.rows[0].cells.length;
+
         table.querySelectorAll('[data-sort-column]').forEach(header => {
             header.addEventListener('click', () => {
                 const column = Number(header.dataset.sortColumn);
@@ -388,7 +406,7 @@
                 }
 
                 const rows = Array.from(tbody.rows).filter(
-                    row => row.cells.length === 8
+                    row => row.cells.length === columnCount
                 );
 
                 rows.sort((a, b) => {
