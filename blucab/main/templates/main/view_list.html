@@ -68,7 +68,7 @@
             <div class="bg-white rounded border shadow-sm p-2">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover align-middle mb-0" style="min-width: 700px;">
-                        <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
+                        <thead class="bg-light shadow-sm" style="z-index: 10;">
                             <tr>
                                 <th scope="col" style="width: 40px;" class="bg-light">
                                     <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
@@ -276,6 +276,35 @@
         </form>
     </div>
 
+    <style>
+        .list-sticky-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            z-index: 1030;
+            overflow: hidden;
+            background: #f8f9fa;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .list-sticky-header table {
+            table-layout: fixed;
+            margin-bottom: 0;
+        }
+
+        .list-sticky-header th {
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: normal;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
+
+        .list-sticky-header .sort-indicator {
+            display: none;
+        }
+    </style>
+
     <script>
         document.getElementById('selectAll').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('.movie-checkbox');
@@ -447,5 +476,155 @@
                 rows.forEach(row => tbody.appendChild(row));
             });
         });
+    </script>
+
+    <script>
+        const sourceTable = document.querySelector('.table-responsive table');
+        const scrollContainer = sourceTable.closest('.table-responsive');
+        const sourceHeaderRow = sourceTable.tHead.rows[0];
+
+        // Create a floating header containing only the column names.
+        const stickyHeader = document.createElement('div');
+        stickyHeader.className = 'list-sticky-header';
+
+        const stickyTable = sourceTable.cloneNode(false);
+        stickyTable.removeAttribute('id');
+        stickyTable.style.minWidth = '0';
+        stickyTable.style.maxWidth = 'none';
+        stickyTable.style.tableLayout = 'fixed';
+
+        const stickyThead = document.createElement('thead');
+        const stickyRow = sourceHeaderRow.cloneNode(true);
+
+        // Remove the select-all checkbox from the floating header.
+        stickyRow.querySelectorAll(
+            'input, select, button, textarea'
+        ).forEach(element => element.remove());
+
+        stickyThead.appendChild(stickyRow);
+        stickyTable.appendChild(stickyThead);
+        stickyHeader.appendChild(stickyTable);
+        document.body.appendChild(stickyHeader);
+
+        function syncStickyColumnWidths() {
+            const sourceCells = Array.from(sourceHeaderRow.cells);
+            const stickyCells = Array.from(stickyRow.cells);
+
+            sourceCells.forEach((cell, index) => {
+                const width = cell.getBoundingClientRect().width;
+                const stickyCell = stickyCells[index];
+
+                stickyCell.style.width = `${width}px`;
+                stickyCell.style.minWidth = `${width}px`;
+                stickyCell.style.maxWidth = `${width}px`;
+            });
+
+            stickyTable.style.width =
+                `${sourceTable.getBoundingClientRect().width}px`;
+        }
+
+        function syncSortIndicators() {
+            stickyRow.querySelectorAll('[data-sort-column]').forEach(
+                stickyCell => {
+                    const sourceCell = sourceHeaderRow.querySelector(
+                        `[data-sort-column="${stickyCell.dataset.sortColumn}"]`
+                    );
+
+                    if (!sourceCell) {
+                        return;
+                    }
+
+                    if (sourceCell.dataset.sortDirection) {
+                        stickyCell.dataset.sortDirection =
+                            sourceCell.dataset.sortDirection;
+                    } else {
+                        delete stickyCell.dataset.sortDirection;
+                    }
+
+                    const sourceIcon =
+                        sourceCell.querySelector('.sort-indicator');
+                    const stickyIcon =
+                        stickyCell.querySelector('.sort-indicator');
+
+                    if (sourceIcon && stickyIcon) {
+                        stickyIcon.className = sourceIcon.className;
+                    }
+                }
+            );
+        }
+
+        stickyRow.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const sourceHeader = sourceHeaderRow.querySelector(
+                    `[data-sort-column="${header.dataset.sortColumn}"]`
+                );
+
+                if (sourceHeader) {
+                    sourceHeader.click();
+                    syncSortIndicators();
+                }
+            });
+        });
+
+        function updateStickyHeader() {
+            const headerRect = sourceHeaderRow.getBoundingClientRect();
+            const tableRect = sourceTable.getBoundingClientRect();
+            const headerHeight = sourceHeaderRow.getBoundingClientRect().height;
+
+            if (headerRect.bottom > 0 || tableRect.bottom <= headerHeight) {
+                stickyHeader.style.display = 'none';
+                return;
+            }
+
+            const containerRect = scrollContainer.getBoundingClientRect();
+
+            stickyHeader.style.display = 'block';
+            stickyHeader.style.left = `${containerRect.left}px`;
+            stickyHeader.style.width = `${scrollContainer.clientWidth}px`;
+            stickyHeader.style.top = '0';
+
+            stickyTable.style.transform =
+                `translateX(-${scrollContainer.scrollLeft}px)`;
+
+            syncStickyColumnWidths();
+            syncSortIndicators();
+        }
+
+        // Throttle updates during scrolling.
+        let stickyUpdatePending = false;
+
+        function scheduleStickyUpdate() {
+            if (stickyUpdatePending) {
+                return;
+            }
+
+            stickyUpdatePending = true;
+
+            requestAnimationFrame(() => {
+                stickyUpdatePending = false;
+                updateStickyHeader();
+            });
+        }
+
+        window.addEventListener('scroll', scheduleStickyUpdate, {
+            passive: true
+        });
+
+        window.addEventListener('resize', () => {
+            syncStickyColumnWidths();
+            scheduleStickyUpdate();
+        });
+
+        scrollContainer.addEventListener('scroll', scheduleStickyUpdate, {
+            passive: true
+        });
+
+        // Also refresh the cloned arrows after sorting the original headers.
+        sourceHeaderRow.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', syncSortIndicators);
+        });
+
+        syncStickyColumnWidths();
+        updateStickyHeader();
     </script>
 {% endblock %}
