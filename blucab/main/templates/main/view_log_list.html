@@ -57,44 +57,46 @@
             </div>
 
             <div class="bg-white rounded border shadow-sm p-2">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
-                        <tr>
-                            <th scope="col" style="width: 40px;" class="bg-light">
-                                <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
-                            </th>
-                            <th scope="col" class="bg-light">{% trans "View Date" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Movie Title" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Season" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Episode" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Watched With" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Comment" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for log in view_logs %}
-                        <tr>
-                            <td>
-                                <input class="form-check-input log-checkbox border-secondary" type="checkbox" name="selected_logs" value="{{ log.id }}">
-                            </td>
-                            <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d - H:i" }}</td>
-                            <td class="fw-normal">
-                                <a href="{% url 'user_movie_settings' log.movie_user_list.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
-                                    {{ log.movie_user_list.movie.title_clean }}
-                                </a>
-                            </td>
-                            <td class="text-secondary">{{ log.season|default:"-" }}</td>
-                            <td class="text-secondary">{{ log.episode|default:"-" }}</td>
-                            <td class="text-secondary">{{ log.watched_with|default:"-" }}</td>
-                            <td class="text-secondary">{{ log.comment|default:"-"|truncatechars:60 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle mb-0" style="min-width: 700px;">
+                        <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
+                            <tr>
+                                <th scope="col" style="width: 40px;" class="bg-light">
+                                    <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
+                                </th>
+                                <th scope="col" class="bg-light">{% trans "View Date" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Movie Title" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Season" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Episode" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Watched With" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Comment" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in view_logs %}
+                            <tr>
+                                <td>
+                                    <input class="form-check-input log-checkbox border-secondary" type="checkbox" name="selected_logs" value="{{ log.id }}">
+                                </td>
+                                <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d - H:i" }}</td>
+                                <td class="fw-normal">
+                                    <a href="{% url 'user_movie_settings' log.movie_user_list.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
+                                        {{ log.movie_user_list.movie.title_clean }}
+                                    </a>
+                                </td>
+                                <td class="text-secondary">{{ log.season|default:"-" }}</td>
+                                <td class="text-secondary">{{ log.episode|default:"-" }}</td>
+                                <td class="text-secondary">{{ log.watched_with|default:"-" }}</td>
+                                <td class="text-secondary">{{ log.comment|default:"-"|truncatechars:60 }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

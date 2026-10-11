@@ -66,46 +66,48 @@
             </div>
 
             <div class="bg-white rounded border shadow-sm p-2">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
-                        <tr>
-                            <th scope="col" style="width: 40px;" class="bg-light">
-                                <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
-                            </th>
-                            <th scope="col" class="bg-light">{% trans "Format" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Title" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Activated" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Rented" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Archived" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Viewed" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Cabinet" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for mu in movieuserlist %}
-                        <tr>
-                            <td>
-                                <input class="form-check-input movie-checkbox border-secondary" type="checkbox" name="selected_movies" value="{{ mu.id }}">
-                            </td>
-                            <td class="text-secondary">{{ mu.movie.format }}</td>
-                            <td class="fw-normal">
-                                <a href="{% url 'user_movie_settings' mu.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
-                                    {{ mu.movie.title_clean }}
-                                </a>
-                            </td>
-                            <td class="text-center">{% if mu.activated %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.rented %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.archived %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.viewed %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-secondary">{{ mu.cabinet.name|default:"-" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle mb-0" style="min-width: 700px;">
+                        <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
+                            <tr>
+                                <th scope="col" style="width: 40px;" class="bg-light">
+                                    <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
+                                </th>
+                                <th scope="col" class="bg-light">{% trans "Format" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Title" %}</th>
+                                <th scope="col" class="text-center bg-light">{% trans "Activated" %}</th>
+                                <th scope="col" class="text-center bg-light">{% trans "Rented" %}</th>
+                                <th scope="col" class="text-center bg-light">{% trans "Archived" %}</th>
+                                <th scope="col" class="text-center bg-light">{% trans "Viewed" %}</th>
+                                <th scope="col" class="bg-light">{% trans "Cabinet" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mu in movieuserlist %}
+                            <tr>
+                                <td>
+                                    <input class="form-check-input movie-checkbox border-secondary" type="checkbox" name="selected_movies" value="{{ mu.id }}">
+                                </td>
+                                <td class="text-secondary">{{ mu.movie.format }}</td>
+                                <td class="fw-normal">
+                                    <a href="{% url 'user_movie_settings' mu.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
+                                        {{ mu.movie.title_clean }}
+                                    </a>
+                                </td>
+                                <td class="text-center">{% if mu.activated %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
+                                <td class="text-center">{% if mu.rented %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
+                                <td class="text-center">{% if mu.archived %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
+                                <td class="text-center">{% if mu.viewed %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
+                                <td class="text-secondary">{{ mu.cabinet.name|default:"-" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
