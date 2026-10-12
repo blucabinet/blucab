@@ -35,7 +35,7 @@
     {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block content_zoomable %}
     <div class="container-fluid pb-4 mb-4">
         <div class="row gx-3 gy-3" id="gallery">
             {% for mu in movieuserlist %}
@@ -45,9 +45,9 @@
                         <div class="overlay_div" id="pictureOverlayIcons">
                             <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
                                 {% if mu.movie.picture_available and not mu.movie.force_picture_disable %}
-                                    <img src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top img-fluid" alt="{% trans "Picture of the cover" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                    <img src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top img-fluid" alt="{% trans "Picture of the cover" %}" loading="lazy" decoding="async" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% else %}
-                                    <img src="{% static 'main/dummy.jpg' %}" class="card-img-top img-fluid" alt="{% trans "Cover dummy" %}" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
+                                    <img src="{% static 'main/dummy.jpg' %}" class="card-img-top img-fluid" alt="{% trans "Cover dummy" %}" loading="lazy" decoding="async" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
                                 {% endif %}
 
                                 {% if usersettings.show_view_icon_new %}
@@ -78,27 +78,27 @@
 
                                 {% if is_user_view %}
                                     {% if usersettings.show_view_details %}
-                                        {% if mu.movie.runtime %}
-                                            <p class="card-text">{{mu.movie.runtime}} min</p>
-                                        {% endif %}
-                                        {% if not mu.movie.disc_count is 1 %}
-                                            {% if usersettings.show_view_count_disc %}
-                                                <p class="card-text">
-                                                    {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
-                                                        {{ disc_count }} Disks
-                                                    {% endblocktrans %}
-                                                </p>
+                                        <p class="card-text">
+                                            {% if mu.movie.runtime %}
+                                                {{mu.movie.runtime}} min
                                             {% endif %}
-                                        {% endif %}
-                                        {% if not mu.movie.movie_count is 1 %}
-                                            {% if usersettings.show_view_count_movie %}
-                                                <p class="card-text">
-                                                    {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
-                                                        {{ movie_count }} Movies
-                                                    {% endblocktrans %}
-                                                </p>
+                                            {% if not mu.movie.disc_count is 1 %}
+                                                {% if usersettings.show_view_count_disc %}
+                                                        <br>
+                                                        {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
+                                                            {{ disc_count }} Disks
+                                                        {% endblocktrans %}
+                                                {% endif %}
                                             {% endif %}
-                                        {% endif %}
+                                            {% if not mu.movie.movie_count is 1 %}
+                                                {% if usersettings.show_view_count_movie %}
+                                                        <br>
+                                                        {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
+                                                            {{ movie_count }} Movies
+                                                        {% endblocktrans %}
+                                                {% endif %}
+                                            {% endif %}
+                                        </p>
                                     {% endif %}
                                     {% if is_user_view and filter_rented and mu.rented_to%}
                                         {% blocktrans with rented_to=mu.rented_to trimmed %}

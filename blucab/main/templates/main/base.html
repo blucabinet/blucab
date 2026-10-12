@@ -176,8 +176,11 @@
                       {% endfor %}
                     {% endif %}
                     
+                    {% block content %}
+                    {% endblock %}
+                    
                     <div id="zoomable-content">
-                      {% block content %}
+                      {% block content_zoomable %}
                       {% endblock %}
                     </div>
                 </div>

@@ -57,44 +57,92 @@
             </div>
 
             <div class="bg-white rounded border shadow-sm p-2">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
-                        <tr>
-                            <th scope="col" style="width: 40px;" class="bg-light">
-                                <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
-                            </th>
-                            <th scope="col" class="bg-light">{% trans "View Date" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Movie Title" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Season" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Episode" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Watched With" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Comment" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for log in view_logs %}
-                        <tr>
-                            <td>
-                                <input class="form-check-input log-checkbox border-secondary" type="checkbox" name="selected_logs" value="{{ log.id }}">
-                            </td>
-                            <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d - H:i" }}</td>
-                            <td class="fw-normal">
-                                <a href="{% url 'user_movie_settings' log.movie_user_list.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
-                                    {{ log.movie_user_list.movie.title_clean }}
-                                </a>
-                            </td>
-                            <td class="text-secondary">{{ log.season|default:"-" }}</td>
-                            <td class="text-secondary">{{ log.episode|default:"-" }}</td>
-                            <td class="text-secondary">{{ log.watched_with|default:"-" }}</td>
-                            <td class="text-secondary">{{ log.comment|default:"-"|truncatechars:60 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle mb-0" style="min-width: 700px;">
+                        <thead class="bg-light shadow-sm" style="z-index: 10;">
+                            <tr>
+                                <th scope="col" style="width: 40px;" class="bg-light">
+                                    <input class="form-check-input border-secondary"
+                                        type="checkbox"
+                                        id="selectAll">
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="1" style="cursor: pointer;">
+                                    {% trans "View Date" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="2" style="cursor: pointer;">
+                                    {% trans "Movie Title" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="3" style="cursor: pointer;">
+                                    {% trans "Season" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="4" style="cursor: pointer;">
+                                    {% trans "Episode" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="5" style="cursor: pointer;">
+                                    {% trans "Watched With" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="6" style="cursor: pointer;">
+                                    {% trans "Comment" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th class="bg-light"></th>
+
+                                {% for column in "123456" %}
+                                    <th class="bg-light">
+                                        <input type="text"
+                                            class="form-control form-control-sm column-filter"
+                                            data-column="{{ column }}"
+                                            placeholder="{% trans 'Filter' %}"
+                                            aria-label="{% trans 'Filter column' %}">
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in view_logs %}
+                            <tr>
+                                <td>
+                                    <input class="form-check-input log-checkbox border-secondary" type="checkbox" name="selected_logs" value="{{ log.id }}">
+                                </td>
+                                <td class="text-secondary fw-bold">{{ log.view_date|date:"Y-m-d - H:i" }}</td>
+                                <td class="fw-normal">
+                                    <a href="{% url 'user_movie_settings' log.movie_user_list.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
+                                        {{ log.movie_user_list.movie.title_clean }}
+                                    </a>
+                                </td>
+                                <td class="text-secondary">{{ log.season|default:"-" }}</td>
+                                <td class="text-secondary">{{ log.episode|default:"-" }}</td>
+                                <td class="text-secondary">{{ log.watched_with|default:"-" }}</td>
+                                <td class="text-secondary">{{ log.comment|default:"-"|truncatechars:60 }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">{% trans "No view logs found for this period." %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -137,6 +185,35 @@
             </div>
         </form>
     </div>
+
+    <style>
+        .list-sticky-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            z-index: 1030;
+            overflow: hidden;
+            background: #f8f9fa;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .list-sticky-header table {
+            table-layout: fixed;
+            margin-bottom: 0;
+        }
+
+        .list-sticky-header th {
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: normal;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
+
+        .list-sticky-header .sort-indicator {
+            display: none;
+        }
+    </style>
 
     <script>
         document.getElementById('selectAll').addEventListener('change', function() {
@@ -181,5 +258,247 @@
         window.addEventListener("beforeunload", function() {
             sessionStorage.setItem('scrollposition_list', window.scrollY);
         });
+    </script>
+
+    <script>
+        const logTable = document.querySelector('.table-responsive table');
+        const logTbody = logTable.querySelector('tbody');
+
+        // Column filtering
+        function applyColumnFilters() {
+            const filters = Array.from(
+                logTable.querySelectorAll('.column-filter')
+            );
+
+            const rows = Array.from(logTbody.rows).filter(
+                row => row.cells.length === 7
+            );
+
+            rows.forEach(row => {
+                const visible = filters.every(filter => {
+                    const column = Number(filter.dataset.column);
+                    const cell = row.cells[column];
+                    const value = filter.value.trim().toLowerCase();
+
+                    if (!value) {
+                        return true;
+                    }
+
+                    return cell.textContent
+                        .trim()
+                        .toLowerCase()
+                        .includes(value);
+                });
+
+                row.style.display = visible ? '' : 'none';
+            });
+        }
+
+        logTable.querySelectorAll('.column-filter').forEach(filter => {
+            filter.addEventListener('input', applyColumnFilters);
+        });
+
+        // Column sorting
+        logTable.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = Number(header.dataset.sortColumn);
+                const direction =
+                    header.dataset.sortDirection === 'asc' ? 'desc' : 'asc';
+
+                logTable.querySelectorAll('[data-sort-column]').forEach(item => {
+                    delete item.dataset.sortDirection;
+
+                    const icon = item.querySelector('.sort-indicator');
+
+                    if (icon) {
+                        icon.classList.remove('bi-arrow-up', 'bi-arrow-down');
+                        icon.classList.add('bi-arrow-down-up');
+                    }
+                });
+
+                header.dataset.sortDirection = direction;
+
+                const indicator = header.querySelector('.sort-indicator');
+
+                if (indicator) {
+                    indicator.classList.remove('bi-arrow-down-up');
+                    indicator.classList.add(
+                        direction === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'
+                    );
+                }
+
+                const rows = Array.from(logTbody.rows).filter(
+                    row => row.cells.length === 7
+                );
+
+                rows.sort((a, b) => {
+                    const aValue = a.cells[column].textContent.trim();
+                    const bValue = b.cells[column].textContent.trim();
+
+                    const result = aValue.localeCompare(
+                        bValue,
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: 'base'
+                        }
+                    );
+
+                    return direction === 'asc' ? result : -result;
+                });
+
+                rows.forEach(row => logTbody.appendChild(row));
+            });
+        });
+    </script>
+
+    <script>
+        const sourceTable = document.querySelector('.table-responsive table');
+        const scrollContainer = sourceTable.closest('.table-responsive');
+        const sourceHeaderRow = sourceTable.tHead.rows[0];
+
+        // Create a floating header containing only the column names.
+        const stickyHeader = document.createElement('div');
+        stickyHeader.className = 'list-sticky-header';
+
+        const stickyTable = sourceTable.cloneNode(false);
+        stickyTable.removeAttribute('id');
+        stickyTable.style.minWidth = '0';
+        stickyTable.style.maxWidth = 'none';
+        stickyTable.style.tableLayout = 'fixed';
+
+        const stickyThead = document.createElement('thead');
+        const stickyRow = sourceHeaderRow.cloneNode(true);
+
+        // Remove the select-all checkbox from the floating header.
+        stickyRow.querySelectorAll(
+            'input, select, button, textarea'
+        ).forEach(element => element.remove());
+
+        stickyThead.appendChild(stickyRow);
+        stickyTable.appendChild(stickyThead);
+        stickyHeader.appendChild(stickyTable);
+        document.body.appendChild(stickyHeader);
+
+        function syncStickyColumnWidths() {
+            const sourceCells = Array.from(sourceHeaderRow.cells);
+            const stickyCells = Array.from(stickyRow.cells);
+
+            sourceCells.forEach((cell, index) => {
+                const width = cell.getBoundingClientRect().width;
+                const stickyCell = stickyCells[index];
+
+                stickyCell.style.width = `${width}px`;
+                stickyCell.style.minWidth = `${width}px`;
+                stickyCell.style.maxWidth = `${width}px`;
+            });
+
+            stickyTable.style.width =
+                `${sourceTable.getBoundingClientRect().width}px`;
+        }
+
+        function syncSortIndicators() {
+            stickyRow.querySelectorAll('[data-sort-column]').forEach(
+                stickyCell => {
+                    const sourceCell = sourceHeaderRow.querySelector(
+                        `[data-sort-column="${stickyCell.dataset.sortColumn}"]`
+                    );
+
+                    if (!sourceCell) {
+                        return;
+                    }
+
+                    if (sourceCell.dataset.sortDirection) {
+                        stickyCell.dataset.sortDirection =
+                            sourceCell.dataset.sortDirection;
+                    } else {
+                        delete stickyCell.dataset.sortDirection;
+                    }
+
+                    const sourceIcon =
+                        sourceCell.querySelector('.sort-indicator');
+                    const stickyIcon =
+                        stickyCell.querySelector('.sort-indicator');
+
+                    if (sourceIcon && stickyIcon) {
+                        stickyIcon.className = sourceIcon.className;
+                    }
+                }
+            );
+        }
+
+        stickyRow.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const sourceHeader = sourceHeaderRow.querySelector(
+                    `[data-sort-column="${header.dataset.sortColumn}"]`
+                );
+
+                if (sourceHeader) {
+                    sourceHeader.click();
+                    syncSortIndicators();
+                }
+            });
+        });
+
+        function updateStickyHeader() {
+            const headerRect = sourceHeaderRow.getBoundingClientRect();
+            const tableRect = sourceTable.getBoundingClientRect();
+            const headerHeight = sourceHeaderRow.getBoundingClientRect().height;
+
+            if (headerRect.bottom > 0 || tableRect.bottom <= headerHeight) {
+                stickyHeader.style.display = 'none';
+                return;
+            }
+
+            const containerRect = scrollContainer.getBoundingClientRect();
+
+            stickyHeader.style.display = 'block';
+            stickyHeader.style.left = `${containerRect.left}px`;
+            stickyHeader.style.width = `${scrollContainer.clientWidth}px`;
+            stickyHeader.style.top = '0';
+
+            stickyTable.style.transform =
+                `translateX(-${scrollContainer.scrollLeft}px)`;
+
+            syncStickyColumnWidths();
+            syncSortIndicators();
+        }
+
+        // Throttle updates during scrolling.
+        let stickyUpdatePending = false;
+
+        function scheduleStickyUpdate() {
+            if (stickyUpdatePending) {
+                return;
+            }
+
+            stickyUpdatePending = true;
+
+            requestAnimationFrame(() => {
+                stickyUpdatePending = false;
+                updateStickyHeader();
+            });
+        }
+
+        window.addEventListener('scroll', scheduleStickyUpdate, {
+            passive: true
+        });
+
+        window.addEventListener('resize', () => {
+            syncStickyColumnWidths();
+            scheduleStickyUpdate();
+        });
+
+        scrollContainer.addEventListener('scroll', scheduleStickyUpdate, {
+            passive: true
+        });
+
+        // Also refresh the cloned arrows after sorting the original headers.
+        sourceHeaderRow.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', syncSortIndicators);
+        });
+
+        syncStickyColumnWidths();
+        updateStickyHeader();
     </script>
 {% endblock %}

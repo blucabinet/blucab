@@ -66,46 +66,173 @@
             </div>
 
             <div class="bg-white rounded border shadow-sm p-2">
-                <table class="table table-striped table-hover align-middle mb-0">
-                    <thead class="sticky-top bg-light shadow-sm" style="z-index: 10;">
-                        <tr>
-                            <th scope="col" style="width: 40px;" class="bg-light">
-                                <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle mb-0" style="min-width: 700px;">
+                        <thead class="bg-light shadow-sm" style="z-index: 10;">
+                            <tr>
+                                <th scope="col" style="width: 40px;" class="bg-light">
+                                    <input class="form-check-input border-secondary" type="checkbox" id="selectAll">
+                                </th>
+                                
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="1" style="cursor: pointer;">
+                                    {% trans "Format" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="2" style="cursor: pointer;">
+                                    {% trans "Inventory Code" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="3" style="cursor: pointer;">
+                                    {% trans "Title" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="4" style="cursor: pointer;">
+                                    {% trans "Activated" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="5" style="cursor: pointer;">
+                                    {% trans "Rented" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="6" style="cursor: pointer;">
+                                    {% trans "Archived" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="text-center bg-light"
+                                    data-sort-column="7" style="cursor: pointer;">
+                                    {% trans "Viewed" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+
+                                <th scope="col" class="bg-light"
+                                    data-sort-column="8" style="cursor: pointer;">
+                                    {% trans "Cabinet" %}
+                                    <i class="bi bi-arrow-down-up ms-1 sort-indicator"></i>
+                                </th>
+                            </tr>
+                            <tr class="bg-light">
+                            <th class="bg-light"></th>
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="1"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter format' %}">
                             </th>
-                            <th scope="col" class="bg-light">{% trans "Format" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Title" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Activated" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Rented" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Archived" %}</th>
-                            <th scope="col" class="text-center bg-light">{% trans "Viewed" %}</th>
-                            <th scope="col" class="bg-light">{% trans "Cabinet" %}</th>
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="2"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter inventory code' %}">
+                            </th>
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="3"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter title' %}">
+                            </th>
+
+                            {% for column in "4567" %}
+                                <th class="bg-light">
+                                    <select class="form-select form-select-sm column-filter"
+                                            data-column="{{ column }}"
+                                            data-filter-type="boolean"
+                                            aria-label="{% trans 'Filter status' %}">
+                                        <option value="">{% trans "All" %}</option>
+                                        <option value="true">{% trans "Yes" %}</option>
+                                        <option value="false">{% trans "No" %}</option>
+                                    </select>
+                                </th>
+                            {% endfor %}
+
+                            <th class="bg-light">
+                                <input type="text"
+                                    class="form-control form-control-sm column-filter"
+                                    data-column="8"
+                                    data-filter-type="text"
+                                    placeholder="{% trans 'Filter' %}"
+                                    aria-label="{% trans 'Filter cabinet' %}">
+                            </th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for mu in movieuserlist %}
-                        <tr>
-                            <td>
-                                <input class="form-check-input movie-checkbox border-secondary" type="checkbox" name="selected_movies" value="{{ mu.id }}">
-                            </td>
-                            <td class="text-secondary">{{ mu.movie.format }}</td>
-                            <td class="fw-normal">
-                                <a href="{% url 'user_movie_settings' mu.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
-                                    {{ mu.movie.title_clean }}
-                                </a>
-                            </td>
-                            <td class="text-center">{% if mu.activated %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.rented %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.archived %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-center">{% if mu.viewed %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-dash text-secondary"></i>{% endif %}</td>
-                            <td class="text-secondary">{{ mu.cabinet.name|default:"-" }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for mu in movieuserlist %}
+                            <tr>
+                                <td>
+                                    <input class="form-check-input movie-checkbox border-secondary" type="checkbox" name="selected_movies" value="{{ mu.id }}">
+                                </td>
+                                <td class="text-secondary">{{ mu.movie.format }}</td>
+                                <td class="text-secondary">{{ mu.inventory_code|default:"-" }}</td>
+                                <td class="fw-normal">
+                                    <a href="{% url 'user_movie_settings' mu.movie.id %}?next={{ request.path }}" class="text-decoration-none" title="{% trans 'Edit movie' %}">
+                                        {{ mu.movie.title_clean }}
+                                    </a>
+                                </td>
+                                <td class="text-center"
+                                    data-value="{% if mu.activated %}true{% else %}false{% endif %}">
+                                    {% if mu.activated %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center"
+                                    data-value="{% if mu.rented %}true{% else %}false{% endif %}">
+                                    {% if mu.rented %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center"
+                                    data-value="{% if mu.archived %}true{% else %}false{% endif %}">
+                                    {% if mu.archived %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-center"
+                                    data-value="{% if mu.viewed %}true{% else %}false{% endif %}">
+                                    {% if mu.viewed %}
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    {% else %}
+                                        <i class="bi bi-dash text-secondary"></i>
+                                    {% endif %}
+                                </td>
+                                <td class="text-secondary">{{ mu.cabinet.name|default:"-" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" class="text-center py-4 text-muted">{% trans "Your list is empty." %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -148,6 +275,35 @@
             </div>
         </form>
     </div>
+
+    <style>
+        .list-sticky-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            z-index: 1030;
+            overflow: hidden;
+            background: #f8f9fa;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .list-sticky-header table {
+            table-layout: fixed;
+            margin-bottom: 0;
+        }
+
+        .list-sticky-header th {
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: normal;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
+
+        .list-sticky-header .sort-indicator {
+            display: none;
+        }
+    </style>
 
     <script>
         document.getElementById('selectAll').addEventListener('change', function() {
@@ -205,5 +361,270 @@
         window.addEventListener("beforeunload", function() {
             sessionStorage.setItem('scrollposition_list', window.scrollY);
         });
+    </script>
+
+    <script>
+        // Column filtering
+        const table = document.querySelector('.table-responsive table');
+        const tbody = table.querySelector('tbody');
+
+        function applyColumnFilters() {
+            const filters = Array.from(
+                table.querySelectorAll('.column-filter')
+            );
+
+            const rows = Array.from(tbody.rows).filter(
+                row => row.cells.length === 9
+            );
+
+            rows.forEach(row => {
+                const visible = filters.every(filter => {
+                    const column = Number(filter.dataset.column);
+                    const cell = row.cells[column];
+                    const value = filter.value.trim().toLowerCase();
+
+                    if (!value) {
+                        return true;
+                    }
+
+                    if (filter.dataset.filterType === 'boolean') {
+                        return cell.dataset.value === value;
+                    }
+
+                    return cell.textContent.trim().toLowerCase().includes(value);
+                });
+
+                row.style.display = visible ? '' : 'none';
+            });
+        }
+
+        table.querySelectorAll('.column-filter').forEach(filter => {
+            filter.addEventListener('input', applyColumnFilters);
+            filter.addEventListener('change', applyColumnFilters);
+        });
+
+        // Column sorting: supports text and Boolean columns
+        const columnCount = table.tHead.rows[0].cells.length;
+
+        table.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = Number(header.dataset.sortColumn);
+                const direction =
+                    header.dataset.sortDirection === 'asc' ? 'desc' : 'asc';
+
+                table.querySelectorAll('[data-sort-column]').forEach(item => {
+                    delete item.dataset.sortDirection;
+
+                    const icon = item.querySelector('.sort-indicator');
+
+                    if (icon) {
+                        icon.classList.remove('bi-arrow-up', 'bi-arrow-down');
+                        icon.classList.add('bi-arrow-down-up');
+                    }
+                });
+
+                header.dataset.sortDirection = direction;
+
+                const indicator = header.querySelector('.sort-indicator');
+
+                if (indicator) {
+                    indicator.classList.remove('bi-arrow-down-up');
+                    indicator.classList.add(
+                        direction === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down'
+                    );
+                }
+
+                const rows = Array.from(tbody.rows).filter(
+                    row => row.cells.length === columnCount
+                );
+
+                rows.sort((a, b) => {
+                    const aCell = a.cells[column];
+                    const bCell = b.cells[column];
+
+                    const aValue = aCell.dataset.value
+                        ?? aCell.textContent.trim();
+
+                    const bValue = bCell.dataset.value
+                        ?? bCell.textContent.trim();
+
+                    let result;
+
+                    if (
+                        aCell.dataset.value !== undefined &&
+                        bCell.dataset.value !== undefined
+                    ) {
+                        // Boolean columns
+                        result = aValue === bValue
+                            ? 0
+                            : (aValue === 'true' ? -1 : 1);
+                    } else {
+                        // Text and numeric columns
+                        result = aValue.localeCompare(
+                            bValue,
+                            undefined,
+                            {
+                                numeric: true,
+                                sensitivity: 'base'
+                            }
+                        );
+                    }
+
+                    return direction === 'asc' ? result : -result;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+            });
+        });
+    </script>
+
+    <script>
+        const sourceTable = document.querySelector('.table-responsive table');
+        const scrollContainer = sourceTable.closest('.table-responsive');
+        const sourceHeaderRow = sourceTable.tHead.rows[0];
+
+        // Create a floating header containing only the column names.
+        const stickyHeader = document.createElement('div');
+        stickyHeader.className = 'list-sticky-header';
+
+        const stickyTable = sourceTable.cloneNode(false);
+        stickyTable.removeAttribute('id');
+        stickyTable.style.minWidth = '0';
+        stickyTable.style.maxWidth = 'none';
+        stickyTable.style.tableLayout = 'fixed';
+
+        const stickyThead = document.createElement('thead');
+        const stickyRow = sourceHeaderRow.cloneNode(true);
+
+        // Remove the select-all checkbox from the floating header.
+        stickyRow.querySelectorAll(
+            'input, select, button, textarea'
+        ).forEach(element => element.remove());
+
+        stickyThead.appendChild(stickyRow);
+        stickyTable.appendChild(stickyThead);
+        stickyHeader.appendChild(stickyTable);
+        document.body.appendChild(stickyHeader);
+
+        function syncStickyColumnWidths() {
+            const sourceCells = Array.from(sourceHeaderRow.cells);
+            const stickyCells = Array.from(stickyRow.cells);
+
+            sourceCells.forEach((cell, index) => {
+                const width = cell.getBoundingClientRect().width;
+                const stickyCell = stickyCells[index];
+
+                stickyCell.style.width = `${width}px`;
+                stickyCell.style.minWidth = `${width}px`;
+                stickyCell.style.maxWidth = `${width}px`;
+            });
+
+            stickyTable.style.width =
+                `${sourceTable.getBoundingClientRect().width}px`;
+        }
+
+        function syncSortIndicators() {
+            stickyRow.querySelectorAll('[data-sort-column]').forEach(
+                stickyCell => {
+                    const sourceCell = sourceHeaderRow.querySelector(
+                        `[data-sort-column="${stickyCell.dataset.sortColumn}"]`
+                    );
+
+                    if (!sourceCell) {
+                        return;
+                    }
+
+                    if (sourceCell.dataset.sortDirection) {
+                        stickyCell.dataset.sortDirection =
+                            sourceCell.dataset.sortDirection;
+                    } else {
+                        delete stickyCell.dataset.sortDirection;
+                    }
+
+                    const sourceIcon =
+                        sourceCell.querySelector('.sort-indicator');
+                    const stickyIcon =
+                        stickyCell.querySelector('.sort-indicator');
+
+                    if (sourceIcon && stickyIcon) {
+                        stickyIcon.className = sourceIcon.className;
+                    }
+                }
+            );
+        }
+
+        stickyRow.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', () => {
+                const sourceHeader = sourceHeaderRow.querySelector(
+                    `[data-sort-column="${header.dataset.sortColumn}"]`
+                );
+
+                if (sourceHeader) {
+                    sourceHeader.click();
+                    syncSortIndicators();
+                }
+            });
+        });
+
+        function updateStickyHeader() {
+            const headerRect = sourceHeaderRow.getBoundingClientRect();
+            const tableRect = sourceTable.getBoundingClientRect();
+            const headerHeight = sourceHeaderRow.getBoundingClientRect().height;
+
+            if (headerRect.bottom > 0 || tableRect.bottom <= headerHeight) {
+                stickyHeader.style.display = 'none';
+                return;
+            }
+
+            const containerRect = scrollContainer.getBoundingClientRect();
+
+            stickyHeader.style.display = 'block';
+            stickyHeader.style.left = `${containerRect.left}px`;
+            stickyHeader.style.width = `${scrollContainer.clientWidth}px`;
+            stickyHeader.style.top = '0';
+
+            stickyTable.style.transform =
+                `translateX(-${scrollContainer.scrollLeft}px)`;
+
+            syncStickyColumnWidths();
+            syncSortIndicators();
+        }
+
+        // Throttle updates during scrolling.
+        let stickyUpdatePending = false;
+
+        function scheduleStickyUpdate() {
+            if (stickyUpdatePending) {
+                return;
+            }
+
+            stickyUpdatePending = true;
+
+            requestAnimationFrame(() => {
+                stickyUpdatePending = false;
+                updateStickyHeader();
+            });
+        }
+
+        window.addEventListener('scroll', scheduleStickyUpdate, {
+            passive: true
+        });
+
+        window.addEventListener('resize', () => {
+            syncStickyColumnWidths();
+            scheduleStickyUpdate();
+        });
+
+        scrollContainer.addEventListener('scroll', scheduleStickyUpdate, {
+            passive: true
+        });
+
+        // Also refresh the cloned arrows after sorting the original headers.
+        sourceHeaderRow.querySelectorAll('[data-sort-column]').forEach(header => {
+            header.addEventListener('click', syncSortIndicators);
+        });
+
+        syncStickyColumnWidths();
+        updateStickyHeader();
     </script>
 {% endblock %}
