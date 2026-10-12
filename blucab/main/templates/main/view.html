@@ -78,27 +78,27 @@
 
                                 {% if is_user_view %}
                                     {% if usersettings.show_view_details %}
-                                        {% if mu.movie.runtime %}
-                                            <p class="card-text">{{mu.movie.runtime}} min</p>
-                                        {% endif %}
-                                        {% if not mu.movie.disc_count is 1 %}
-                                            {% if usersettings.show_view_count_disc %}
-                                                <p class="card-text">
-                                                    {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
-                                                        {{ disc_count }} Disks
-                                                    {% endblocktrans %}
-                                                </p>
+                                        <p class="card-text">
+                                            {% if mu.movie.runtime %}
+                                                {{mu.movie.runtime}} min
                                             {% endif %}
-                                        {% endif %}
-                                        {% if not mu.movie.movie_count is 1 %}
-                                            {% if usersettings.show_view_count_movie %}
-                                                <p class="card-text">
-                                                    {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
-                                                        {{ movie_count }} Movies
-                                                    {% endblocktrans %}
-                                                </p>
+                                            {% if not mu.movie.disc_count is 1 %}
+                                                {% if usersettings.show_view_count_disc %}
+                                                        <br>
+                                                        {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
+                                                            {{ disc_count }} Disks
+                                                        {% endblocktrans %}
+                                                {% endif %}
                                             {% endif %}
-                                        {% endif %}
+                                            {% if not mu.movie.movie_count is 1 %}
+                                                {% if usersettings.show_view_count_movie %}
+                                                        <br>
+                                                        {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
+                                                            {{ movie_count }} Movies
+                                                        {% endblocktrans %}
+                                                {% endif %}
+                                            {% endif %}
+                                        </p>
                                     {% endif %}
                                     {% if is_user_view and filter_rented and mu.rented_to%}
                                         {% blocktrans with rented_to=mu.rented_to trimmed %}
