@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy, reverse
 from .models import UserSettings, MovieUserList, User, Movie, UserCabinet, MovieViewLog
-from .forms import AddMovieForm, MovieErrorReportForm
+from .forms import AddMovieForm, MovieErrorReportForm, MovieViewLogForm
 from contenthandler.tasks import task_add_new_movie
 
 from environs import Env
@@ -549,31 +549,45 @@ def add_movie(request):
 
 @login_required
 def add_view_log(request, mu_id):
-    movie_user_entry = get_object_or_404(MovieUserList, id=mu_id, user=request.user)
+    movie_user_entry = get_object_or_404(
+        MovieUserList,
+        id=mu_id,
+        user=request.user,
+    )
     next_url = request.GET.get("next", "view")
 
     if request.method == "POST":
-        view_date = request.POST.get("view_date")
-        season = request.POST.get("season")
-        episode = request.POST.get("episode")
-        watched_with = request.POST.get("watched_with")
-        comment = request.POST.get("comment")
+        form = MovieViewLogForm(request.POST)
 
-        if view_date:
-            MovieViewLog.objects.create(
-                movie_user_list=movie_user_entry,
-                view_date=view_date,
-                season=season or None,
-                episode=episode or None,
-                watched_with=watched_with,
-                comment=comment,
-            )
+        if form.is_valid():
+            view_log = form.save(commit=False)
+            view_log.movie_user_list = movie_user_entry
+            view_log.save()
 
             if not movie_user_entry.viewed:
                 movie_user_entry.viewed = True
                 movie_user_entry.save()
 
-            messages.success(request, _("Viewing history updated."))
+            messages.success(
+                request,
+                _("Viewing history updated."),
+            )
+        else:
+            error_messages = []
+
+            for field_name, errors in form.errors.items():
+                if field_name in form.fields:
+                    field_label = form.fields[field_name].label
+                else:
+                    field_label = _("Form")
+
+                for error in errors:
+                    error_messages.append(f"{field_label}: {error}")
+
+            messages.error(
+                request,
+                " ".join(error_messages),
+            )
 
     return redirect(next_url)
 
