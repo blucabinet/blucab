@@ -132,7 +132,6 @@ class UpdateMovieAsModerator(forms.ModelForm):
             "is_bluray_3d",
             "force_picture_disable",
             "imdb_id",
-            "date_added",
             "date_updated",
         ]
         widgets = {
