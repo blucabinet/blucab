@@ -1,7 +1,14 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from dal import autocomplete
-from .models import UserCabinet, UserSettings, MovieUserList, Movie, MovieErrorReport
+from .models import (
+    UserCabinet,
+    UserSettings,
+    MovieUserList,
+    Movie,
+    MovieErrorReport,
+    MovieViewLog,
+)
 
 
 class UpdateUserSettings(forms.ModelForm):
@@ -285,3 +292,34 @@ class MovieErrorReportForm(forms.ModelForm):
         widgets = {
             "comment": forms.Textarea(attrs={"rows": 3}),
         }
+
+
+class MovieViewLogForm(forms.ModelForm):
+    view_date = forms.DateTimeField(
+        label=_("Date"),
+        input_formats=["%Y-%m-%dT%H:%M"],
+    )
+
+    season = forms.IntegerField(
+        label=_("Season"),
+        required=False,
+        min_value=0,
+        max_value=9999,
+    )
+
+    episode = forms.IntegerField(
+        label=_("Episode"),
+        required=False,
+        min_value=0,
+        max_value=9999,
+    )
+
+    class Meta:
+        model = MovieViewLog
+        fields = [
+            "view_date",
+            "season",
+            "episode",
+            "watched_with",
+            "comment",
+        ]

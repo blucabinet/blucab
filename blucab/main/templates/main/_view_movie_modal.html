@@ -233,12 +233,40 @@
                                     <input type="datetime-local" name="view_date" class="form-control form-control-sm border-secondary text-dark bg-white" value="{% now 'Y-m-d' %}T{% now 'H:i' %}" required>
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small text-dark mb-0 fw-bold">{% trans "Season" %}</label>
-                                    <input type="text" name="season" class="form-control form-control-sm border-secondary text-dark bg-white" placeholder="{% trans 'e.g. 1' %}">
+                                    <label
+                                        for="season{{ mu.id }}"
+                                        class="form-label small text-dark mb-0 fw-bold"
+                                    >
+                                        {% trans "Season" %}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="season{{ mu.id }}"
+                                        name="season"
+                                        class="form-control form-control-sm border-secondary text-dark bg-white"
+                                        placeholder="{% trans 'e.g. 1' %}"
+                                        min="0"
+                                        max="9999"
+                                        step="1"
+                                    >
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small text-dark mb-0 fw-bold">{% trans "Episode" %}</label>
-                                    <input type="text" name="episode" class="form-control form-control-sm border-secondary text-dark bg-white" placeholder="{% trans 'e.g. 1' %}">
+                                    <label
+                                        for="episode{{ mu.id }}"
+                                        class="form-label small text-dark mb-0 fw-bold"
+                                    >
+                                        {% trans "Episode" %}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="episode{{ mu.id }}"
+                                        name="episode"
+                                        class="form-control form-control-sm border-secondary text-dark bg-white"
+                                        placeholder="{% trans 'e.g. 1' %}"
+                                        min="0"
+                                        max="9999"
+                                        step="1"
+                                    >
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label small text-dark mb-0 fw-bold">{% trans "Watched with" %}</label>
