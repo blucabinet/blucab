@@ -72,9 +72,71 @@ class UpdateMovie(forms.ModelForm):
         widgets = {
             "date_added": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
             "date_updated": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
-            "price": forms.NumberInput(attrs={"type": "number", "step": "0.01"}),
             "picture_url_original": forms.TextInput(attrs={"type": "url"}),
             "picture_url_original_hd": forms.TextInput(attrs={"type": "url"}),
+            "content": forms.Textarea(attrs={"rows": 5}),
+            "languages": autocomplete.ModelSelect2Multiple(
+                url="language-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Languages..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+            "directors": autocomplete.ModelSelect2Multiple(
+                url="director-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Directors..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+            "actors": autocomplete.ModelSelect2Multiple(
+                url="actor-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Actors..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+            "studios": autocomplete.ModelSelect2Multiple(
+                url="studio-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Studios..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+        }
+
+
+class UpdateMovieAsModerator(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields = [
+            "ean",
+            "asin",
+            "title_clean",
+            "format",
+            "release_year",
+            "runtime",
+            "content",
+            "content_rating",
+            "actors",
+            "directors",
+            "studios",
+            "genre",
+            "languages",
+            "disc_count",
+            "movie_count",
+            "season_count",
+            "episode_count",
+            "is_series",
+            "is_bluray_uhd",
+            "is_bluray_3d",
+            "force_picture_disable",
+            "imdb_id",
+            "date_updated",
+        ]
+        widgets = {
+            "date_added": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "date_updated": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
             "content": forms.Textarea(attrs={"rows": 5}),
             "languages": autocomplete.ModelSelect2Multiple(
                 url="language-autocomplete",
