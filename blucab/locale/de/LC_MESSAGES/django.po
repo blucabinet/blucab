@@ -103,8 +103,8 @@ msgid "--- Choose a cabinet ---"
 msgstr "--- Wähle einen Schrank ---"
 
 #: main/forms.py:206
-msgid "EAN or Title"
-msgstr "EAN oder Titel"
+msgid "EAN/GTIN or Title"
+msgstr "EAN/GTIN oder Titel"
 
 #: main/forms.py:211
 msgid "Enter EAN or search term"

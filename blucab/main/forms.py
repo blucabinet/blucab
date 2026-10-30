@@ -273,12 +273,12 @@ class CabinetDeleteForm(forms.Form):
 class AddMovieForm(forms.Form):
     query = forms.CharField(
         max_length=128,
-        label=_("EAN or Title"),
+        label=_("EAN/GTIN or Title"),
         required=True,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "placeholder": _("Enter EAN or search term"),
+                "placeholder": _("Enter EAN/GTIN or search term"),
             }
         ),
     )
