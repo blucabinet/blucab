@@ -54,6 +54,13 @@
               justify-content: center;
               padding: 0;
             }
+            #mainNavbar.navbar-scroll-enabled {
+              position: sticky;
+              top: 0;
+              z-index: 1030;
+              transition: none;
+              will-change: transform;
+            }
         </style>
 
         <meta charset="utf-8">
@@ -68,7 +75,7 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark {% block navbar_scroll_class %}navbar-scroll-enabled{% endblock %}">
           <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">
               <img src="{% static 'blucab-logo.png' %}"
@@ -282,6 +289,31 @@
             zoomResetBtn.addEventListener('click', () => {
                 updateZoom(1.0);
             });
+        </script>
+
+        <script>
+            const navbar = document.getElementById("mainNavbar");
+
+            if (navbar && navbar.classList.contains("navbar-scroll-enabled")) {
+                let lastScrollY = window.scrollY;
+                let navbarOffset = 0;
+
+                window.addEventListener("scroll", () => {
+                    const currentScrollY = window.scrollY;
+                    const delta = currentScrollY - lastScrollY;
+                    const navbarHeight = navbar.offsetHeight;
+
+                    if (currentScrollY <= 1) {
+                        navbarOffset = 0;
+                    } else {
+                        navbarOffset -= delta;
+                        navbarOffset = Math.max(-navbarHeight, Math.min(0, navbarOffset));
+                    }
+
+                    navbar.style.transform = `translateY(${navbarOffset}px)`;
+                    lastScrollY = currentScrollY;
+                }, { passive: true });
+            }
         </script>
     </body>
 </html>
