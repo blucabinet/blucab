@@ -293,15 +293,38 @@
 
         <script>
             const navbar = document.getElementById("mainNavbar");
+            const navbarCollapse = document.getElementById("navbarNav");
 
-            if (navbar && navbar.classList.contains("navbar-scroll-enabled")) {
+            if (
+                navbar &&
+                navbarCollapse &&
+                navbar.classList.contains("navbar-scroll-enabled")
+            ) {
                 let lastScrollY = window.scrollY;
                 let navbarOffset = 0;
+
+                // Show navbar when opening the mobile menu
+                navbarCollapse.addEventListener("show.bs.collapse", () => {
+                    navbarOffset = 0;
+                    lastScrollY = window.scrollY;
+                    navbar.style.transform = "translateY(0)";
+                });
 
                 window.addEventListener("scroll", () => {
                     const currentScrollY = window.scrollY;
                     const delta = currentScrollY - lastScrollY;
                     const navbarHeight = navbar.offsetHeight;
+
+                    // Keep navbar visible while the menu is open or transitioning
+                    if (
+                        navbarCollapse.classList.contains("show") ||
+                        navbarCollapse.classList.contains("collapsing")
+                    ) {
+                        navbarOffset = 0;
+                        navbar.style.transform = "translateY(0)";
+                        lastScrollY = currentScrollY;
+                        return;
+                    }
 
                     if (currentScrollY <= 1) {
                         navbarOffset = 0;
