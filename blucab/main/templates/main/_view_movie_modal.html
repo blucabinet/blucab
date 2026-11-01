@@ -2,6 +2,7 @@
 {% load static %}
 {% load auth_extras %}
 
+{% for mu in movieuserlist %}
 <div class="modal fade" id="e{{mu.id}}ModalLong" tabindex="-1" role="dialog" aria-labelledby="e{{mu.id}}ModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -310,3 +311,4 @@
         </div>
     </div>
 </div>
+{% endfor %}

@@ -37,106 +37,37 @@
 
 {% block content_zoomable %}
     <div class="container-fluid pb-4 mb-4">
+
         <div class="row gx-3 gy-3" id="gallery">
-            {% for mu in movieuserlist %}
-                <div class="col">
-                    <div class="card h-100" style="width: 10rem;">
-                        {% load static %}
-                        <div class="overlay_div" id="pictureOverlayIcons">
-                            <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
-                                {% if mu.movie.picture_available and not mu.movie.force_picture_disable %}
-                                    <img src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg" class="card-img-top img-fluid" alt="{% trans "Picture of the cover" %}" loading="lazy" decoding="async" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
-                                {% else %}
-                                    <img src="{% static 'main/dummy.jpg' %}" class="card-img-top img-fluid" alt="{% trans "Cover dummy" %}" loading="lazy" decoding="async" data-bs-toggle="tooltip" data-placement="top" title="{{mu.movie.title_clean}}">
-                                {% endif %}
-
-                                {% if usersettings.show_view_icon_new %}
-                                    {% load days_since %}
-                                    {% if mu.date_added|days_since <= usersettings.days_for_new %}
-                                        <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
-                                    {% endif %}
-                                {% endif %}
-                                {% if mu.rented %}
-                                    {% if usersettings.show_view_icon_rented %}
-                                        <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
-                                    {% endif %}
-                                {% endif %}
-                            </span>
-                        </div>
-                        
-                        {% if show_card_body %}
-                            <div class="card-body" id="e{{mu.id}}Card">
-                                {% if is_user_view %}
-                                    {% if usersettings.show_view_title %}
-                                        <h5 class="card-title title-clamp" title="{{mu.movie.title_clean}}">{{mu.movie.title_clean}}</h5>
-                                    {% endif %}
-                                {% else %}
-                                    {% if show_view_title %}
-                                        <h5 class="card-title title-clamp" title="{{mu.movie.title_clean}}">{{mu.movie.title_clean}}</h5>
-                                    {% endif %}
-                                {% endif %}
-
-                                {% if is_user_view %}
-                                    {% if usersettings.show_view_details %}
-                                        <p class="card-text">
-                                            {% if mu.movie.runtime %}
-                                                {{mu.movie.runtime}} min
-                                            {% endif %}
-                                            {% if not mu.movie.disc_count is 1 %}
-                                                {% if usersettings.show_view_count_disc %}
-                                                        <br>
-                                                        {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
-                                                            {{ disc_count }} Disks
-                                                        {% endblocktrans %}
-                                                {% endif %}
-                                            {% endif %}
-                                            {% if not mu.movie.movie_count is 1 %}
-                                                {% if usersettings.show_view_count_movie %}
-                                                        <br>
-                                                        {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
-                                                            {{ movie_count }} Movies
-                                                        {% endblocktrans %}
-                                                {% endif %}
-                                            {% endif %}
-                                        </p>
-                                    {% endif %}
-                                    {% if is_user_view and filter_rented and mu.rented_to%}
-                                        {% blocktrans with rented_to=mu.rented_to trimmed %}
-                                            Rented to {{rented_to}}
-                                        {% endblocktrans %}
-                                        <br>
-                                    {% endif %}
-                                    {% if usersettings.show_view_button_details %}
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
-                                            {% trans "Details" %}
-                                        </button>
-                                    {% endif %}
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-                
-            {% empty %}
-                <div class="col-12 mt-4 text-center">
-                    <p>
-                        {% trans "Filter active or no movies available." %}
-                        {% if is_user_view %}
-                            <a href="{% url 'add_movie' %}">{% trans "Add a movie." %}</a>
-                        {% endif %}
-                    </p>
-                </div>
-            {% endfor %}
+            {% include "main/_view_cards.html" %}
         </div>
+
+        <div
+            id="paginationInfo"
+            data-has-next="{{ page_obj.has_next|yesno:'true,false' }}"
+            data-next-page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}">
+        </div>
+
+        <div id="loadMoreArea" class="text-center py-4">
+            <button
+                type="button"
+                id="loadMoreButton"
+                class="btn btn-outline-secondary">
+                {% trans "Load more" %}
+            </button>
+
+            <span id="loadingMore" class="text-light ms-2" hidden>
+                {% trans "Loading..." %}
+            </span>
+        </div>
+
     </div>
 {% endblock %}
 
 {% block modals %}
-    {% for mu in movieuserlist %}
-
+    <div id="movieModals">
         {% include "main/_view_movie_modal.html" %}
-        
-    {% endfor %}
+    </div>
 {% endblock %}
 
 {% block footer %}
@@ -305,6 +236,147 @@
 
         window.addEventListener("beforeunload", function() {
             sessionStorage.setItem('scrollposition_grid', window.scrollY);
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const gallery = document.getElementById("gallery");
+            const modalContainer = document.getElementById("movieModals");
+            const paginationInfo = document.getElementById("paginationInfo");
+
+            const loadMoreArea = document.getElementById("loadMoreArea");
+            const loadMoreButton = document.getElementById("loadMoreButton");
+            const loadingIndicator = document.getElementById("loadingMore");
+
+            if (
+                !gallery ||
+                !modalContainer ||
+                !paginationInfo ||
+                !loadMoreButton
+            ) {
+                return;
+            }
+
+            let isLoading = false;
+            let chunkLoaded = false;
+            let observer = null;
+
+            function updateLoadMoreState() {
+                const hasNext = paginationInfo.dataset.hasNext === "true";
+
+                loadMoreArea.hidden = !hasNext;
+                loadMoreButton.disabled = isLoading || !hasNext;
+            }
+
+            async function loadNextChunk() {
+                chunkLoaded = false;
+
+                if (
+                    isLoading ||
+                    paginationInfo.dataset.hasNext !== "true"
+                ) {
+                    return;
+                }
+
+                isLoading = true;
+                loadingIndicator.hidden = false;
+                updateLoadMoreState();
+
+                try {
+                    const nextPage = paginationInfo.dataset.nextPage;
+
+                    const url = new URL(window.location.href);
+                    url.searchParams.set("page", nextPage);
+
+                    const response = await fetch(url.toString(), {
+                        method: "GET",
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Failed to load movies.");
+                    }
+
+                    const html = await response.text();
+
+                    const parser = new DOMParser();
+                    const documentFragment = parser.parseFromString(
+                        html,
+                        "text/html"
+                    );
+
+                    const chunkCards = documentFragment.getElementById(
+                        "chunkCards"
+                    );
+
+                    const chunkModals = documentFragment.getElementById(
+                        "chunkModals"
+                    );
+
+                    const chunkInfo = documentFragment.getElementById(
+                        "chunkPaginationInfo"
+                    );
+
+                    if (!chunkCards || !chunkModals || !chunkInfo) {
+                        throw new Error("Invalid chunk response.");
+                    }
+
+                    gallery.append(...Array.from(chunkCards.children));
+
+                    modalContainer.append(
+                        ...Array.from(chunkModals.children)
+                    );
+
+                    paginationInfo.dataset.hasNext = chunkInfo.dataset.hasNext;
+
+                    paginationInfo.dataset.nextPage = chunkInfo.dataset.nextPage;
+                    
+                    chunkLoaded = true;
+
+                    updateLoadMoreState();
+
+                } catch (error) {
+                    console.error("Error loading movie chunk:", error);
+
+                } finally {
+                    isLoading = false;
+                    loadingIndicator.hidden = true;
+                    updateLoadMoreState();
+
+                    // Re-observe the loading area to trigger another check.
+                    // This allows continuous loading while the sentinel remains visible.
+                    if (
+                        chunkLoaded &&
+                        observer &&
+                        paginationInfo.dataset.hasNext === "true"
+                    ) {
+                        observer.unobserve(loadMoreArea);
+                        observer.observe(loadMoreArea);
+                    }
+                }
+            }
+
+            loadMoreButton.addEventListener("click", loadNextChunk);
+
+            if ("IntersectionObserver" in window) {
+                observer = new IntersectionObserver(
+                    function (entries) {
+                        if (entries.some(entry => entry.isIntersecting)) {
+                            loadNextChunk();
+                        }
+                    },
+                    {
+                        rootMargin: "800px"
+                    }
+                );
+
+                observer.observe(loadMoreArea);
+            }
+
+            updateLoadMoreState();
         });
     </script>
 {% endblock %}

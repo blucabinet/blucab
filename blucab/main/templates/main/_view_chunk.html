@@ -1,0 +1,13 @@
+<div id="chunkCards">
+    {% include "main/_view_cards.html" %}
+</div>
+
+<div id="chunkModals">
+    {% include "main/_view_movie_modal.html" %}
+</div>
+
+<div
+    id="chunkPaginationInfo"
+    data-has-next="{{ page_obj.has_next|yesno:'true,false' }}"
+    data-next-page="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}">
+</div>
