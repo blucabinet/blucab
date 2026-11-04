@@ -80,7 +80,7 @@ class ContentRating(models.Model):
 
 
 class Movie(models.Model):
-    ean = models.CharField(max_length=16, verbose_name=_("EAN"))
+    ean = models.CharField(max_length=16, verbose_name=_("EAN/GTIN"))
     asin = models.CharField(
         blank=True, null=True, default=None, max_length=16, verbose_name=_("ASIN")
     )
@@ -412,7 +412,7 @@ class MovieErrorReport(models.Model):
     picture_wrong = models.BooleanField(default=False, verbose_name=_("Picture Wrong"))
     content_wrong = models.BooleanField(default=False, verbose_name=_("Content Wrong"))
     wrong_ean_asin = models.BooleanField(
-        default=False, verbose_name=_("Wrong EAN/ASIN")
+        default=False, verbose_name=_("Wrong EAN/GTIN/ASIN")
     )
     comment = models.TextField(blank=True, null=True, verbose_name=_("Comment/Details"))
     created_at = models.DateTimeField(

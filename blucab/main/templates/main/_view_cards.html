@@ -1,0 +1,130 @@
+{% load i18n %}
+{% load static %}
+{% load days_since %}
+
+{% for mu in movieuserlist %}
+    <div class="col">
+        <div class="card h-100" style="width: 10rem;">
+
+            <div class="overlay_div" id="pictureOverlayIcons">
+                <span data-bs-toggle="modal" data-bs-target="#e{{mu.id}}ModalLong">
+
+                    {% if mu.movie.picture_available and not mu.movie.force_picture_disable %}
+                        <img
+                            src="{% get_media_prefix %}cover/{{mu.movie.ean}}/cover.jpg"
+                            class="card-img-top img-fluid"
+                            alt="{% trans 'Picture of the cover' %}"
+                            loading="lazy"
+                            decoding="async"
+                            data-bs-toggle="tooltip"
+                            data-placement="top"
+                            title="{{mu.movie.title_clean}}">
+                    {% else %}
+                        <img
+                            src="{% static 'main/dummy.jpg' %}"
+                            class="card-img-top img-fluid"
+                            alt="{% trans 'Cover dummy' %}"
+                            loading="lazy"
+                            decoding="async"
+                            data-bs-toggle="tooltip"
+                            data-placement="top"
+                            title="{{mu.movie.title_clean}}">
+                    {% endif %}
+
+                    {% if usersettings.show_view_icon_new %}
+                        {% if mu.date_added|days_since <= usersettings.days_for_new %}
+                            <img src="{% static 'main/icons/new-icon.png' %}" class="new_overlay" />
+                        {% endif %}
+                    {% endif %}
+
+                    {% if mu.rented and usersettings.show_view_icon_rented %}
+                        <img src="{% static 'main/icons/rent-icon.png' %}" class="rented_overlay" />
+                    {% endif %}
+
+                </span>
+            </div>
+
+            {% if show_card_body %}
+                <div class="card-body" id="e{{mu.id}}Card">
+
+                    {% if is_user_view %}
+                        {% if usersettings.show_view_title %}
+                            <h5 class="card-title title-clamp" title="{{mu.movie.title_clean}}">
+                                {{mu.movie.title_clean}}
+                            </h5>
+                        {% endif %}
+                    {% else %}
+                        {% if show_view_title %}
+                            <h5 class="card-title title-clamp" title="{{mu.movie.title_clean}}">
+                                {{mu.movie.title_clean}}
+                            </h5>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if is_user_view and usersettings.show_view_details %}
+                        <p class="card-text">
+
+                            {% if mu.movie.runtime %}
+                                {{mu.movie.runtime}} min
+                            {% endif %}
+
+                            {% if not mu.movie.disc_count is 1 %}
+                                {% if usersettings.show_view_count_disc %}
+                                    <br>
+                                    {% blocktrans with disc_count=mu.movie.disc_count trimmed %}
+                                        {{ disc_count }} Disks
+                                    {% endblocktrans %}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if not mu.movie.movie_count is 1 %}
+                                {% if usersettings.show_view_count_movie %}
+                                    <br>
+                                    {% blocktrans with movie_count=mu.movie.movie_count trimmed %}
+                                        {{ movie_count }} Movies
+                                    {% endblocktrans %}
+                                {% endif %}
+                            {% endif %}
+
+                        </p>
+                    {% endif %}
+
+                    {% if is_user_view and filter_rented and mu.rented_to %}
+                        {% blocktrans with rented_to=mu.rented_to trimmed %}
+                            Rented to {{rented_to}}
+                        {% endblocktrans %}
+                        <br>
+                    {% endif %}
+
+                    {% if is_user_view and usersettings.show_view_button_details %}
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#e{{mu.id}}ModalLong">
+                            {% trans "Details" %}
+                        </button>
+                    {% endif %}
+
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% empty %}
+
+    {% if not is_partial %}
+        <div class="col-12 mt-4 text-center">
+            <p>
+                {% trans "Filter active or no movies available." %}
+                {% if is_user_view %}
+                    <a href="{% url 'add_movie' %}">
+                        {% trans "Add a movie." %}
+                    </a>
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+
+{% endfor %}

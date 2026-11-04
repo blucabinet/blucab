@@ -6,6 +6,7 @@ from .forms import (
     UpdateUserSettings,
     UpdateMovieUserList,
     UpdateMovie,
+    UpdateMovieAsModerator,
 )
 
 
@@ -35,11 +36,16 @@ def user_settings(request):
 @login_required
 def movie_settings(request, movie_id):
     user = request.user
+    reduced_edit = False
 
     is_moderator = user.groups.filter(name="Moderator-Movie").exists()
+    is_superuser = user.is_superuser
 
-    if not (user.is_superuser or is_moderator):
+    if not (is_superuser or is_moderator):
         return render(request, "error/403.html", status=403)
+
+    if is_moderator and (not is_superuser):
+        reduced_edit = True
 
     try:
         movie_model = Movie.objects.get(id=movie_id)
@@ -47,7 +53,10 @@ def movie_settings(request, movie_id):
         return render(request, "error/404.html", status=404)
 
     if request.method == "POST":
-        form = UpdateMovie(request.POST, instance=movie_model)
+        if reduced_edit:
+            form = UpdateMovieAsModerator(request.POST, instance=movie_model)
+        else:
+            form = UpdateMovie(request.POST, instance=movie_model)
 
         if form.is_valid():
             form.save()
@@ -57,7 +66,10 @@ def movie_settings(request, movie_id):
             return redirect(next_url)
         return redirect("view")
     else:
-        form = UpdateMovie(instance=movie_model)
+        if reduced_edit:
+            form = UpdateMovieAsModerator(instance=movie_model)
+        else:
+            form = UpdateMovie(instance=movie_model)
 
     next_url = request.GET.get("next", "")
 

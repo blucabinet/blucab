@@ -1,7 +1,14 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from dal import autocomplete
-from .models import UserCabinet, UserSettings, MovieUserList, Movie, MovieErrorReport
+from .models import (
+    UserCabinet,
+    UserSettings,
+    MovieUserList,
+    Movie,
+    MovieErrorReport,
+    MovieViewLog,
+)
 
 
 class UpdateUserSettings(forms.ModelForm):
@@ -65,9 +72,71 @@ class UpdateMovie(forms.ModelForm):
         widgets = {
             "date_added": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
             "date_updated": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
-            "price": forms.NumberInput(attrs={"type": "number", "step": "0.01"}),
             "picture_url_original": forms.TextInput(attrs={"type": "url"}),
             "picture_url_original_hd": forms.TextInput(attrs={"type": "url"}),
+            "content": forms.Textarea(attrs={"rows": 5}),
+            "languages": autocomplete.ModelSelect2Multiple(
+                url="language-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Languages..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+            "directors": autocomplete.ModelSelect2Multiple(
+                url="director-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Directors..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+            "actors": autocomplete.ModelSelect2Multiple(
+                url="actor-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Actors..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+            "studios": autocomplete.ModelSelect2Multiple(
+                url="studio-autocomplete",
+                attrs={
+                    "data-placeholder": _("Choose Studios..."),
+                    "data-theme": "bootstrap-5",
+                },
+            ),
+        }
+
+
+class UpdateMovieAsModerator(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields = [
+            "ean",
+            "asin",
+            "title_clean",
+            "format",
+            "release_year",
+            "runtime",
+            "content",
+            "content_rating",
+            "actors",
+            "directors",
+            "studios",
+            "genre",
+            "languages",
+            "disc_count",
+            "movie_count",
+            "season_count",
+            "episode_count",
+            "is_series",
+            "is_bluray_uhd",
+            "is_bluray_3d",
+            "force_picture_disable",
+            "imdb_id",
+            "date_updated",
+        ]
+        widgets = {
+            "date_added": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "date_updated": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
             "content": forms.Textarea(attrs={"rows": 5}),
             "languages": autocomplete.ModelSelect2Multiple(
                 url="language-autocomplete",
@@ -204,12 +273,12 @@ class CabinetDeleteForm(forms.Form):
 class AddMovieForm(forms.Form):
     query = forms.CharField(
         max_length=128,
-        label=_("EAN or Title"),
+        label=_("EAN/GTIN or Title"),
         required=True,
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "placeholder": _("Enter EAN or search term"),
+                "placeholder": _("Enter EAN/GTIN or search term"),
             }
         ),
     )
@@ -222,3 +291,34 @@ class MovieErrorReportForm(forms.ModelForm):
         widgets = {
             "comment": forms.Textarea(attrs={"rows": 3}),
         }
+
+
+class MovieViewLogForm(forms.ModelForm):
+    view_date = forms.DateTimeField(
+        label=_("Date"),
+        input_formats=["%Y-%m-%dT%H:%M"],
+    )
+
+    season = forms.IntegerField(
+        label=_("Season"),
+        required=False,
+        min_value=0,
+        max_value=9999,
+    )
+
+    episode = forms.IntegerField(
+        label=_("Episode"),
+        required=False,
+        min_value=0,
+        max_value=9999,
+    )
+
+    class Meta:
+        model = MovieViewLog
+        fields = [
+            "view_date",
+            "season",
+            "episode",
+            "watched_with",
+            "comment",
+        ]

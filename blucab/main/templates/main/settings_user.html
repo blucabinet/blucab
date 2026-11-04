@@ -40,6 +40,7 @@
             <a href="{% url 'import' %}" class="btn btn-outline-success" role="button">{% trans "Import Movies" %}</a>
             <br><br>
             <a href="{% url 'export' %}" class="btn btn-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Export your Movies in blucab format" %}">{% trans "Export" %}</a>
+            <br>
             ({% trans "Last export" %}: {{ usersettings.last_export }})
         </div>
     </div>

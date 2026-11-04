@@ -43,6 +43,7 @@
     <script>
         const form = document.getElementById("importForm");
         const submitBtn = document.getElementById("submitBtn");
+        const fileBtn = document.getElementById("fileBtn");
         const btnText = document.getElementById("btnText");
         const spinner = document.getElementById("spinner");
         
@@ -50,12 +51,16 @@
 
         form.addEventListener("submit", () => {
             submitBtn.disabled = true;
+            fileBtn.style.pointerEvents = "none";
+            fileBtn.style.opacity = "0.5";
+            fileBtn.tabIndex = -1;
             btnText.textContent = "{% trans 'Importing...' %}";
             spinner.classList.remove("d-none");
         });
 
         {% if task_id %}
             submitBtn.disabled = true;
+            fileBtn.disabled = true;
             btnText.textContent = "{% trans 'Processing in background...' %}";
             spinner.classList.remove("d-none");
 
@@ -73,6 +78,10 @@
                             
                             spinner.classList.add("d-none");
                             submitBtn.disabled = false;
+                            fileBtn.disabled = false;
+                            fileBtn.style.pointerEvents = "";
+                            fileBtn.style.opacity = "";
+                            fileBtn.removeAttribute("tabindex");
                             btnText.textContent = "{% trans 'Import' %}";
                             
                             alertBox.classList.remove("d-none");
