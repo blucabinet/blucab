@@ -4,6 +4,7 @@ from django.db.models.functions import Upper
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy, reverse
@@ -18,6 +19,8 @@ env.read_env()
 
 DEBUG = env.bool("DEBUG", False)
 ALLOW_MOVIE_ERROR_REPORT = env.bool("BLUCAB_ALLOW_MOVIE_ERROR_REPORT", True)
+
+MOVIES_PER_CHUNK = 30
 
 
 class RegexReplace(Func):
@@ -51,6 +54,26 @@ def natural_sort_key(expression, max_digits=20):
         )
 
     return result
+
+
+def render_movie_collection(request, context):
+    page_obj = Paginator(
+        context["movieuserlist"],
+        MOVIES_PER_CHUNK,
+    ).get_page(request.GET.get("page", 1))
+
+    context["movieuserlist"] = page_obj.object_list
+    context["page_obj"] = page_obj
+
+    is_partial = request.headers.get("x-requested-with") == "XMLHttpRequest"
+    context["is_partial"] = is_partial
+
+    if is_partial:
+        template = "main/_view_chunk.html"
+    else:
+        template = "main/view.html"
+
+    return render(request, template, context)
 
 
 def legal(request):
@@ -120,7 +143,9 @@ def cab_uname(request, uname):
     }
 
     if sort_by in sort_mapping:
-        movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
+        movieuserlist = movieuserlist.order_by(sort_mapping[sort_by], "pk")
+    else:
+        movieuserlist = movieuserlist.order_by("pk")
 
     # Update counts after filtering
     count_dvd = movieuserlist.filter(movie__format__name="DVD").count()
@@ -152,9 +177,8 @@ def cab_uname(request, uname):
         "movie__languages",
     )
 
-    return render(
+    return render_movie_collection(
         request,
-        "main/view.html",
         {
             "movieuserlist": movieuserlist,
             "usersettings": usersettings,
@@ -264,7 +288,7 @@ def view(request):
     sort_by = request.GET.get("sort") or usersettings.default_sort
 
     if sort_by in sort_mapping:
-        movieuserlist = movieuserlist.order_by(sort_mapping[sort_by])
+        movieuserlist = movieuserlist.order_by(sort_mapping[sort_by], "pk")
 
     elif sort_by in ("inventory_code_asc", "inventory_code_desc"):
         movieuserlist = movieuserlist.annotate(
@@ -284,13 +308,18 @@ def view(request):
                 "inventory_code_empty",
                 F("inventory_code_natural").asc(nulls_last=True),
                 "inventory_code",
+                "pk",
             )
         else:
             movieuserlist = movieuserlist.order_by(
                 "inventory_code_empty",
                 F("inventory_code_natural").desc(nulls_last=True),
                 "-inventory_code",
+                "pk",
             )
+
+    else:
+        movieuserlist = movieuserlist.order_by("pk")
 
     # Update counts after filtering
     count_dvd = movieuserlist.filter(movie__format__name="DVD").count()
@@ -312,9 +341,8 @@ def view(request):
         "movie__languages",
     )
 
-    return render(
+    return render_movie_collection(
         request,
-        "main/view.html",
         {
             "movieuserlist": movieuserlist,
             "usersettings": usersettings,
