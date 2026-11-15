@@ -63,4 +63,10 @@ urlpatterns = [
         autocomplete.StudioAutocomplete.as_view(),
         name="studio-autocomplete",
     ),
+    path("inventory/", views.inventory_check, name="inventory_check"),
+    path(
+        "inventory/update/<int:entry_id>/",
+        views.inventory_update,
+        name="inventory_update",
+    ),
 ]
