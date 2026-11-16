@@ -132,7 +132,7 @@ msgstr "Folge"
 #: main/models.py:11 main/models.py:22 main/models.py:33 main/models.py:44
 #: main/models.py:55 main/models.py:66
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: main/models.py:14 main/models.py:94
 #: main/templates/main/add_movie_confirm.html:31
@@ -201,7 +201,7 @@ msgstr "Inhaltsbewertungen"
 #: main/templates/main/inventory_check.html:190
 #: main/templates/main/inventory_check.html:252
 msgid "EAN/GTIN"
-msgstr ""
+msgstr "EAN/GTIN"
 
 #: main/models.py:85
 msgid "ASIN"
@@ -306,7 +306,7 @@ msgstr "Update Datum"
 
 #: main/models.py:175
 msgid "Flickrack ID"
-msgstr ""
+msgstr "Flickrack ID"
 
 #: main/models.py:179
 msgid "Movies"
@@ -902,7 +902,7 @@ msgstr "Barcode per Kamera scannen"
 #: main/templates/main/inventory_check.html:78
 msgid "Note: Scan with Camera works best with a smartphone rear-camera."
 msgstr ""
-"Notiz: Das einscannen funktioniert am besten mit der Hauptkamera eines "
+"Notiz: Das Einscannen funktioniert am besten mit der Hauptkamera eines "
 "Smartphones"
 
 #: main/templates/main/add_movie.html:40 main/templates/main/add_movie.html:88
@@ -1013,7 +1013,7 @@ msgstr "Sammlung"
 
 #: main/templates/main/base.html:106
 msgid "Inventory Check"
-msgstr "Inventur Prüfung"
+msgstr "Inventarprüfung"
 
 #: main/templates/main/base.html:112
 msgid "About"
@@ -1180,6 +1180,8 @@ msgid ""
 "These collection entries have not been found by an EAN/GTIN scan in this "
 "inventory run. You can update their details directly in the table."
 msgstr ""
+"Diese Sammlungseinträge wurden in dieser Inventur nicht durch ihre EAN/GTIN scans gefunden. "
+"Du kannst die Details direkt in der Tabelle editieren."
 
 #: main/templates/main/inventory_check.html:139
 msgid "All collection movies have been scanned."
@@ -1200,15 +1202,15 @@ msgstr "Gescannt aber nicht in deiner Sammlung"
 #: main/templates/main/inventory_check.html:192
 #: main/templates/main/inventory_check.html:255
 msgid "Scans"
-msgstr ""
+msgstr "Scans"
 
 #: main/templates/main/inventory_check.html:221
 msgid "Movie data lookup pending"
-msgstr ""
+msgstr "Abfrage der Filmdaten steht noch aus"
 
 #: main/templates/main/inventory_check.html:224
 msgid "The movie can be added after its data has been imported."
-msgstr ""
+msgstr "Der Film kann hinzugefügt werden, nachdem die Daten geladen wurde."
 
 #: main/templates/main/inventory_check.html:232
 msgid "No scanned movies are missing from your collection."
@@ -1805,36 +1807,36 @@ msgstr "Film in der Datenbank, aber nicht in deiner Sammlung gefunden: %(title)s
 
 #: main/views.py:923
 msgid "The EAN/GTIN was scanned, but the movie lookup could not be started."
-msgstr ""
+msgstr "Die EAN/GTIN wurde eingescannt, aber die Film-Abfrage konnte nicht gestartet werden."
 
 #: main/views.py:930
 #, python-format
 msgid ""
 "Movie not found yet. A background lookup has been started for EAN/GTIN "
 "%(ean)s."
-msgstr ""
+msgstr "Film noch nicht gefunden. Eine Hintergrundabgfrage wurde für die EAN/GTIN %(ean)s gestartet."
 
 #: main/views.py:937
 #, python-format
 msgid "EAN/GTIN %(ean)s is recorded. Movie data is still pending."
-msgstr ""
+msgstr "EAN/GTIN %(ean)s wurde angenommen. Film daten sind noch offen."
 
 #: main/views.py:943
 msgid "Unknown inventory action."
-msgstr ""
+msgstr "Unbekannte inventar Aktion."
 
 #: main/views.py:1118
 msgid "Enter a valid price with up to two decimal places."
-msgstr ""
+msgstr "Trage einen gültigen Preis mit biszu zwei Dezimalstellen ein."
 
 #: main/views.py:1125
 msgid "Enter a valid date added."
-msgstr ""
+msgstr "Trage ein valides hinzugefügt Datum ein."
 
 #: main/views.py:1144
 #, python-format
 msgid "Changes for %(title)s were saved."
-msgstr ""
+msgstr "Änderungen für %(title)s wurden gespeichert."
 
 #: register/forms.py:9
 msgid "Email"
