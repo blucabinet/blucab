@@ -133,7 +133,7 @@
                     </thead>
                     <tbody>
                         {% for mu in unchecked_movies %}
-                            {% include "main/_inventory_movie_row.html" with mu=mu %}
+                            {% include "main/_inventory_movie_row.html" with mu=mu show_manual_check=True %}
                         {% empty %}
                             <tr><td colspan="8" class="text-center py-4 text-success">
                                 <i class="bi bi-check-circle-fill"></i> {% trans "All collection movies have been scanned." %}
@@ -167,7 +167,7 @@
                     </thead>
                     <tbody>
                         {% for mu in checked_movies %}
-                            {% include "main/_inventory_movie_row.html" with mu=mu %}
+                            {% include "main/_inventory_movie_row.html" with mu=mu show_manual_check=False %}
                         {% empty %}
                             <tr><td colspan="8" class="text-center py-4 text-muted">{% trans "No scanned movies from your collection yet." %}</td></tr>
                         {% endfor %}
@@ -207,7 +207,7 @@
                                         <input type="hidden" name="scan_id" value="{{ scan.id }}">
                                         <button type="submit" class="btn btn-success btn-sm text-nowrap">
                                             <i class="bi bi-plus-lg"></i>
-                                            {% trans "Add to collection" %}
+                                            {% trans "Add to my collection" %}
                                         </button>
                                     </form>
                                 </td>

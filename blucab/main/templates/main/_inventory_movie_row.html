@@ -65,5 +65,23 @@
                 <i class="bi bi-save"></i> {% trans "Save" %}
             </button>
         </form>
+        {% if show_manual_check %}
+            <form method="post"
+                action="{% url 'inventory_check' %}"
+                class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="check_manually">
+                <input type="hidden" name="entry_id" value="{{ mu.id }}">
+
+                <button type="submit"
+                        class="btn btn-outline-success btn-sm"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="{% trans 'Check the Movie manually' %}">
+                    <i class="bi bi-check-lg"></i>
+                    {% trans "Check" %}
+                </button>
+            </form>
+        {% endif %}
     </td>
 </tr>

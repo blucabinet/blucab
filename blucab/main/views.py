@@ -761,6 +761,40 @@ def inventory_check(request):
             messages.success(request, _("The inventory check has been reset."))
             return redirect("inventory_check")
 
+        if action == "check_manually":
+            entry = get_object_or_404(
+                MovieUserList.objects.select_related("movie"),
+                pk=request.POST.get("entry_id"),
+                user=user,
+            )
+
+            now = timezone.now()
+
+            scan, created = InventoryScan.objects.get_or_create(
+                session=session,
+                ean=entry.movie.ean,
+                defaults={
+                    "movie": entry.movie,
+                    "scan_count": 1,
+                    "first_scanned_at": now,
+                    "last_scanned_at": now,
+                },
+            )
+
+            if created:
+                messages.success(
+                    request,
+                    _("Movie manually checked: %(title)s")
+                    % {"title": entry.movie.title_clean},
+                )
+            else:
+                messages.info(
+                    request,
+                    _("This movie has already been checked."),
+                )
+
+            return redirect("inventory_check")
+
         if action == "add_to_collection":
             scan = get_object_or_404(
                 InventoryScan,
