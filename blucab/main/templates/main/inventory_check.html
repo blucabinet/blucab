@@ -118,7 +118,7 @@
         <p class="text-muted small">{% trans "These collection entries have not been found by an EAN/GTIN scan in this inventory run. You can update their details directly in the table." %}</p>
         <div class="bg-white rounded border shadow-sm p-2">
             <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle mb-0" style="min-width: 950px;">
+                <table class="table table-striped table-hover align-middle mb-0 inventory-table inventory-table-collection">
                     <thead class="table-light">
                         <tr>
                             <th>{% trans "Format" %}</th>
@@ -152,7 +152,7 @@
         </div>
         <div class="bg-white rounded border shadow-sm p-2">
             <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle mb-0" style="min-width: 950px;">
+                <table class="table table-striped table-hover align-middle mb-0 inventory-table inventory-table-collection">
                     <thead class="table-light">
                         <tr>
                             <th>{% trans "Format" %}</th>
@@ -182,8 +182,7 @@
 
         <div class="bg-white rounded border shadow-sm p-2">
             <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle mb-0"
-                    style="min-width: 950px;">
+                <table class="table table-striped table-hover align-middle mb-0 inventory-table inventory-table-unknown">
                     <thead class="table-light">
                         <tr>
                             <th>{% trans "Format" %}</th>
@@ -240,19 +239,18 @@
     </section>
 
     <section class="mb-4">
-        <h2 class="h5 mb-2">{% trans "Duplicate movies" %}</h2>
+        <h2 class="h5 mb-2">{% trans "Duplicate movie scans" %}</h2>
 
         <div class="bg-white rounded border shadow-sm p-2">
             <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle mb-0"
-                    style="min-width: 950px;">
+                <table class="table table-striped table-hover align-middle mb-0 inventory-table inventory-table-unknown">
                     <thead class="table-light">
                         <tr>
                             <th>{% trans "Format" %}</th>
                             <th>{% trans "EAN/GTIN" %}</th>
                             <th>{% trans "Title" %}</th>
-                            <th>{% trans "Collection entries" %}</th>
                             <th>{% trans "Scans" %}</th>
+                            <th>{% trans "Collection entries" %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -279,14 +277,14 @@
                                         —
                                     {% endif %}
                                 </td>
-                                <td>{{ duplicate.collection_count }}</td>
                                 <td>
                                     {% if duplicate.scan_count %}
-                                        {{ duplicate.scan_count }}
+                                    {{ duplicate.scan_count }}
                                     {% else %}
-                                        —
+                                    —
                                     {% endif %}
                                 </td>
+                                <td>{{ duplicate.collection_count }}</td>
                             </tr>
                         {% empty %}
                             <tr>
@@ -491,31 +489,114 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
-#inventory-interactive {
-    position: relative;
-    width: 100%;
-    max-width: 28rem;
-    aspect-ratio: 1 / 1;
-    margin-inline: auto;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #000;
-}
+    #inventory-interactive {
+        position: relative;
+        width: 100%;
+        max-width: 28rem;
+        aspect-ratio: 1 / 1;
+        margin-inline: auto;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000;
+    }
 
-.inventory-scanner-control {
-    display: block;
-    width: 100%;
-    max-width: 28rem;
-    margin-inline: auto;
-}
+    .inventory-scanner-control {
+        display: block;
+        width: 100%;
+        max-width: 28rem;
+        margin-inline: auto;
+    }
 
-#inventory-interactive video,
-#inventory-interactive canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    #inventory-interactive video,
+    #inventory-interactive canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .inventory-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+        overflow-wrap: break-word;
+    }
+
+    .inventory-table-collection {
+        min-width: 122ch;
+    }
+
+    .inventory-table-collection th:nth-child(1),
+    .inventory-table-collection td:nth-child(1) {
+        width: 10ch; /* Format */
+    }
+
+    .inventory-table-collection th:nth-child(2),
+    .inventory-table-collection td:nth-child(2) {
+        width: 17ch; /* EAN/GTIN */
+    }
+
+    .inventory-table-collection th:nth-child(3),
+    .inventory-table-collection td:nth-child(3) {
+        min-width: 17ch; /* Title */
+    }
+
+    .inventory-table-collection th:nth-child(4),
+    .inventory-table-collection td:nth-child(4) {
+        width: 10ch; /* Viewed / Scans */
+    }
+
+    .inventory-table-collection th:nth-child(5),
+    .inventory-table-collection td:nth-child(5) {
+        width: 17ch; /* Cabinet / Action */
+    }
+
+    .inventory-table-collection th:nth-child(6),
+    .inventory-table-collection td:nth-child(6) {
+        width: 14ch; /* Price */
+    }
+
+    .inventory-table-collection th:nth-child(7),
+    .inventory-table-collection td:nth-child(7) {
+        width: 16ch; /* Date added */
+    }
+
+    .inventory-table-collection th:nth-child(8),
+    .inventory-table-collection td:nth-child(8) {
+        width: 16ch; /* Buttons */
+    }
+
+    .inventory-table-unknown {
+        min-width: 85ch;
+    }
+
+    .inventory-table-unknown th:nth-child(1),
+    .inventory-table-unknown td:nth-child(1) {
+        width: 10ch;
+    } /* Format */
+
+    .inventory-table-unknown th:nth-child(2),
+    .inventory-table-unknown td:nth-child(2) {
+        width: 17ch;
+    } /* EAN/GTIN */
+
+    .inventory-table-unknown th:nth-child(3),
+    .inventory-table-unknown td:nth-child(3) {
+        min-width: 17ch; /* Title */
+    }
+
+    .inventory-table-unknown th:nth-child(4),
+    .inventory-table-unknown td:nth-child(4) {
+        width: 10ch;
+    } /* Scans */
+
+    .inventory-table-unknown th:nth-child(5),
+    .inventory-table-unknown td:nth-child(5) {
+        width: 20ch;
+    } /* Action */
 </style>
 {% endblock %}
