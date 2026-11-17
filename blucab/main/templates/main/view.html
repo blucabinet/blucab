@@ -20,13 +20,16 @@
                 {% else %}
                     <a href="{% url 'settings' %}" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">🔗 {% trans "Share" %}</a>
                 {% endif %}
+            {% endif %}
                 <a href="{% url 'view_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open list view' %}">
                     <i class="bi bi-list-task"></i> {% trans "List View" %}
                 </a>
                 <a href="{% url 'view_log_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open global watch log' %}">
                     <i class="bi bi-list-task"></i> {% trans "Log View" %}
                 </a>
-            {% endif %}
+                <a href="{% url 'inventory_check' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open the inventory check' %}">
+                    <i class="bi bi-list-task"></i> {% trans "Inventory Check" %}
+                </a>
         {% endif %}
     {% else %}
         {% blocktrans with username=usersettings.user.get_username trimmed %}
