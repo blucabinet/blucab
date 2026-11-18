@@ -96,13 +96,45 @@
         <div class="text-muted small">
             {% trans "Inventory started" %}: {{ inventory_session.started_at|date:"SHORT_DATETIME_FORMAT" }}
         </div>
-        <form method="post" onsubmit="return confirm('{% trans 'Reset the inventory check and remove all scans?' %}');">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="reset">
-            <button type="submit" class="btn btn-outline-danger btn-sm">
-                <i class="bi bi-arrow-counterclockwise"></i> {% trans "Reset inventory" %}
-            </button>
-        </form>
+        <button type="button"
+                class="btn btn-outline-danger btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#resetInventoryModal">
+            <i class="bi bi-arrow-counterclockwise"></i> {% trans "Reset Inventory Check" %}
+        </button>
+    </div>
+
+    <div class="modal fade" id="resetInventoryModal" tabindex="-1"
+        aria-labelledby="resetInventoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="post" class="modal-content">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="reset">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger fw-bold" id="resetInventoryModalLabel">
+                        {% trans "Reset Inventory Check" %}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="{% trans 'Close' %}"></button>
+                </div>
+
+                <div class="modal-body">
+                    {% trans "Are you sure you want to reset this inventory check and remove all scans?" %}
+                    <br>
+                    {% trans "This action cannot be undone." %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {% trans "Cancel" %}
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        {% trans "Yes, reset this inventory check" %}
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="progress mb-4" role="progressbar" aria-label="{% trans 'Inventory progress' %}"
