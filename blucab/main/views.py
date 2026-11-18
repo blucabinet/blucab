@@ -1125,6 +1125,7 @@ def inventory_update(request, entry_id):
         messages.error(request, _("Enter a valid date added."))
         return redirect("inventory_check")
 
+    entry.rented = request.POST.get("rented") == "true"
     entry.viewed = request.POST.get("viewed") == "true"
     entry.cabinet = cabinet
     entry.price = price
@@ -1132,6 +1133,7 @@ def inventory_update(request, entry_id):
 
     entry.save(
         update_fields=[
+            "rented",
             "viewed",
             "cabinet",
             "price",

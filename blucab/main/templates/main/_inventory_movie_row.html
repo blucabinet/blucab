@@ -13,6 +13,15 @@
         <input form="inventory-row-form-{{ mu.id }}"
                class="form-check-input"
                type="checkbox"
+               name="rented"
+               value="true"
+               {% if mu.rented %}checked{% endif %}
+               aria-label="{% trans 'Rented' %}">
+    </td>
+    <td class="text-center">
+        <input form="inventory-row-form-{{ mu.id }}"
+               class="form-check-input"
+               type="checkbox"
                name="viewed"
                value="true"
                {% if mu.viewed %}checked{% endif %}

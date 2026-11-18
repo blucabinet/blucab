@@ -124,6 +124,7 @@
                             <th>{% trans "Format" %}</th>
                             <th>{% trans "EAN/GTIN" %}</th>
                             <th>{% trans "Title" %}</th>
+                            <th class="text-center">{% trans "Rented" %}</th>
                             <th class="text-center">{% trans "Viewed" %}</th>
                             <th>{% trans "Cabinet" %}</th>
                             <th>{% trans "Price" %}</th>
@@ -158,6 +159,7 @@
                             <th>{% trans "Format" %}</th>
                             <th>{% trans "EAN/GTIN" %}</th>
                             <th>{% trans "Title" %}</th>
+                            <th class="text-center">{% trans "Rented" %}</th>
                             <th class="text-center">{% trans "Viewed" %}</th>
                             <th>{% trans "Cabinet" %}</th>
                             <th>{% trans "Price" %}</th>
@@ -547,26 +549,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
     .inventory-table-collection th:nth-child(4),
     .inventory-table-collection td:nth-child(4) {
-        width: 10ch; /* Viewed / Scans */
+        width: 10ch; /* Rented */
     }
 
     .inventory-table-collection th:nth-child(5),
     .inventory-table-collection td:nth-child(5) {
-        width: 17ch; /* Cabinet / Action */
+        width: 10ch; /* Viewed */
     }
 
     .inventory-table-collection th:nth-child(6),
     .inventory-table-collection td:nth-child(6) {
-        width: 14ch; /* Price */
+        width: 17ch; /* Cabinet */
     }
 
     .inventory-table-collection th:nth-child(7),
     .inventory-table-collection td:nth-child(7) {
-        width: 16ch; /* Date added */
+        width: 14ch; /* Price */
     }
 
     .inventory-table-collection th:nth-child(8),
     .inventory-table-collection td:nth-child(8) {
+        width: 16ch; /* Date added */
+    }
+
+    .inventory-table-collection th:nth-child(9),
+    .inventory-table-collection td:nth-child(9) {
         width: 16ch; /* Buttons */
     }
 
