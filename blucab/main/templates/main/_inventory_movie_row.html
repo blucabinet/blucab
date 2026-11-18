@@ -1,0 +1,96 @@
+{% load i18n %}
+<tr>
+    <td class="text-secondary">{{ mu.movie.format }}</td>
+    <td class="text-secondary text-nowrap">{{ mu.movie.ean }}</td>
+    <td class="fw-normal">
+        <a href="{% url 'user_movie_settings' mu.movie.id %}?next={% url 'inventory_check' %}"
+           class="text-decoration-none"
+           title="{% trans 'Edit movie' %}">
+            {{ mu.movie.title_clean }}
+        </a>
+    </td>
+    <td class="text-center">
+        <input form="inventory-row-form-{{ mu.id }}"
+               class="form-check-input"
+               type="checkbox"
+               name="rented"
+               value="true"
+               {% if mu.rented %}checked{% endif %}
+               aria-label="{% trans 'Rented' %}">
+    </td>
+    <td class="text-center">
+        <input form="inventory-row-form-{{ mu.id }}"
+               class="form-check-input"
+               type="checkbox"
+               name="viewed"
+               value="true"
+               {% if mu.viewed %}checked{% endif %}
+               aria-label="{% trans 'Viewed' %}">
+    </td>
+    <td>
+        <select form="inventory-row-form-{{ mu.id }}"
+                name="cabinet_id"
+                class="form-select form-select-sm"
+                style="min-width: 130px;">
+            <option value="">-</option>
+            {% for cabinet in cabinets %}
+                <option value="{{ cabinet.id }}" {% if mu.cabinet_id == cabinet.id %}selected{% endif %}>
+                    {{ cabinet.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </td>
+    <td>
+        <div class="input-group input-group-sm" style="min-width: 110px;">
+            <input form="inventory-row-form-{{ mu.id }}"
+                   type="number"
+                   name="price"
+                   class="form-control"
+                   min="0"
+                   max="9999.99"
+                   step="0.01"
+                   value="{{ mu.price }}"
+                   required
+                   aria-label="{% trans 'Price' %}">
+            <span class="input-group-text">{{ price_unit }}</span>
+        </div>
+    </td>
+    <td>
+        <input form="inventory-row-form-{{ mu.id }}"
+               type="date"
+               name="date_added"
+               class="form-control form-control-sm"
+               value="{{ mu.date_added|date:'Y-m-d' }}"
+               required
+               style="min-width: 135px;"
+               aria-label="{% trans 'Date added' %}">
+    </td>
+    <td class="text-end">
+        <form id="inventory-row-form-{{ mu.id }}"
+              method="post"
+              action="{% url 'inventory_update' mu.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-primary btn-sm text-nowrap">
+                <i class="bi bi-save"></i> {% trans "Save" %}
+            </button>
+        </form>
+        {% if show_manual_check %}
+            <form method="post"
+                action="{% url 'inventory_check' %}"
+                class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="check_manually">
+                <input type="hidden" name="entry_id" value="{{ mu.id }}">
+
+                <button type="submit"
+                        class="btn btn-outline-success btn-sm"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="{% trans 'Check the Movie manually' %}">
+                    <i class="bi bi-check-lg"></i>
+                    {% trans "Check" %}
+                </button>
+            </form>
+        {% endif %}
+    </td>
+</tr>
