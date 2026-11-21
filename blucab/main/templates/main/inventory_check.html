@@ -48,6 +48,19 @@
             <form method="post" id="inventory-scan-form" class="row g-2 align-items-end">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="scan">
+                <div class="col-12 col-md-1">
+                    <label for="inventory-batch-number" class="form-label">
+                        {% trans "Batch number" %}
+                    </label>
+                    <input type="number"
+                        name="batch_number"
+                        id="inventory-batch-number"
+                        class="form-control"
+                        step="1"
+                        value="{{ inventory_session.current_batch_number|default_if_none:'1' }}"
+                        title="{% trans 'User defined batch number for later filtering'}"
+                    >
+                </div>
                 <div class="col-12 col-md">
                     <label for="inventory-ean" class="form-label">{% trans "EAN/GTIN" %}</label>
                     <input type="search"
@@ -57,7 +70,8 @@
                            inputmode="numeric"
                            autocomplete="off"
                            placeholder="{% trans 'Enter EAN/GTIN' %}"
-                           required>
+                           required
+                    >
                 </div>
                 <div class="col-12 col-md-auto">
                     <button type="submit" class="btn btn-primary w-100" id="inventory-search-button">

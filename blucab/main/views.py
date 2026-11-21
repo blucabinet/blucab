@@ -775,6 +775,7 @@ def inventory_check(request):
                 ean=entry.movie.ean,
                 defaults={
                     "movie": entry.movie,
+                    "batch_number": session.current_batch_number,
                     "scan_count": 1,
                     "first_scanned_at": now,
                     "last_scanned_at": now,
@@ -846,6 +847,16 @@ def inventory_check(request):
         if action == "scan":
             raw_ean = request.POST.get("ean", "").strip()
             ean = "".join(raw_ean.split()).replace("-", "")
+            raw_batch_number = request.POST.get("batch_number", "").strip()
+
+            try:
+                batch_number = int(raw_batch_number) if raw_batch_number else None
+            except ValueError:
+                messages.error(request, _("Enter a valid batch number."))
+                return redirect("inventory_check")
+
+            session.current_batch_number = batch_number
+            session.save(update_fields=["current_batch_number"])
 
             if not ean.isascii() or not ean.isdigit() or not 8 <= len(ean) <= 14:
                 messages.error(
@@ -863,6 +874,7 @@ def inventory_check(request):
                     ean=ean,
                     defaults={
                         "movie": movie,
+                        "batch_number": session.current_batch_number,
                         "first_scanned_at": now,
                         "last_scanned_at": now,
                     },
