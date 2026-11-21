@@ -15,6 +15,26 @@
         </a>
     </div>
 
+    <div id="inventory-scanner-container" class="card mb-4" style="display:none;">
+        <div class="card-header fw-semibold">{% trans "Camera" %}</div>
+        
+        <div class="inventory-scanner-inner">
+
+            <div class="mb-2 inventory-scanner-control" style="margin-top: 15px;">
+                <select id="inventory-camera-select" class="form-select">
+                    <option value="">{% trans "Select camera..." %}</option>
+                </select>
+            </div>
+
+            <div id="inventory-interactive" class="viewport"></div>
+            <button type="button" id="btn-stop-inventory-scanner" class="btn btn-danger mt-2 inventory-scanner-control">
+                {% trans "Cancel Scan" %}
+            </button>
+            </br>
+
+        </div>
+    </div>
+
     <div class="row g-3 mb-3">
         <div class="col-6 col-lg-3">
             <div class="card h-100"><div class="card-body">
@@ -48,6 +68,7 @@
             <form method="post" id="inventory-scan-form" class="row g-2 align-items-end">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="scan">
+                
                 <div class="col-12 col-md-1">
                     <label for="inventory-batch-number" class="form-label">
                         {% trans "Batch number" %}
@@ -88,18 +109,6 @@
                 {% trans "A second scan of the same EAN/GTIN is recorded as a duplicate scan." %}
                 {% trans "Note: Scan with Camera works best with a smartphone rear-camera." %}
             </p>
-            <div id="inventory-scanner-container" class="mt-3" style="display:none;">
-                <div class="mb-2 inventory-scanner-control">
-                    <label for="inventory-camera-select" class="form-label">{% trans "Camera" %}</label>
-                    <select id="inventory-camera-select" class="form-select">
-                        <option value="">{% trans "Select camera..." %}</option>
-                    </select>
-                </div>
-                <div id="inventory-interactive" class="viewport"></div>
-                <button type="button" id="btn-stop-inventory-scanner" class="btn btn-danger mt-2 inventory-scanner-control">
-                    {% trans "Cancel Scan" %}
-                </button>
-            </div>
         </div>
     </div>
 
@@ -386,10 +395,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    startBtn.addEventListener('click', async function () {
+    startBtn.addEventListener('click', async function (event) {
         sessionStorage.setItem('blucab_inventory_scanner_active', 'true');
         scannerContainer.style.display = 'block';
         startBtn.style.display = 'none';
+
+        // Scroll to the top only when the user starts the scanner manually.
+        if (event.isTrusted) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -534,6 +551,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
+    .inventory-scanner-inner {
+        margin-inline: 1rem;
+    }
+
     #inventory-interactive {
         position: relative;
         width: 100%;
