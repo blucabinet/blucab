@@ -453,6 +453,12 @@ class InventorySession(models.Model):
         default=timezone.now,
         verbose_name=_("Started at"),
     )
+    current_batch_number = models.IntegerField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Current batch number"),
+    )
 
     class Meta:
         verbose_name = _("Inventory session")
@@ -488,6 +494,12 @@ class InventoryScan(models.Model):
     last_scanned_at = models.DateTimeField(
         default=timezone.now,
         verbose_name=_("Last scanned at"),
+    )
+    batch_number = models.IntegerField(
+        blank=True,
+        null=True,
+        default=1,
+        verbose_name=_("Batch number"),
     )
 
     class Meta:
