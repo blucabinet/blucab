@@ -456,8 +456,32 @@ class InventorySession(models.Model):
     current_batch_number = models.IntegerField(
         blank=True,
         null=True,
-        default=None,
+        default=1,
         verbose_name=_("Current batch number"),
+    )
+
+    default_viewed = models.BooleanField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Default viewed"),
+    )
+
+    default_rented = models.BooleanField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Default rented"),
+    )
+
+    default_cabinet = models.ForeignKey(
+        UserCabinet,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        default=None,
+        related_name="inventory_sessions",
+        verbose_name=_("Default cabinet"),
     )
 
     class Meta:
@@ -498,7 +522,7 @@ class InventoryScan(models.Model):
     batch_number = models.IntegerField(
         blank=True,
         null=True,
-        default=1,
+        default=None,
         verbose_name=_("Batch number"),
     )
 
