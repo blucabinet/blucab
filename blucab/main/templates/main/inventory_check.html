@@ -68,47 +68,152 @@
             <form method="post" id="inventory-scan-form" class="row g-2 align-items-end">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="scan">
-                
-                <div class="col-12 col-md-1">
-                    <label for="inventory-batch-number" class="form-label">
-                        {% trans "Batch number" %}
-                    </label>
-                    <input type="number"
-                        name="batch_number"
-                        id="inventory-batch-number"
-                        class="form-control"
-                        step="1"
-                        value="{{ inventory_session.current_batch_number|default_if_none:'1' }}"
-                        title="{% trans 'User defined batch number for later filtering'}"
-                    >
-                </div>
+
                 <div class="col-12 col-md">
-                    <label for="inventory-ean" class="form-label">{% trans "EAN/GTIN" %}</label>
-                    <input type="search"
-                           name="ean"
-                           id="inventory-ean"
-                           class="form-control"
-                           inputmode="numeric"
-                           autocomplete="off"
-                           placeholder="{% trans 'Enter EAN/GTIN' %}"
-                           required
+                    <label for="inventory-ean" class="form-label">
+                        {% trans "EAN/GTIN" %}
+                    </label>
+                    <input
+                        type="search"
+                        name="ean"
+                        id="inventory-ean"
+                        class="form-control"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="{% trans 'Enter EAN/GTIN' %}"
+                        required
                     >
                 </div>
+
                 <div class="col-12 col-md-auto">
                     <button type="submit" class="btn btn-primary w-100" id="inventory-search-button">
                         <i class="bi bi-search"></i> {% trans "Check" %}
                     </button>
                 </div>
+
                 <div class="col-12 col-md-auto">
                     <button type="button" id="btn-start-inventory-scanner" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-camera"></i> {% trans "Scan Barcode with Camera" %}
                     </button>
                 </div>
+
+                <div class="col-12">
+                    <p class="small text-muted mt-2 mb-0">
+                        {% trans "A second scan of the same EAN/GTIN is recorded as a duplicate scan." %}
+                        {% trans "Note: Scan with Camera works best with a smartphone rear-camera." %}
+                    </p>
+
+                    <div class="accordion mt-2" id="inventory-default-values">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button
+                                    class="accordion-button collapsed inventory-default-values-toggle"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#inventory-default-values-content"
+                                    aria-expanded="false"
+                                    aria-controls="inventory-default-values-content"
+                                >
+                                    <i class="bi bi-gear me-2" aria-hidden="true"></i>
+                                    {% trans "Default values for Checked Movie" %}
+                                </button>
+                            </h2>
+
+                            <div
+                                id="inventory-default-values-content"
+                                class="accordion-collapse collapse"
+                                data-bs-parent="#inventory-default-values"
+                            >
+                                <div class="accordion-body">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-2">
+                                            <label for="inventory-batch-number" class="form-label">
+                                                {% trans "Batch number" %}
+                                            </label>
+                                            <input
+                                                type="number"
+                                                name="batch_number"
+                                                id="inventory-batch-number"
+                                                class="form-control"
+                                                step="1"
+                                                value="{{ inventory_session.current_batch_number|default_if_none:'1' }}"
+                                                title="{% trans 'User defined batch number for later filtering' %}"
+                                            >
+                                        </div>
+
+                                        <div class="col-6 col-md-2">
+                                            <label for="inventory-default-rented" class="form-label">
+                                                {% trans "Rented" %}
+                                            </label>
+                                            <select
+                                                name="default_rented"
+                                                id="inventory-default-rented"
+                                                class="form-select"
+                                            >
+                                                <option value="" {% if default_rented_value == "" %}selected{% endif %}>
+                                                    - {% trans "Don't change" %} -
+                                                </option>
+                                                <option value="true" {% if default_rented_value == "true" %}selected{% endif %}>
+                                                    {% trans "Yes" %}
+                                                </option>
+                                                <option value="false" {% if default_rented_value == "false" %}selected{% endif %}>
+                                                    {% trans "No" %}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-6 col-md-2">
+                                            <label for="inventory-default-viewed" class="form-label">
+                                                {% trans "Viewed" %}
+                                            </label>
+                                            <select
+                                                name="default_viewed"
+                                                id="inventory-default-viewed"
+                                                class="form-select"
+                                            >
+                                                <option value="" {% if default_viewed_value == "" %}selected{% endif %}>
+                                                    - {% trans "Don't change" %} -
+                                                </option>
+                                                <option value="true" {% if default_viewed_value == "true" %}selected{% endif %}>
+                                                    {% trans "Yes" %}
+                                                </option>
+                                                <option value="false" {% if default_viewed_value == "false" %}selected{% endif %}>
+                                                    {% trans "No" %}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label for="inventory-default-cabinet" class="form-label">
+                                                {% trans "Cabinet" %}
+                                            </label>
+                                            <select
+                                                name="default_cabinet"
+                                                id="inventory-default-cabinet"
+                                                class="form-select"
+                                            >
+                                                <option value="" {% if not inventory_session.default_cabinet_id %}selected{% endif %}>
+                                                    - {% trans "Don't change" %} -
+                                                </option>
+                                                {% for cabinet in cabinets %}
+                                                    <option
+                                                        value="{{ cabinet.pk }}"
+                                                        {% if inventory_session.default_cabinet_id == cabinet.pk %}selected{% endif %}
+                                                    >
+                                                        {{ cabinet.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
-            <p class="small text-muted mt-2 mb-0">
-                {% trans "A second scan of the same EAN/GTIN is recorded as a duplicate scan." %}
-                {% trans "Note: Scan with Camera works best with a smartphone rear-camera." %}
-            </p>
         </div>
     </div>
 
@@ -550,7 +655,56 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<script>
+document.querySelectorAll('form').forEach(function (form) {
+    const actionInput = form.querySelector('input[name="action"]');
+
+    if (
+        !actionInput ||
+        !['check_manually', 'add_to_collection'].includes(actionInput.value)
+    ) {
+        return;
+    }
+
+    form.addEventListener('submit', function () {
+        const fields = [
+            ['batch_number', 'inventory-batch-number'],
+            ['default_viewed', 'inventory-default-viewed'],
+            ['default_rented', 'inventory-default-rented'],
+            ['default_cabinet', 'inventory-default-cabinet'],
+        ];
+
+        fields.forEach(function ([name, sourceId]) {
+            const source = document.getElementById(sourceId);
+
+            if (!source) return;
+
+            let hiddenInput = form.querySelector(`input[name="${name}"]`);
+
+            if (!hiddenInput) {
+                hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = name;
+                form.appendChild(hiddenInput);
+            }
+
+            hiddenInput.value = source.value;
+        });
+    });
+});
+</script>
+
 <style>
+    .inventory-default-values-toggle {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        padding: 0.4rem 0.75rem;
+    }
+
+    .inventory-default-values-toggle::after {
+        background-size: 0.85rem;
+    }
+
     .inventory-scanner-inner {
         margin-inline: 1rem;
     }

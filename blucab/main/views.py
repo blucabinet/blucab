@@ -746,10 +746,87 @@ def report_movie_error(request, movie_id):
     )
 
 
+def _save_inventory_session_defaults(request, session, user):
+    update_fields = []
+
+    if "batch_number" in request.POST:
+        raw_batch_number = request.POST.get("batch_number", "").strip()
+
+        try:
+            session.current_batch_number = (
+                int(raw_batch_number) if raw_batch_number else None
+            )
+        except ValueError:
+            return _("Enter a valid batch number.")
+
+        update_fields.append("current_batch_number")
+
+    for field_name in ("default_viewed", "default_rented"):
+        if field_name not in request.POST:
+            continue
+
+        raw_value = request.POST.get(field_name, "")
+
+        if raw_value == "":
+            value = None
+        elif raw_value == "true":
+            value = True
+        elif raw_value == "false":
+            value = False
+        else:
+            return _("Select a valid default value.")
+
+        setattr(session, field_name, value)
+        update_fields.append(field_name)
+
+    if "default_cabinet" in request.POST:
+        raw_cabinet_id = request.POST.get("default_cabinet", "").strip()
+
+        if raw_cabinet_id:
+            try:
+                cabinet_id = int(raw_cabinet_id)
+                cabinet = UserCabinet.objects.get(
+                    pk=cabinet_id,
+                    user=user,
+                )
+            except (ValueError, UserCabinet.DoesNotExist):
+                return _("Select a valid cabinet.")
+        else:
+            cabinet = None
+
+        session.default_cabinet = cabinet
+        update_fields.append("default_cabinet")
+
+    if update_fields:
+        session.save(update_fields=update_fields)
+
+    return None
+
+
+def _inventory_movie_default_values(session):
+    values = {}
+
+    if session.default_viewed is not None:
+        values["viewed"] = session.default_viewed
+
+    if session.default_rented is not None:
+        values["rented"] = session.default_rented
+
+    if session.default_cabinet_id is not None:
+        values["cabinet"] = session.default_cabinet
+
+    return values
+
+
 @login_required
 def inventory_check(request):
     user = request.user
     session, created_session = InventorySession.objects.get_or_create(user=user)
+    error = _save_inventory_session_defaults(request, session, user)
+
+    if error:
+        messages.error(request, error)
+        return redirect("inventory_check")
 
     if request.method == "POST":
         action = request.POST.get("action")
@@ -781,6 +858,15 @@ def inventory_check(request):
                     "last_scanned_at": now,
                 },
             )
+
+            if created:
+                default_values = _inventory_movie_default_values(session)
+
+                if default_values:
+                    MovieUserList.objects.filter(
+                        user=user,
+                        movie__ean=entry.movie.ean,
+                    ).update(**default_values)
 
             if created:
                 messages.success(
@@ -828,6 +914,7 @@ def inventory_check(request):
             created_entry, created = MovieUserList.objects.get_or_create(
                 user=user,
                 movie=movie,
+                defaults=_inventory_movie_default_values(session),
             )
 
             if created:
@@ -847,16 +934,6 @@ def inventory_check(request):
         if action == "scan":
             raw_ean = request.POST.get("ean", "").strip()
             ean = "".join(raw_ean.split()).replace("-", "")
-            raw_batch_number = request.POST.get("batch_number", "").strip()
-
-            try:
-                batch_number = int(raw_batch_number) if raw_batch_number else None
-            except ValueError:
-                messages.error(request, _("Enter a valid batch number."))
-                return redirect("inventory_check")
-
-            session.current_batch_number = batch_number
-            session.save(update_fields=["current_batch_number"])
 
             if not ean.isascii() or not ean.isdigit() or not 8 <= len(ean) <= 14:
                 messages.error(
@@ -879,6 +956,15 @@ def inventory_check(request):
                         "last_scanned_at": now,
                     },
                 )
+
+                if created:
+                    default_values = _inventory_movie_default_values(session)
+
+                    if default_values:
+                        MovieUserList.objects.filter(
+                            user=user,
+                            movie__ean=ean,
+                        ).update(**default_values)
 
                 if not created:
                     update_values = {
@@ -1086,6 +1172,16 @@ def inventory_check(request):
                 .values_list("price_unit", flat=True)
                 .first()
                 or "€"
+            ),
+            "default_viewed_value": (
+                ""
+                if session.default_viewed is None
+                else "true" if session.default_viewed else "false"
+            ),
+            "default_rented_value": (
+                ""
+                if session.default_rented is None
+                else "true" if session.default_rented else "false"
             ),
         },
     )
