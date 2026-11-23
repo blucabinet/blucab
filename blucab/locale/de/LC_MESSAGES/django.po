@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 18:04+0100\n"
+"POT-Creation-Date: 2026-11-23 06:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,8 +24,8 @@ msgstr "EAN"
 
 #: contenthandler/models.py:10 main/models.py:167 main/models.py:240
 #: main/templates/main/_inventory_movie_row.html:66
-#: main/templates/main/inventory_check.html:160
-#: main/templates/main/inventory_check.html:195
+#: main/templates/main/inventory_check.html:288
+#: main/templates/main/inventory_check.html:323
 msgid "Date added"
 msgstr "Hinzugefügt am"
 
@@ -38,7 +38,7 @@ msgid "Checked"
 msgstr "Ausgewählt"
 
 #: contenthandler/models.py:17 main/models.py:218 main/models.py:404
-#: main/models.py:481 main/templates/main/_view_movie_modal.html:299
+#: main/models.py:511 main/templates/main/_view_movie_modal.html:299
 #: main/templates/main/settings_user_movie.html:26
 msgid "Movie"
 msgstr "Film"
@@ -137,10 +137,10 @@ msgstr "Name"
 #: main/models.py:14 main/models.py:94
 #: main/templates/main/add_movie_confirm.html:31
 #: main/templates/main/add_movie_results.html:33
-#: main/templates/main/inventory_check.html:153
-#: main/templates/main/inventory_check.html:188
-#: main/templates/main/inventory_check.html:219
-#: main/templates/main/inventory_check.html:280
+#: main/templates/main/inventory_check.html:281
+#: main/templates/main/inventory_check.html:316
+#: main/templates/main/inventory_check.html:347
+#: main/templates/main/inventory_check.html:408
 #: main/templates/main/view_list.html:81
 msgid "Format"
 msgstr "Format"
@@ -192,14 +192,14 @@ msgstr "Inhaltsbewertung"
 msgid "Content Ratings"
 msgstr "Inhaltsbewertungen"
 
-#: main/models.py:83 main/models.py:474
+#: main/models.py:83 main/models.py:504
 #: main/templates/main/add_movie_confirm.html:30
 #: main/templates/main/add_movie_results.html:32
-#: main/templates/main/inventory_check.html:52
-#: main/templates/main/inventory_check.html:154
-#: main/templates/main/inventory_check.html:189
-#: main/templates/main/inventory_check.html:220
-#: main/templates/main/inventory_check.html:281
+#: main/templates/main/inventory_check.html:74
+#: main/templates/main/inventory_check.html:282
+#: main/templates/main/inventory_check.html:317
+#: main/templates/main/inventory_check.html:348
+#: main/templates/main/inventory_check.html:409
 msgid "EAN/GTIN"
 msgstr "EAN/GTIN"
 
@@ -207,10 +207,10 @@ msgstr "EAN/GTIN"
 msgid "ASIN"
 msgstr "ASIN"
 
-#: main/models.py:87 main/templates/main/inventory_check.html:155
-#: main/templates/main/inventory_check.html:190
-#: main/templates/main/inventory_check.html:221
-#: main/templates/main/inventory_check.html:282
+#: main/models.py:87 main/templates/main/inventory_check.html:283
+#: main/templates/main/inventory_check.html:318
+#: main/templates/main/inventory_check.html:349
+#: main/templates/main/inventory_check.html:410
 #: main/templates/main/view_list.html:93
 msgid "Title"
 msgstr "Titel"
@@ -322,8 +322,9 @@ msgid "Cabinet Name"
 msgstr "Schrankname"
 
 #: main/models.py:202 main/models.py:256
-#: main/templates/main/inventory_check.html:158
-#: main/templates/main/inventory_check.html:193
+#: main/templates/main/inventory_check.html:189
+#: main/templates/main/inventory_check.html:286
+#: main/templates/main/inventory_check.html:321
 #: main/templates/main/view_list.html:123
 msgid "Cabinet"
 msgstr "Schrank"
@@ -342,16 +343,18 @@ msgid "Rating"
 msgstr "Bewertung"
 
 #: main/models.py:232 main/templates/main/_inventory_movie_row.html:28
-#: main/templates/main/inventory_check.html:157
-#: main/templates/main/inventory_check.html:192
+#: main/templates/main/inventory_check.html:168
+#: main/templates/main/inventory_check.html:285
+#: main/templates/main/inventory_check.html:320
 #: main/templates/main/view.html:124 main/templates/main/view_list.html:117
 msgid "Viewed"
 msgstr "Bereits gesehen"
 
 #: main/models.py:233 main/templates/main/_inventory_movie_row.html:19
 #: main/templates/main/_view_movie_modal.html:125
-#: main/templates/main/inventory_check.html:156
-#: main/templates/main/inventory_check.html:191
+#: main/templates/main/inventory_check.html:147
+#: main/templates/main/inventory_check.html:284
+#: main/templates/main/inventory_check.html:319
 #: main/templates/main/view.html:95 main/templates/main/view_list.html:105
 msgid "Rented"
 msgstr "Verliehen"
@@ -365,8 +368,8 @@ msgid "Rented since"
 msgstr "Verliehen seit"
 
 #: main/models.py:242 main/templates/main/_inventory_movie_row.html:54
-#: main/templates/main/inventory_check.html:159
-#: main/templates/main/inventory_check.html:194
+#: main/templates/main/inventory_check.html:287
+#: main/templates/main/inventory_check.html:322
 msgid "Price"
 msgstr "Preis"
 
@@ -548,31 +551,51 @@ msgstr "Filmfehler Berichte"
 msgid "Started at"
 msgstr "Gestartet am"
 
-#: main/models.py:458 main/models.py:472
+#: main/models.py:460
+msgid "Current batch number"
+msgstr "Aktuelle Batchnummer"
+
+#: main/models.py:467
+msgid "Default viewed"
+msgstr "Standard angesehen"
+
+#: main/models.py:474
+msgid "Default rented"
+msgstr "Standard ausgeliehen"
+
+#: main/models.py:484
+msgid "Default cabinet"
+msgstr "Standard Schrank"
+
+#: main/models.py:488 main/models.py:502
 msgid "Inventory session"
 msgstr "Inventursitzung"
 
-#: main/models.py:459
+#: main/models.py:489
 msgid "Inventory sessions"
 msgstr "Inventursitzungen"
 
-#: main/models.py:483
+#: main/models.py:513
 msgid "Scan count"
 msgstr "Anzahl der Scans"
 
-#: main/models.py:486
+#: main/models.py:516
 msgid "First scanned at"
 msgstr "Zuerst gescannt am"
 
-#: main/models.py:490
+#: main/models.py:520
 msgid "Last scanned at"
 msgstr "Zulest gescannt am"
 
-#: main/models.py:501
+#: main/models.py:526 main/templates/main/inventory_check.html:132
+msgid "Batch number"
+msgstr "Batchnummer"
+
+#: main/models.py:537
 msgid "Inventory scan"
 msgstr "Inventur Scan"
 
-#: main/models.py:502
+#: main/models.py:538
 msgid "Inventory scans"
 msgstr "Inventur Scans"
 
@@ -673,7 +696,7 @@ msgstr ""
 "bei der Erstellung seines Profils eingibt."
 
 #: main/templates/main/_inventory_movie_row.html:8
-#: main/templates/main/inventory_check.html:302
+#: main/templates/main/inventory_check.html:430
 #: main/templates/main/view_list.html:189
 #: main/templates/main/view_log_list.html:131
 msgid "Edit movie"
@@ -692,7 +715,7 @@ msgid "Check the Movie manually"
 msgstr "Den Film manuell prüfen"
 
 #: main/templates/main/_inventory_movie_row.html:91
-#: main/templates/main/inventory_check.html:64
+#: main/templates/main/inventory_check.html:90
 msgid "Check"
 msgstr "Prüfen"
 
@@ -839,7 +862,7 @@ msgid "Yes, delete"
 msgstr "Ja, löschen"
 
 #: main/templates/main/_view_movie_modal.html:217
-#: main/templates/main/inventory_check.html:127
+#: main/templates/main/inventory_check.html:255
 #: main/templates/main/settings_user_movie.html:78
 #: main/templates/main/view_list.html:253
 #: main/templates/main/view_log_list.html:163
@@ -872,7 +895,7 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: main/templates/main/_view_movie_modal.html:308
-#: main/templates/main/inventory_check.html:116
+#: main/templates/main/inventory_check.html:244
 #: main/templates/main/settings_user_movie.html:72
 #: main/templates/main/view_list.html:245
 #: main/templates/main/view_list.html:267
@@ -899,30 +922,30 @@ msgid "Search"
 msgstr "Suche"
 
 #: main/templates/main/add_movie.html:29
-#: main/templates/main/inventory_check.html:69
+#: main/templates/main/inventory_check.html:96
 msgid "Scan Barcode with Camera"
 msgstr "Barcode per Kamera scannen"
 
 #: main/templates/main/add_movie.html:34
-#: main/templates/main/inventory_check.html:75
+#: main/templates/main/inventory_check.html:103
 msgid "Note: Scan with Camera works best with a smartphone rear-camera."
 msgstr ""
 "Notiz: Das Einscannen funktioniert am besten mit der Hauptkamera eines "
 "Smartphones"
 
 #: main/templates/main/add_movie.html:40 main/templates/main/add_movie.html:88
-#: main/templates/main/inventory_check.html:79
-#: main/templates/main/inventory_check.html:355
+#: main/templates/main/inventory_check.html:19
+#: main/templates/main/inventory_check.html:483
 msgid "Camera"
 msgstr "Kamera"
 
 #: main/templates/main/add_movie.html:43
-#: main/templates/main/inventory_check.html:81
+#: main/templates/main/inventory_check.html:25
 msgid "Select camera..."
 msgstr "Kamera auswählen"
 
 #: main/templates/main/add_movie.html:49
-#: main/templates/main/inventory_check.html:86
+#: main/templates/main/inventory_check.html:31
 msgid "Cancel Scan"
 msgstr "Scan abbrechen"
 
@@ -943,17 +966,17 @@ msgid "Back"
 msgstr "Zurück"
 
 #: main/templates/main/add_movie.html:128
-#: main/templates/main/inventory_check.html:385
+#: main/templates/main/inventory_check.html:521
 msgid "Camera permission is required."
 msgstr "Kamera Berechtigung ist benötigt."
 
 #: main/templates/main/add_movie.html:174
-#: main/templates/main/inventory_check.html:420
+#: main/templates/main/inventory_check.html:556
 msgid "Camera could not be started. Check permissions."
 msgstr "Kamera konnte nicht gestartet werden. Berechtigungen prüfen."
 
 #: main/templates/main/add_movie.html:219
-#: main/templates/main/inventory_check.html:486
+#: main/templates/main/inventory_check.html:622
 msgid "Searching"
 msgstr "Suche"
 
@@ -983,7 +1006,7 @@ msgstr "Wir haben den folgenden Film in unserer Datenbank gefunden."
 
 #: main/templates/main/add_movie_confirm.html:39
 #: main/templates/main/add_movie_results.html:45
-#: main/templates/main/inventory_check.html:240
+#: main/templates/main/inventory_check.html:368
 msgid "Add to my collection"
 msgstr "Zu meiner Sammlung hinzufügen"
 
@@ -1124,115 +1147,148 @@ msgstr "Inventarprüfung"
 msgid "Back to collection"
 msgstr "Zurück zur Sammlung"
 
-#: main/templates/main/inventory_check.html:21
+#: main/templates/main/inventory_check.html:41
 msgid "Movies in collection"
 msgstr "Filme in deiner Sammlung"
 
-#: main/templates/main/inventory_check.html:27
+#: main/templates/main/inventory_check.html:47
 msgid "Scanned"
 msgstr "Eingescannt"
 
-#: main/templates/main/inventory_check.html:33
+#: main/templates/main/inventory_check.html:53
 msgid "Not scanned"
 msgstr "Nicht gescannt"
 
-#: main/templates/main/inventory_check.html:39
+#: main/templates/main/inventory_check.html:59
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: main/templates/main/inventory_check.html:46
+#: main/templates/main/inventory_check.html:66
 msgid "Scan barcode or enter EAN/GTIN"
 msgstr "Barcode scannen oder EAN/GTIN eingeben"
 
-#: main/templates/main/inventory_check.html:59
+#: main/templates/main/inventory_check.html:83
 msgid "Enter EAN/GTIN"
 msgstr "EAN/GTIN eingeben"
 
-#: main/templates/main/inventory_check.html:74
+#: main/templates/main/inventory_check.html:102
 msgid "A second scan of the same EAN/GTIN is recorded as a duplicate scan."
 msgstr ""
 "Ein weiterer Scan der gleichen EAN/GTIN wird as doppelter Scan aufgezeichnet."
 
-#: main/templates/main/inventory_check.html:94
+#: main/templates/main/inventory_check.html:118
+msgid "Default values for Checked Movie"
+msgstr "Standardwerte für geprüfte Filme"
+
+#: main/templates/main/inventory_check.html:141
+msgid "User defined batch number for later filtering"
+msgstr "Benutzerdefinierte Batchnummer für späteres Filtern"
+
+#: main/templates/main/inventory_check.html:155
+#: main/templates/main/inventory_check.html:176
+#: main/templates/main/inventory_check.html:197
+msgid "Don't change"
+msgstr "Nicht ändern"
+
+#: main/templates/main/inventory_check.html:158
+#: main/templates/main/inventory_check.html:179
+#: main/templates/main/view.html:131 main/templates/main/view.html:147
+#: main/templates/main/view.html:163 main/templates/main/view.html:179
+#: main/templates/main/view_list.html:164
+msgid "Yes"
+msgstr "Ja"
+
+#: main/templates/main/inventory_check.html:161
+#: main/templates/main/inventory_check.html:182
+#: main/templates/main/view.html:134 main/templates/main/view.html:150
+#: main/templates/main/view.html:166 main/templates/main/view.html:182
+#: main/templates/main/view_list.html:165
+msgid "No"
+msgstr "Nein"
+
+#: main/templates/main/inventory_check.html:222
 msgid "Inventory started"
 msgstr "Inventarprüfung gestartet"
 
-#: main/templates/main/inventory_check.html:100
-#: main/templates/main/inventory_check.html:113
+#: main/templates/main/inventory_check.html:228
+#: main/templates/main/inventory_check.html:241
 msgid "Reset Inventory Check"
 msgstr "Inventarprüfung zurücksetzen"
 
-#: main/templates/main/inventory_check.html:120
+#: main/templates/main/inventory_check.html:248
 msgid ""
 "Are you sure you want to reset this inventory check and remove all scans?"
-msgstr "Bist du sicher, dass du die Inventarprüfung zurücksetzen und alle Scans entfernen möchtest?"
+msgstr ""
+"Bist du sicher, dass du die Inventarprüfung zurücksetzen und alle Scans "
+"entfernen möchtest?"
 
-#: main/templates/main/inventory_check.html:122
+#: main/templates/main/inventory_check.html:250
 msgid "This action cannot be undone."
 msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 
-#: main/templates/main/inventory_check.html:130
+#: main/templates/main/inventory_check.html:258
 msgid "Yes, reset this inventory check"
 msgstr "Ja, diese Inventarprüfung zurücksetzen"
 
-#: main/templates/main/inventory_check.html:137
+#: main/templates/main/inventory_check.html:265
 msgid "Inventory progress"
 msgstr "Inventarprüfung fortschritt"
 
-#: main/templates/main/inventory_check.html:144
+#: main/templates/main/inventory_check.html:272
 msgid "Not scanned yet"
 msgstr "Bisher nicht gescannt"
 
-#: main/templates/main/inventory_check.html:147
+#: main/templates/main/inventory_check.html:275
 msgid ""
 "These collection entries have not been found by an EAN/GTIN scan in this "
 "inventory run. You can update their details directly in the table."
 msgstr ""
-"Diese Sammlungseinträge wurden in dieser Inventarprüfung nicht durch ihre EAN/GTIN "
-"scans gefunden. Du kannst die Details direkt in der Tabelle editieren."
+"Diese Sammlungseinträge wurden in dieser Inventarprüfung nicht durch ihre "
+"EAN/GTIN scans gefunden. Du kannst die Details direkt in der Tabelle "
+"editieren."
 
-#: main/templates/main/inventory_check.html:169
+#: main/templates/main/inventory_check.html:297
 msgid "All collection movies have been scanned."
 msgstr "Alle Filme der Sammlung wurden gescannt."
 
-#: main/templates/main/inventory_check.html:180
+#: main/templates/main/inventory_check.html:308
 msgid "Scanned movies in your collection"
 msgstr "Gescannte Filme in deiner Sammlung"
 
-#: main/templates/main/inventory_check.html:203
+#: main/templates/main/inventory_check.html:331
 msgid "No scanned movies from your collection yet."
 msgstr "Bisher keine gescannten Filme aus deiner Sammlung."
 
-#: main/templates/main/inventory_check.html:212
+#: main/templates/main/inventory_check.html:340
 msgid "Scanned but not in your collection"
 msgstr "Gescannt aber nicht in deiner Sammlung"
 
-#: main/templates/main/inventory_check.html:222
-#: main/templates/main/inventory_check.html:283
+#: main/templates/main/inventory_check.html:350
+#: main/templates/main/inventory_check.html:411
 msgid "Scans"
 msgstr "Scans"
 
-#: main/templates/main/inventory_check.html:251
+#: main/templates/main/inventory_check.html:379
 msgid "Movie data lookup pending"
 msgstr "Abfrage der Filmdaten steht noch aus"
 
-#: main/templates/main/inventory_check.html:254
+#: main/templates/main/inventory_check.html:382
 msgid "The movie can be added after its data has been imported."
 msgstr "Der Film kann hinzugefügt werden, nachdem die Daten geladen wurde."
 
-#: main/templates/main/inventory_check.html:262
+#: main/templates/main/inventory_check.html:390
 msgid "No scanned movies are missing from your collection."
 msgstr "Es fehlen keine gescannten Filme in deiner Sammlung."
 
-#: main/templates/main/inventory_check.html:273
+#: main/templates/main/inventory_check.html:401
 msgid "Duplicate movie scans"
 msgstr "Doppelt eingescannte Filme"
 
-#: main/templates/main/inventory_check.html:284
+#: main/templates/main/inventory_check.html:412
 msgid "Collection entries"
 msgstr "Sammlungseinträge"
 
-#: main/templates/main/inventory_check.html:323
+#: main/templates/main/inventory_check.html:451
 msgid "No duplicate EAN/GTIN entries in your collection."
 msgstr "Keine doppelten EAN/GTIN EInträge in deiner Sammlung."
 
@@ -1492,18 +1548,6 @@ msgstr "Mehr"
 msgid "All"
 msgstr "Alle"
 
-#: main/templates/main/view.html:131 main/templates/main/view.html:147
-#: main/templates/main/view.html:163 main/templates/main/view.html:179
-#: main/templates/main/view_list.html:164
-msgid "Yes"
-msgstr "Ja"
-
-#: main/templates/main/view.html:134 main/templates/main/view.html:150
-#: main/templates/main/view.html:166 main/templates/main/view.html:182
-#: main/templates/main/view_list.html:165
-msgid "No"
-msgstr "Nein"
-
 #: main/templates/main/view.html:172
 msgid "Is 3D"
 msgstr "Ist 3D"
@@ -1741,7 +1785,7 @@ msgstr ""
 "erfolgreich zu deiner <a href='%(url)s' class='alert-link'>Sammlung</a> "
 "hinzugefügt"
 
-#: main/views.py:511 main/views.py:812 main/views.py:841
+#: main/views.py:511 main/views.py:899 main/views.py:929
 msgid "This movie is already in your collection."
 msgstr "Dieser Film ist bereits in deiner Sammlung."
 
@@ -1782,55 +1826,67 @@ msgstr "Formular"
 msgid "Viewing log entry deleted."
 msgstr "Ansichtseintrag gelöscht."
 
-#: main/views.py:761
+#: main/views.py:760
+msgid "Enter a valid batch number."
+msgstr "Trage eine valide Batchnummer aus."
+
+#: main/views.py:777
+msgid "Select a valid default value."
+msgstr "Wähle einen validen Standardwert aus."
+
+#: main/views.py:793
+msgid "Select a valid cabinet."
+msgstr "Wähle einen validen Schrank aus"
+
+#: main/views.py:838
 msgid "The inventory check has been reset."
 msgstr "Die Inventarprüfung wurde zurückgesetzt."
 
-#: main/views.py:787
+#: main/views.py:874
 #, python-format
 msgid "Movie manually checked: %(title)s"
 msgstr "Film manuell geprüft: %(title)s"
 
-#: main/views.py:793
+#: main/views.py:880
 msgid "This movie has already been checked."
 msgstr "Dieser Film wurde bereits geprüft."
 
-#: main/views.py:823
+#: main/views.py:910
 msgid "The movie data is not available yet. Please try again later."
 msgstr "Die Filmdaten sind nocht nicht verfügbar. Bitte später probieren."
 
-#: main/views.py:835
+#: main/views.py:923
 #, python-format
 msgid "%(title)s was added to your collection."
 msgstr "%(title)s wurde zu deiner Sammlung hinzugefügt."
 
-#: main/views.py:853
+#: main/views.py:941
 msgid "Enter a valid EAN/GTIN containing 8 to 14 digits."
 msgstr "Gebe eine valide EAN/GTIN mit 8 bis 14 Stellen ein."
 
-#: main/views.py:886
+#: main/views.py:984
 #, python-format
 msgid "This EAN/GTIN was scanned more than once (%(count)s scans)."
 msgstr "Die EAN/GTIN wurde mehr als einmal gescannt (%(count)s Scans)"
 
-#: main/views.py:904
+#: main/views.py:1002
 #, python-format
 msgid "Movie found in your collection: %(title)s"
 msgstr "Film in deiner Sammlung gefunden: %(title)s"
 
-#: main/views.py:911
+#: main/views.py:1009
 #, python-format
 msgid "Movie found in the database but not in your collection: %(title)s"
 msgstr ""
 "Film in der Datenbank, aber nicht in deiner Sammlung gefunden: %(title)s"
 
-#: main/views.py:923
+#: main/views.py:1021
 msgid "The EAN/GTIN was scanned, but the movie lookup could not be started."
 msgstr ""
 "Die EAN/GTIN wurde eingescannt, aber die Film-Abfrage konnte nicht gestartet "
 "werden."
 
-#: main/views.py:930
+#: main/views.py:1028
 #, python-format
 msgid ""
 "Movie not found yet. A background lookup has been started for EAN/GTIN "
@@ -1839,24 +1895,24 @@ msgstr ""
 "Film noch nicht gefunden. Eine Hintergrundabgfrage wurde für die EAN/GTIN "
 "%(ean)s gestartet."
 
-#: main/views.py:937
+#: main/views.py:1035
 #, python-format
 msgid "EAN/GTIN %(ean)s is recorded. Movie data is still pending."
 msgstr "EAN/GTIN %(ean)s wurde angenommen. Film daten sind noch offen."
 
-#: main/views.py:943
+#: main/views.py:1041
 msgid "Unknown inventory action."
 msgstr "Unbekannte inventar Aktion."
 
-#: main/views.py:1118
+#: main/views.py:1226
 msgid "Enter a valid price with up to two decimal places."
 msgstr "Trage einen gültigen Preis mit biszu zwei Dezimalstellen ein."
 
-#: main/views.py:1125
+#: main/views.py:1233
 msgid "Enter a valid date added."
 msgstr "Trage ein valides hinzugefügt Datum ein."
 
-#: main/views.py:1146
+#: main/views.py:1254
 #, python-format
 msgid "Changes for %(title)s were saved."
 msgstr "Änderungen für %(title)s wurden gespeichert."
