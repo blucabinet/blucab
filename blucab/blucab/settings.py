@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "main.apps.MainConfig",
     "register.apps.RegisterConfig",
+    "inventory.apps.InventoryConfig",
     "django.contrib.humanize",
     "rest_framework",
     "knox",
