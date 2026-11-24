@@ -22,6 +22,7 @@ from register import urls as regview_urls
 from main import urls as main_urls
 from api import urls as api_urls
 from contenthandler import urls as contenthandler_urls
+from inventory import urls as inventory_urls
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -33,6 +34,7 @@ urlpatterns = [
     path("", include(main_urls)),
     path("", include(regview_urls)),
     path("", include(contenthandler_urls)),
+    path("inventory/", include(inventory_urls)),
     path(
         "", include("django.contrib.auth.urls")
     ),  # Needs to be included after regview_urls

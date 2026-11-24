@@ -14,6 +14,7 @@ from .models import (
     ContentRating,
 )
 from contenthandler.models import FailedAddMovie
+from inventory.models import InventorySession, InventoryScan
 from django.utils.translation import gettext as _
 
 
@@ -100,3 +101,27 @@ class FailedAddMovieAdmin(admin.ModelAdmin):
 
 admin.site.site_title = _("blucab site admin")
 admin.site.site_header = _("blucab administration")
+
+
+@admin.register(InventorySession)
+class InventorySessionAdmin(admin.ModelAdmin):
+    list_display = ("user", "started_at")
+    search_fields = ("user__username",)
+    autocomplete_fields = ("user",)
+
+
+@admin.register(InventoryScan)
+class InventoryScanAdmin(admin.ModelAdmin):
+    list_display = (
+        "ean",
+        "movie",
+        "session",
+        "scan_count",
+        "last_scanned_at",
+    )
+    search_fields = (
+        "ean",
+        "movie__title_clean",
+        "session__user__username",
+    )
+    autocomplete_fields = ("movie", "session")

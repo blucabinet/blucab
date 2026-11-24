@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import Q, Count, Case, F, Value, When, IntegerField
 from django.db.models.expressions import Func
 from django.db.models.functions import Upper
@@ -5,12 +6,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.utils.translation import gettext as _
+from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 from django.urls import reverse_lazy, reverse
-from .models import UserSettings, MovieUserList, User, Movie, UserCabinet, MovieViewLog
+from .models import (
+    User,
+    UserSettings,
+    UserCabinet,
+    MovieUserList,
+    Movie,
+    MovieViewLog,
+)
 from .forms import AddMovieForm, MovieErrorReportForm, MovieViewLogForm
 from contenthandler.tasks import task_add_new_movie
+
 
 from environs import Env
 
@@ -532,7 +543,7 @@ def add_movie(request):
                 )
 
             # Verify if it's an EAN
-            if query.isdigit() and len(query) >= 8 and len(query) <= 13:
+            if query.isdigit() and len(query) >= 8 and len(query) <= 14:
                 task_add_new_movie.delay(query)
                 messages.info(
                     request,

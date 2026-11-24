@@ -16,17 +16,24 @@
             {% trans "View of your collection" %}
             {% if usersettings.show_view_button_share %}
                 {% if usersettings.view_is_public %}
-                    <a href="{% url 'cab_uname' user.username %}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Open public view" %}">🔗 {% trans "Share" %}</a>
+                    <a href="{% url 'cab_uname' user.username %}" class="btn btn-outline-success" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Open public view" %}">
+                        <i class="bi bi-share"></i> {% trans "Share" %}
+                    </a>
                 {% else %}
-                    <a href="{% url 'settings' %}" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">🔗 {% trans "Share" %}</a>
+                    <a href="{% url 'settings' %}" class="btn btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans "Public view is deactivated. Open Settings." %}">
+                        <i class="bi bi-share"></i> {% trans "Share" %}
+                    </a>
                 {% endif %}
+            {% endif %}
                 <a href="{% url 'view_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open list view' %}">
                     <i class="bi bi-list-task"></i> {% trans "List View" %}
                 </a>
                 <a href="{% url 'view_log_list' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open global watch log' %}">
-                    <i class="bi bi-list-task"></i> {% trans "Log View" %}
+                    <i class="bi bi-list-ol"></i> {% trans "Log View" %}
                 </a>
-            {% endif %}
+                <a href="{% url 'inventory_check' %}" class="btn btn-outline-info me-2" role="button" data-bs-toggle="tooltip" data-placement="top" title="{% trans 'Open the inventory check' %}">
+                    <i class="bi bi-list-check"></i> {% trans "Inventory Check" %}
+                </a>
         {% endif %}
     {% else %}
         {% blocktrans with username=usersettings.user.get_username trimmed %}
