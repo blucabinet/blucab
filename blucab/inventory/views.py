@@ -12,10 +12,8 @@ from main.models import (
     UserCabinet,
     MovieUserList,
     Movie,
-    InventoryScan,
-    InventorySession,
 )
-
+from inventory.models import InventorySession, InventoryScan
 from decimal import Decimal, InvalidOperation
 
 

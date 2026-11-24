@@ -12,10 +12,9 @@ from .models import (
     Studio,
     Director,
     ContentRating,
-    InventorySession,
-    InventoryScan,
 )
 from contenthandler.models import FailedAddMovie
+from inventory.models import InventorySession, InventoryScan
 from django.utils.translation import gettext as _
 
 
