@@ -14,6 +14,8 @@ from main.models import (
     Movie,
 )
 from inventory.models import InventorySession, InventoryScan
+from contenthandler.tasks import task_add_new_movie
+
 from decimal import Decimal, InvalidOperation
 
 
