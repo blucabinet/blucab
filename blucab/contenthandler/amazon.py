@@ -320,7 +320,7 @@ class contentParser:
                 if item in mediaformat:
                     return FORMAT_DVD
 
-        return FORMAT_UNKNOWN
+        return None
 
     def is_bluray_uhd(self, soup) -> bool:
         title = self.get_title(soup)

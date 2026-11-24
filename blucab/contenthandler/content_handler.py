@@ -75,11 +75,8 @@ class handler:
 
     def _get_format_instance(self, format_name: str):
         format_clean = self._check_string(format_name)
-
-        if not format_clean:
-            format_clean = FORMAT_UNKNOWN
-
         format_obj, created = Format.objects.get_or_create(name=format_clean)
+
         return format_obj
 
     def _get_content_rating(self, fsk_string: str):
